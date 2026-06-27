@@ -522,13 +522,22 @@ async function translateText(text, targetLang) {
   if (translationCache[cacheKey]) return translationCache[cacheKey];
 
   try {
-    const res = await fetch('/.netlify/functions/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, lang: targetLang })
+    const params = new URLSearchParams({
+      auth_key: '494d9efa-2291-41c3-a25c-ca0228da01ef:fx',
+      text: text,
+      source_lang: 'IT',
+      target_lang: targetLang === 'EN' ? 'EN-GB' : targetLang,
+      tag_handling: 'html'
     });
+
+    const res = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://api-free.deepl.com/v2/translate'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+    });
+
     const data = await res.json();
-    const translated = data.translated || text;
+    const translated = data.translations?.[0]?.text || text;
     translationCache[cacheKey] = translated;
     return translated;
   } catch(e) {
