@@ -516,77 +516,87 @@ function saveOriginals() {
   });
 }
 
-async function translateText(text, targetLang) {
-  if (targetLang === 'IT') return text;
-  const cacheKey = targetLang + '_' + text.substring(0,50);
-  if (translationCache[cacheKey]) return translationCache[cacheKey];
-
-  try {
-    // Strip HTML tags for translation, then reinsert
-    const stripped = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g,' ').trim();
-    if (!stripped) return text;
-
-    const langMap = { 'EN': 'en', 'ES': 'es', 'FR': 'fr' };
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(stripped)}&langpair=it|${langMap[targetLang]}&de=francesco_amirante@yahoo.it`;
+// Translate multiple texts in parallel
+async function translateBatch(texts, targetLang) {
+  const langMap = { 'EN': 'en', 'ES': 'es', 'FR': 'fr' };
+  const target = langMap[targetLang];
+  
+  const promises = texts.map(async (text) => {
+    if (!text || !text.trim()) return text;
+    const cacheKey = targetLang + '_' + text.substring(0,40);
+    if (translationCache[cacheKey]) return translationCache[cacheKey];
     
-    const res = await fetch(url);
-    const data = await res.json();
-    const translated = data.responseData?.translatedText || stripped;
-    translationCache[cacheKey] = translated;
-    return translated;
-  } catch(e) {
-    console.error('Translate error:', e);
-    return text;
-  }
+    // Strip HTML for translation
+    const stripped = text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+    if (!stripped) return text;
+    
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(stripped)}&langpair=it|${target}&de=francesco_amirante@yahoo.it`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const translated = data.responseData?.translatedText || stripped;
+      translationCache[cacheKey] = translated;
+      return translated;
+    } catch(e) { return text; }
+  });
+  
+  return Promise.all(promises);
+}
+
+async function translateText(text, targetLang) {
+  const results = await translateBatch([text], targetLang);
+  return results[0];
 }
 
 async function setLang(lang) {
   if (lang === currentLang) return;
   currentLang = lang;
 
-  // Update active button
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.textContent === lang);
   });
 
-  // Save originals before first translation
   saveOriginals();
 
   if (lang === 'IT') {
-    // Restore originals
     TRANSLATE_SELECTORS.forEach(sel => {
       document.querySelectorAll(sel).forEach((el, i) => {
         const key = sel + '_' + i;
         if (originalTexts[key]) el.innerHTML = originalTexts[key];
       });
     });
-    // Restore story cards
     document.querySelectorAll('.story h3, .story p, .story-tag, .story-link').forEach((el, i) => {
       if (originalTexts['story_' + i]) el.innerHTML = originalTexts['story_' + i];
     });
     return;
   }
 
-  // Add translating class
   document.body.classList.add('translating');
 
-  // Translate static elements
-  for (const sel of TRANSLATE_SELECTORS) {
-    const els = document.querySelectorAll(sel);
-    for (let i = 0; i < els.length; i++) {
-      const key = sel + '_' + i;
-      const original = originalTexts[key] || els[i].innerHTML;
-      const translated = await translateText(original, lang);
-      els[i].innerHTML = translated;
-    }
-  }
+  // Collect ALL elements at once
+  const allEls = [];
+  const allKeys = [];
+  
+  TRANSLATE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      allEls.push(el);
+      allKeys.push(sel + '_' + i);
+    });
+  });
+  
+  document.querySelectorAll('.story h3, .story p, .story-tag, .story-link').forEach((el, i) => {
+    allEls.push(el);
+    allKeys.push('story_' + i);
+  });
 
-  // Translate story cards
-  const storyEls = document.querySelectorAll('.story h3, .story p, .story-tag, .story-link');
-  for (let i = 0; i < storyEls.length; i++) {
-    const original = originalTexts['story_' + i] || storyEls[i].innerHTML;
-    storyEls[i].innerHTML = await translateText(original, lang);
-  }
+  // Get original texts
+  const originals = allEls.map((el, i) => originalTexts[allKeys[i]] || el.innerHTML);
+  
+  // Translate ALL in parallel
+  const translated = await translateBatch(originals, lang);
+  
+  // Apply all at once
+  allEls.forEach((el, i) => { el.innerHTML = translated[i]; });
 
   document.body.classList.remove('translating');
 }
