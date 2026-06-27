@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMIRA vision — Magazine</title>
+  <style>
+    :root{ --gold:#c9a96e; --paper:#fafaf8; --ink:#080808; --line:rgba(255,255,255,.12); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;background:#080808;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.35}
+    a{color:inherit;text-decoration:none}
+    img{display:block;width:100%;height:100%;object-fit:cover}
+    .page{display:none}.page.active{display:block}
+
+    /* NAV */
+    .nav{position:fixed;z-index:100;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 44px;height:56px;transition:background .35s}
+    .nav.scrolled{background:rgba(8,8,8,.88);backdrop-filter:blur(20px);border-bottom:.5px solid var(--line)}
+    .nav-logo{display:flex;flex-direction:column;align-items:center;cursor:pointer;line-height:1;gap:2px}
+    .nav-logo-amira{font-size:16px;font-weight:800;letter-spacing:.22em;color:#fff;text-indent:.22em}
+    .nav-logo-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);text-indent:.5em}
+    .nav-links{display:flex;gap:32px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
+    .nav-links a{cursor:pointer;transition:color .15s}.nav-links a:hover{color:#fff}
+    .nav-studio{border:.5px solid rgba(255,255,255,.35);padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;letter-spacing:.03em;transition:all .2s;cursor:pointer;background:none}
+    .nav-studio:hover{background:#fff;color:#080808}
+
+    /* HERO */
+    .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .hero-bg{position:absolute;inset:0}.hero-bg img{filter:brightness(.65) saturate(.85)}
+    .hero-grad{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.3) 0%,rgba(0,0,0,.72) 60%,rgba(0,0,0,.94) 100%)}
+    .hero-content{position:relative;z-index:2;text-align:center;padding:0 32px;display:flex;flex-direction:column;align-items:center}
+    .hero-brand{display:flex;flex-direction:column;align-items:center;margin-bottom:36px;gap:6px}
+    .hero-brand-amira{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:.22em;color:#fff;line-height:1;text-indent:.22em}
+    .hero-brand-vision{font-size:clamp(13px,1.8vw,22px);font-style:italic;font-weight:300;letter-spacing:.55em;color:rgba(255,255,255,.65);text-indent:.55em}
+    .hero-rule{width:40px;height:.5px;background:rgba(255,255,255,.3);margin-bottom:36px}
+    .hero-payoff{font-size:clamp(40px,6.5vw,88px);font-weight:700;letter-spacing:-.04em;line-height:.92;margin-bottom:20px}
+    .hero-payoff em{font-style:italic;font-weight:300;color:rgba(255,255,255,.7)}
+    .hero-sub{font-size:clamp(16px,1.8vw,19px);font-weight:400;color:rgba(255,255,255,.72);max-width:460px;line-height:1.6;margin-bottom:36px}
+    .btn-pill{display:inline-flex;gap:10px;align-items:center;border:.5px solid rgba(255,255,255,.35);padding:13px 24px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.04em;background:rgba(255,255,255,.1);backdrop-filter:blur(16px);transition:all .2s;cursor:pointer}
+    .btn-pill:hover{background:rgba(255,255,255,.2)}
+
+    /* STORIES */
+    .stories-section{padding:80px 44px;background:#050505}
+    .sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:18px;border-bottom:.5px solid rgba(255,255,255,.09)}
+    .sec-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.38)}
+    .stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    .story{position:relative;overflow:hidden;aspect-ratio:2/3;cursor:pointer;background:#111}
+    .story::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.94) 0%,rgba(0,0,0,.03) 55%)}
+    .story img{transition:transform .55s ease}
+    .story:hover img{transform:scale(1.04)}
+    .story-body{position:absolute;z-index:2;bottom:28px;left:26px;right:26px}
+    .story-tag{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--gold);letter-spacing:.16em;margin-bottom:9px}
+    .story h3{font-size:clamp(22px,2.5vw,32px);font-weight:700;letter-spacing:-.04em;line-height:.93;margin-bottom:12px}
+    .story h3 em{font-style:italic;font-weight:300}
+    .story p{color:rgba(255,255,255,.65);font-size:14px;font-weight:400;line-height:1.6;margin-bottom:18px}
+    .story-link{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.45);display:inline-flex;align-items:center;gap:7px;transition:color .2s}
+    .story:hover .story-link{color:#fff}
+
+    /* LETTER */
+    .letter{display:grid;grid-template-columns:1fr 1.1fr 1fr}
+    .letter-photo{min-height:420px;overflow:hidden}.letter-photo img{transition:transform .6s ease}.letter-photo:hover img{transform:scale(1.03)}
+    .letter-body{padding:68px 50px;display:flex;flex-direction:column;justify-content:center;background:var(--paper);color:var(--ink)}
+    .letter-eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:rgba(8,8,8,.35);margin-bottom:18px}
+    .letter h2{font-size:clamp(30px,3.5vw,44px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:18px;color:var(--ink)}
+    .letter h2 em{font-style:italic;font-weight:300;color:rgba(8,8,8,.55)}
+    .letter p{font-size:16px;font-weight:400;color:rgba(8,8,8,.62);line-height:1.75;margin-bottom:26px}
+    .btn-dark{display:inline-flex;gap:10px;align-items:center;border:.5px solid rgba(8,8,8,.28);padding:12px 22px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--ink);transition:all .2s;cursor:pointer}
+    .btn-dark:hover{background:var(--ink);color:var(--paper)}
+
+    /* QUOTE */
+    .quote-band{background:#0c0c0c;border-top:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid rgba(255,255,255,.07);padding:72px 44px;display:grid;grid-template-columns:1.3fr .7fr;gap:60px;align-items:center}
+    .q-txt{font-size:clamp(28px,3.8vw,50px);font-weight:700;letter-spacing:-.04em;line-height:.95;color:rgba(255,255,255,.88)}
+    .q-txt em{color:var(--gold);font-style:italic;font-weight:300}
+    .q-src{font-size:12px;color:rgba(255,255,255,.28);margin-top:22px;font-weight:500;letter-spacing:.1em}
+    .q-side p{font-size:16px;font-weight:400;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:24px}
+
+    /* FOOTER */
+    footer{padding:60px 44px 30px;background:#030303;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:44px}
+    .f-logo-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:14px}
+    .f-logo-amira{font-size:44px;font-weight:800;letter-spacing:.22em;color:#fff;line-height:1;text-indent:.22em}
+    .f-logo-vision{font-size:14px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.45);text-indent:.5em}
+    .f-tag{font-size:12px;font-weight:400;color:rgba(255,255,255,.28);line-height:1.7}
+    .f-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.28);margin-bottom:16px}
+    .f-col input{width:100%;background:transparent;border:none;border-bottom:.5px solid rgba(255,255,255,.18);padding:12px 0;color:#fff;font-size:15px;font-family:inherit;outline:none}
+    .f-col input::placeholder{color:rgba(255,255,255,.25)}
+    .f-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+    .f-col ul li a{font-size:13px;font-weight:400;color:rgba(255,255,255,.32);transition:color .2s}
+    .f-col ul li a:hover{color:#fff}
+    .f-bottom{grid-column:1/-1;border-top:.5px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:rgba(255,255,255,.2)}
+
+    /* ARTICLE */
+    .art-hero{min-height:75vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+    .art-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
+    .art-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.1) 55%)}
+    .art-hero-body{position:relative;z-index:2;padding:0 64px 64px;max-width:940px}
+    .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+    .art-tag::before{content:'';display:block;width:20px;height:.5px;background:var(--gold)}
+    .art-title{font-size:clamp(42px,6vw,80px);font-weight:700;letter-spacing:-.04em;line-height:.92;margin-bottom:20px}
+    .art-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.65)}
+    .art-meta{font-size:13px;font-weight:400;color:rgba(255,255,255,.45);display:flex;gap:20px}
+    .art-body{max-width:680px;margin:0 auto;padding:72px 32px 80px}
+    .art-intro{font-size:21px;font-weight:400;color:rgba(255,255,255,.88);line-height:1.65;margin-bottom:48px;border-left:2px solid var(--gold);padding-left:24px}
+    .art-text{font-size:17px;font-weight:400;color:rgba(255,255,255,.7);line-height:1.8;margin-bottom:28px}
+    .art-text strong{color:#fff;font-weight:600}
+    .art-img-full{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:4px;margin:40px 0}
+    .art-img-full img{width:100%;height:100%;object-fit:cover}
+    .art-img-caption{font-size:12px;font-weight:400;color:rgba(255,255,255,.3);margin-top:-30px;margin-bottom:40px;text-align:center;letter-spacing:.05em}
+    .art-pullquote{font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#fff;border-top:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid rgba(255,255,255,.15);padding:36px 0;margin:44px 0;text-align:center}
+    .art-pullquote em{color:var(--gold);font-style:italic;font-weight:300}
+    .art-nav-bottom{background:#0a0a0a;border-top:.5px solid rgba(255,255,255,.08);padding:48px 44px;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
+    .art-nav-prev,.art-nav-next{cursor:pointer;transition:opacity .2s}.art-nav-prev:hover,.art-nav-next:hover{opacity:.6}
+    .art-nav-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.35);margin-bottom:8px}
+    .art-nav-title{font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+    .art-nav-next{text-align:right}
+    .art-back{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.35);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;transition:color .2s}
+    .art-back:hover{color:#fff}
+
+    @media(max-width:768px){
+      .nav{padding:0 20px}.nav-links{display:none}
+      .hero-content{padding:0 20px}
+      .stories-section{padding:52px 20px}.stories-grid{grid-template-columns:1fr}.story{aspect-ratio:4/3}
+      .letter{grid-template-columns:1fr}.letter-photo{min-height:260px}.letter-body{padding:44px 22px}
+      .quote-band{grid-template-columns:1fr;padding:52px 20px;gap:28px}
+      footer{grid-template-columns:1fr;padding:44px 20px 24px}.f-logo-amira{font-size:36px}.f-bottom{flex-direction:column;gap:6px}
+      .art-hero-body{padding:0 20px 44px}.art-body{padding:48px 20px 64px}
+      .art-nav-bottom{grid-template-columns:1fr 1fr;padding:32px 20px}.art-back{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-amira">AMIRA</div>
+    <div class="nav-logo-vision">vision</div>
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('home')">Le storie</a>
+    <a onclick="showPage('home')">Il magazine</a>
+    <a href="https://amiravision.it" target="_blank">Lo studio</a>
+  </div>
+  <button class="nav-studio" onclick="window.open('https://amiravision.it','_blank')">amiravision.it</button>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+
+  <header class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=2200&q=85" alt="Hero"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-content">
+      <div class="hero-brand">
+        <div class="hero-brand-amira">AMIRA</div>
+        <div class="hero-brand-vision">vision</div>
+      </div>
+      <div class="hero-rule"></div>
+      <h1 class="hero-payoff">Dentro ognuno di noi<br><em>c'è una storia.</em></h1>
+      <p class="hero-sub">AMIRA è un magazine su persone, luoghi e talenti.</p>
+      <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Scopri le storie &nbsp;→</span>
+    </div>
+  </header>
+
+  <div id="stories-anchor"></div>
+  <section class="stories-section">
+    <div class="sec-head">
+      <span class="sec-label">Le storie</span>
+    </div>
+    <div class="stories-grid" id="stories-grid">
+      <!-- articoli generati da JS -->
+    </div>
+  </section>
+
+  <section class="letter">
+    <div class="letter-photo"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=85" alt="Amira"></div>
+    <div class="letter-body">
+      <div class="letter-eye">Una lettera da Amira</div>
+      <h2>C'è una storia<br><em>in ogni cosa.</em></h2>
+      <p>In ogni persona che incontri, in ogni posto che visiti, in ogni brand che costruisce qualcosa di vero. Amira Vision esiste per raccontarle.</p>
+      <span class="btn-dark" onclick="window.open('https://amiravision.it','_blank')">Scopri lo studio →</span>
+    </div>
+    <div class="letter-photo"><img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=85" alt="Amira"></div>
+  </section>
+
+  <section class="quote-band">
+    <div>
+      <div class="q-txt">«Le storie migliori<br>non si raccontano.<br><em>Si sentono.</em>»</div>
+      <div class="q-src">— Amira Vision Magazine</div>
+    </div>
+    <div class="q-side">
+      <p>Un magazine visivo e indipendente su persone, luoghi e talenti. Ogni storia è scelta con cura, raccontata con intenzione.</p>
+      <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Sfoglia le storie →</span>
+    </div>
+  </section>
+
+  <footer>
+    <div>
+      <div class="f-logo-wrap">
+        <div class="f-logo-amira">AMIRA</div>
+        <div class="f-logo-vision">vision</div>
+      </div>
+      <div class="f-tag">Storie di persone,<br>luoghi e talenti.</div>
+    </div>
+    <div class="f-col">
+      <h4>Newsletter</h4>
+      <input type="email" placeholder="La tua email →">
+    </div>
+    <div class="f-col">
+      <h4>Link</h4>
+      <ul>
+        <li><a href="#">Chi siamo</a></li>
+        <li><a href="#">Contatti</a></li>
+        <li><a href="https://instagram.com/amira.vision" target="_blank">Instagram</a></li>
+        <li><a href="https://amiravision.it" target="_blank">amiravision.it</a></li>
+      </ul>
+    </div>
+    <div class="f-bottom">
+      <span>© Amira Magazine 2026</span>
+      <span>amiravision.it</span>
+    </div>
+  </footer>
+
+</div><!-- /home -->
+
+<!-- ══ ARTICLE PAGE (rendered dynamically) ══ -->
+<div class="page" id="page-article">
+  <div id="art-hero-section" class="art-hero">
+    <img id="art-cover" src="" alt="">
+    <div class="art-hero-grad"></div>
+    <div class="art-hero-body">
+      <div class="art-tag" id="art-tag"></div>
+      <h1 class="art-title" id="art-title"></h1>
+      <div class="art-meta" id="art-meta"></div>
+    </div>
+  </div>
+  <div class="art-body">
+    <p class="art-intro" id="art-intro"></p>
+    <div id="art-content"></div>
+  </div>
+  <div class="art-nav-bottom">
+    <div class="art-nav-prev" id="art-prev" onclick="navArticle(-1)">
+      <div class="art-nav-label">← Storia precedente</div>
+      <div class="art-nav-title" id="art-prev-title"></div>
+    </div>
+    <div class="art-back" onclick="showPage('home')">↩ Torna alle storie</div>
+    <div class="art-nav-next" id="art-next" onclick="navArticle(1)">
+      <div class="art-nav-label">Storia successiva →</div>
+      <div class="art-nav-title" id="art-next-title"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ARTICLES DATABASE ──
+// Per aggiungere un articolo: copia un oggetto, cambia i dati, salva.
+const ARTICOLI = [
+  {
+    id: "larte-di-fare-le-cose-lentamente",
+    titolo: "L'arte di fare le cose",
+    titolo_em: "lentamente.",
+    luogo: "Napoli",
+    minuti: 5,
+    autore: "Francesco Amirante",
+    data: "Giugno 2026",
+    copertina: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=2000&q=85",
+    anteprima: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=85",
+    intro: "In un vicolo di Spaccanapoli, Giovanni Lubrano cuce abiti da quarant'anni. Non ha un sito web. Non gli serve. Ha le mani, un ago, e una pazienza che il mondo moderno ha dimenticato di avere.",
+    estratto: "In un vicolo di Spaccanapoli, Giovanni cuce abiti da quarant'anni.",
+    contenuto: [
+      { tipo: "paragrafo", testo: "La sua bottega è piccola. Due metri per tre, forse. Sul muro ci sono le foto dei clienti — non influencer, non personaggi famosi. Persone. Un avvocato che porta lo stesso completo da vent'anni. Una signora che viene ogni estate a farsi aggiustare un vestito da sposa che non indossa più, ma che vuole tenere perfetto." },
+      { tipo: "paragrafo", testo: "«La gente ha fretta», dice Giovanni senza alzare gli occhi dal tessuto. «Vuole tutto subito. Ma un abito fatto bene non si fa in fretta. Un abito fatto bene si fa con rispetto.»" },
+      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1600&q=85", didascalia: "Le mani di Giovanni, sessantadue anni di ago e filo." },
+      { tipo: "citazione", testo: "Non vendo abiti.", em: "Vendo tempo." },
+      { tipo: "paragrafo", testo: "Sono rimasto lì due ore. Non ho comprato nulla. Non avevo niente da riparare. Eppure sono andato via con qualcosa — quella sensazione rara di aver incontrato qualcuno che sa esattamente chi è, e non ha nessuna intenzione di cambiarlo." },
+      { tipo: "paragrafo", testo: "<strong>Forse è questo che fa un magazine.</strong> Non dare notizie. Fermare il momento in cui hai incontrato qualcosa di vero — e tenerlo lì, per chi non c'era." }
+    ]
+  },
+  {
+    id: "santorini-luce-del-mattino",
+    titolo: "Santorini,",
+    titolo_em: "luce del mattino.",
+    luogo: "Santorini, Grecia",
+    minuti: 4,
+    autore: "Francesco Amirante",
+    data: "Maggio 2026",
+    copertina: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2000&q=85",
+    anteprima: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=900&q=85",
+    intro: "Ci sono posti che esistono in due versioni. Quello che vedi nelle foto — azzurro, bianco, tramonti famosi — e quello che trovi quando ci arrivi davvero, quando sei abbastanza sveglio da alzarti prima che arrivino i turisti.",
+    estratto: "Un'isola che sembra dipinta — e ai posti che esistono solo se ci sei tu.",
+    contenuto: [
+      { tipo: "paragrafo", testo: "Oia alle sei del mattino è un altro posto. Le strade sono vuote. Le cupole sono ancora in ombra. Un gatto attraversa la strada senza guardare nessuno. L'aria ha ancora il freddo della notte, e il mare sotto è piatto come un vetro." },
+      { tipo: "paragrafo", testo: "Sono rimasto fermo davanti al castello per quaranta minuti. Non ho scattato subito. Ho aspettato che la luce fosse quella giusta — quella che trasforma il bianco in oro e fa sembrare ogni muro un dipinto." },
+      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1600&q=85", didascalia: "Old Castle Oia, ore 6:12. Prima dei turisti, dopo la notte." },
+      { tipo: "citazione", testo: "Ci sono posti che devi", em: "aspettare per capire." },
+      { tipo: "paragrafo", testo: "Santorini ti insegna la pazienza. O almeno, la versione di Santorini che non trovi su Instagram. Quella che esiste solo se ti alzi presto, se cammini lento, se lasci il telefono in tasca per qualche minuto e guardi con gli occhi." }
+    ]
+  },
+  {
+    id: "la-creativita-e-una-ribellione",
+    titolo: "La creatività",
+    titolo_em: "è una ribellione.",
+    luogo: "Moda",
+    minuti: 6,
+    autore: "Francesco Amirante",
+    data: "Aprile 2026",
+    copertina: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=2000&q=85",
+    anteprima: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85",
+    intro: "Valeria Greco non vuole essere un'influencer. Non vuole un brand deal. Non vuole spiegare cosa fa in trenta secondi su TikTok. Vuole fare le cose bene, e lasciare che siano le cose a parlare.",
+    estratto: "Conversazioni con chi segue le proprie regole e costruisce qualcosa che non esisteva prima.",
+    contenuto: [
+      { tipo: "paragrafo", testo: "Lavora con tessuti campani dimenticati — stoffe che le sarte delle nonne usavano e che nessuno produceva più da vent'anni. Le ha riscoperte andando di paese in paese, bussando a porte che nessuno bussava più." },
+      { tipo: "paragrafo", testo: "«La creatività vera non è invenzione», dice. «È memoria. È guardare quello che c'era già e capire perché aveva senso.»" },
+      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1600&q=85", didascalia: "Laboratorio di Valeria, Napoli est. Tessuti campani degli anni '60." },
+      { tipo: "citazione", testo: "Non invento nulla.", em: "Ricordo." },
+      { tipo: "paragrafo", testo: "Le sue collezioni non hanno stagioni. Non seguono le fiere. Escono quando sono pronte. Ogni pezzo è in edizione limitata non per marketing, ma perché non riesce a produrne di più senza perdere la qualità." },
+      { tipo: "paragrafo", testo: "<strong>È questo il tipo di creatività che AMIRA vuole raccontare.</strong> Non quella che urla per farsi sentire. Quella che sussurra, e per questo ti rimane dentro." }
+    ]
+  }
+];
+
+let currentIndex = 0;
+
+// ── RENDER HOME GRID ──
+function renderGrid() {
+  const grid = document.getElementById('stories-grid');
+  grid.innerHTML = ARTICOLI.map((art, i) => `
+    <article class="story" onclick="openArticle(${i})">
+      <img src="${art.anteprima}" alt="${art.titolo}">
+      <div class="story-body">
+        <div class="story-tag">${art.luogo}</div>
+        <h3>${art.titolo} <em>${art.titolo_em}</em></h3>
+        <p>${art.estratto}</p>
+        <span class="story-link">Leggi la storia →</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+// ── RENDER ARTICLE ──
+function openArticle(index) {
+  currentIndex = index;
+  const art = ARTICOLI[index];
+
+  document.getElementById('art-cover').src = art.copertina;
+  document.getElementById('art-tag').textContent = `${art.luogo} · ${art.minuti} min`;
+  document.getElementById('art-title').innerHTML = `${art.titolo} <em>${art.titolo_em}</em>`;
+  document.getElementById('art-meta').innerHTML = `<span>${art.autore}</span><span>· ${art.data}</span>`;
+  document.getElementById('art-intro').textContent = art.intro;
+
+  // Content blocks
+  const content = art.contenuto.map(block => {
+    if (block.tipo === 'paragrafo') return `<p class="art-text">${block.testo}</p>`;
+    if (block.tipo === 'foto') return `
+      <div class="art-img-full"><img src="${block.immagine}" alt="${block.didascalia || ''}"></div>
+      ${block.didascalia ? `<p class="art-img-caption">${block.didascalia}</p>` : ''}
+    `;
+    if (block.tipo === 'citazione') return `
+      <div class="art-pullquote">«${block.testo} <em>${block.em || ''}</em>»</div>
+    `;
+    return '';
+  }).join('');
+  document.getElementById('art-content').innerHTML = content;
+
+  // Prev/next
+  const prev = ARTICOLI[(index - 1 + ARTICOLI.length) % ARTICOLI.length];
+  const next = ARTICOLI[(index + 1) % ARTICOLI.length];
+  document.getElementById('art-prev-title').textContent = prev.titolo + ' ' + prev.titolo_em;
+  document.getElementById('art-next-title').textContent = next.titolo + ' ' + next.titolo_em;
+
+  showPage('article');
+}
+
+function navArticle(dir) {
+  openArticle((currentIndex + dir + ARTICOLI.length) % ARTICOLI.length);
+}
+
+// ── PAGE SYSTEM ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+// ── INIT ──
+renderGrid();
+</script>
+</body>
+</html>

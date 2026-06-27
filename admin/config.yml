@@ -1,0 +1,54 @@
+backend:
+  name: github
+  repo: fraamira/amira-magazine
+  branch: main
+
+media_folder: "immagini"
+public_folder: "/immagini"
+
+locale: 'it'
+
+collections:
+  - name: "articoli"
+    label: "Articoli"
+    label_singular: "Articolo"
+    folder: "_articoli"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "titolo"
+    preview_path: "/#/{{slug}}"
+    fields:
+      - { label: "Titolo", name: "titolo", widget: "string", hint: "Es: L'arte di fare le cose lentamente" }
+      - { label: "Titolo corsivo", name: "titolo_em", widget: "string", required: false, hint: "La parte finale del titolo in corsivo. Es: lentamente." }
+      - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { label: "Luogo o tema", name: "luogo", widget: "string", hint: "Es: Napoli · oppure: Moda" }
+      - { label: "Autore", name: "autore", widget: "string", default: "Francesco Amirante" }
+      - { label: "Minuti di lettura", name: "minuti", widget: "number", value_type: "int", default: 5 }
+      - { label: "Foto copertina", name: "copertina", widget: "image", hint: "Foto grande, formato orizzontale" }
+      - { label: "Breve estratto", name: "estratto", widget: "string", hint: "1 frase per la card nella home" }
+      - { label: "Testo introduttivo", name: "intro", widget: "text", hint: "2-3 righe in evidenza all inizio articolo" }
+      - label: "Contenuto articolo"
+        name: "contenuto"
+        widget: "list"
+        label_singular: "Blocco"
+        summary: "{{fields.tipo}}"
+        types:
+          - label: "Paragrafo di testo"
+            name: "paragrafo"
+            widget: "object"
+            summary: "{{fields.testo}}"
+            fields:
+              - { label: "Testo", name: "testo", widget: "markdown" }
+          - label: "Foto"
+            name: "foto"
+            widget: "object"
+            fields:
+              - { label: "Immagine", name: "immagine", widget: "image" }
+              - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
+          - label: "Citazione in evidenza"
+            name: "citazione"
+            widget: "object"
+            fields:
+              - { label: "Testo citazione", name: "testo", widget: "string" }
+              - { label: "Parte in oro (corsivo)", name: "em", widget: "string", required: false }
+      - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true, hint: "Deseleziona per salvare come bozza" }
