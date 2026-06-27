@@ -4,18 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA vision — Magazine</title>
+  <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/index.html";
-        });
-      }
-    });
-  }
-</script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/index.html";
+          });
+        }
+      });
+    }
+  </script>
   <style>
     :root{ --gold:#c9a96e; --paper:#fafaf8; --ink:#080808; --line:rgba(255,255,255,.12); }
     *{box-sizing:border-box;margin:0;padding:0}
@@ -33,7 +34,7 @@
     .nav-logo-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);text-indent:.5em}
     .nav-links{display:flex;gap:32px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
     .nav-links a{cursor:pointer;transition:color .15s}.nav-links a:hover{color:#fff}
-    .nav-studio{border:.5px solid rgba(255,255,255,.35);padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;letter-spacing:.03em;transition:all .2s;cursor:pointer;background:none}
+    .nav-studio{border:.5px solid rgba(255,255,255,.35);padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;transition:all .2s;cursor:pointer;background:none}
     .nav-studio:hover{background:#fff;color:#080808}
 
     /* HERO */
@@ -58,7 +59,7 @@
     .stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
     .story{position:relative;overflow:hidden;aspect-ratio:2/3;cursor:pointer;background:#111}
     .story::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.94) 0%,rgba(0,0,0,.03) 55%)}
-    .story img{transition:transform .55s ease}
+    .story img{transition:transform .55s ease;width:100%;height:100%;object-fit:cover}
     .story:hover img{transform:scale(1.04)}
     .story-body{position:absolute;z-index:2;bottom:28px;left:26px;right:26px}
     .story-tag{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--gold);letter-spacing:.16em;margin-bottom:9px}
@@ -67,10 +68,11 @@
     .story p{color:rgba(255,255,255,.65);font-size:14px;font-weight:400;line-height:1.6;margin-bottom:18px}
     .story-link{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.45);display:inline-flex;align-items:center;gap:7px;transition:color .2s}
     .story:hover .story-link{color:#fff}
+    .loading{text-align:center;padding:60px;color:rgba(255,255,255,.3);font-size:14px;letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1}
 
     /* LETTER */
     .letter{display:grid;grid-template-columns:1fr 1.1fr 1fr}
-    .letter-photo{min-height:420px;overflow:hidden}.letter-photo img{transition:transform .6s ease}.letter-photo:hover img{transform:scale(1.03)}
+    .letter-photo{min-height:420px;overflow:hidden}.letter-photo img{transition:transform .6s ease;width:100%;height:100%;object-fit:cover}.letter-photo:hover img{transform:scale(1.03)}
     .letter-body{padding:68px 50px;display:flex;flex-direction:column;justify-content:center;background:var(--paper);color:var(--ink)}
     .letter-eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:rgba(8,8,8,.35);margin-bottom:18px}
     .letter h2{font-size:clamp(30px,3.5vw,44px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:18px;color:var(--ink)}
@@ -102,7 +104,7 @@
 
     /* ARTICLE */
     .art-hero{min-height:75vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
-    .art-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
+    .art-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
     .art-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.1) 55%)}
     .art-hero-body{position:relative;z-index:2;padding:0 64px 64px;max-width:940px}
     .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
@@ -113,10 +115,9 @@
     .art-body{max-width:680px;margin:0 auto;padding:72px 32px 80px}
     .art-intro{font-size:21px;font-weight:400;color:rgba(255,255,255,.88);line-height:1.65;margin-bottom:48px;border-left:2px solid var(--gold);padding-left:24px}
     .art-text{font-size:17px;font-weight:400;color:rgba(255,255,255,.7);line-height:1.8;margin-bottom:28px}
-    .art-text strong{color:#fff;font-weight:600}
     .art-img-full{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:4px;margin:40px 0}
     .art-img-full img{width:100%;height:100%;object-fit:cover}
-    .art-img-caption{font-size:12px;font-weight:400;color:rgba(255,255,255,.3);margin-top:-30px;margin-bottom:40px;text-align:center;letter-spacing:.05em}
+    .art-img-caption{font-size:12px;color:rgba(255,255,255,.3);margin-top:-30px;margin-bottom:40px;text-align:center;letter-spacing:.05em}
     .art-pullquote{font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#fff;border-top:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid rgba(255,255,255,.15);padding:36px 0;margin:44px 0;text-align:center}
     .art-pullquote em{color:var(--gold);font-style:italic;font-weight:300}
     .art-nav-bottom{background:#0a0a0a;border-top:.5px solid rgba(255,255,255,.08);padding:48px 44px;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
@@ -154,9 +155,8 @@
   <button class="nav-studio" onclick="window.open('https://amiravision.it','_blank')">amiravision.it</button>
 </nav>
 
-<!-- ══ HOME ══ -->
+<!-- HOME -->
 <div class="page active" id="page-home">
-
   <header class="hero">
     <div class="hero-bg"><img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=2200&q=85" alt="Hero"></div>
     <div class="hero-grad"></div>
@@ -174,11 +174,9 @@
 
   <div id="stories-anchor"></div>
   <section class="stories-section">
-    <div class="sec-head">
-      <span class="sec-label">Le storie</span>
-    </div>
+    <div class="sec-head"><span class="sec-label">Le storie</span></div>
     <div class="stories-grid" id="stories-grid">
-      <!-- articoli generati da JS -->
+      <div class="loading">Caricamento storie...</div>
     </div>
   </section>
 
@@ -230,13 +228,12 @@
       <span>amiravision.it</span>
     </div>
   </footer>
+</div>
 
-</div><!-- /home -->
-
-<!-- ══ ARTICLE PAGE (rendered dynamically) ══ -->
+<!-- ARTICLE PAGE -->
 <div class="page" id="page-article">
-  <div id="art-hero-section" class="art-hero">
-    <img id="art-cover" src="" alt="">
+  <div class="art-hero" id="art-hero">
+    <img class="art-hero-img" id="art-cover" src="" alt="">
     <div class="art-hero-grad"></div>
     <div class="art-hero-body">
       <div class="art-tag" id="art-tag"></div>
@@ -262,127 +259,190 @@
 </div>
 
 <script>
-// ── ARTICLES DATABASE ──
-// Per aggiungere un articolo: copia un oggetto, cambia i dati, salva.
-const ARTICOLI = [
-  {
-    id: "larte-di-fare-le-cose-lentamente",
-    titolo: "L'arte di fare le cose",
-    titolo_em: "lentamente.",
-    luogo: "Napoli",
-    minuti: 5,
-    autore: "Francesco Amirante",
-    data: "Giugno 2026",
-    copertina: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=2000&q=85",
-    anteprima: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=85",
-    intro: "In un vicolo di Spaccanapoli, Giovanni Lubrano cuce abiti da quarant'anni. Non ha un sito web. Non gli serve. Ha le mani, un ago, e una pazienza che il mondo moderno ha dimenticato di avere.",
-    estratto: "In un vicolo di Spaccanapoli, Giovanni cuce abiti da quarant'anni.",
-    contenuto: [
-      { tipo: "paragrafo", testo: "La sua bottega è piccola. Due metri per tre, forse. Sul muro ci sono le foto dei clienti — non influencer, non personaggi famosi. Persone. Un avvocato che porta lo stesso completo da vent'anni. Una signora che viene ogni estate a farsi aggiustare un vestito da sposa che non indossa più, ma che vuole tenere perfetto." },
-      { tipo: "paragrafo", testo: "«La gente ha fretta», dice Giovanni senza alzare gli occhi dal tessuto. «Vuole tutto subito. Ma un abito fatto bene non si fa in fretta. Un abito fatto bene si fa con rispetto.»" },
-      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1600&q=85", didascalia: "Le mani di Giovanni, sessantadue anni di ago e filo." },
-      { tipo: "citazione", testo: "Non vendo abiti.", em: "Vendo tempo." },
-      { tipo: "paragrafo", testo: "Sono rimasto lì due ore. Non ho comprato nulla. Non avevo niente da riparare. Eppure sono andato via con qualcosa — quella sensazione rara di aver incontrato qualcuno che sa esattamente chi è, e non ha nessuna intenzione di cambiarlo." },
-      { tipo: "paragrafo", testo: "<strong>Forse è questo che fa un magazine.</strong> Non dare notizie. Fermare il momento in cui hai incontrato qualcosa di vero — e tenerlo lì, per chi non c'era." }
-    ]
-  },
-  {
-    id: "santorini-luce-del-mattino",
-    titolo: "Santorini,",
-    titolo_em: "luce del mattino.",
-    luogo: "Santorini, Grecia",
-    minuti: 4,
-    autore: "Francesco Amirante",
-    data: "Maggio 2026",
-    copertina: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=2000&q=85",
-    anteprima: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=900&q=85",
-    intro: "Ci sono posti che esistono in due versioni. Quello che vedi nelle foto — azzurro, bianco, tramonti famosi — e quello che trovi quando ci arrivi davvero, quando sei abbastanza sveglio da alzarti prima che arrivino i turisti.",
-    estratto: "Un'isola che sembra dipinta — e ai posti che esistono solo se ci sei tu.",
-    contenuto: [
-      { tipo: "paragrafo", testo: "Oia alle sei del mattino è un altro posto. Le strade sono vuote. Le cupole sono ancora in ombra. Un gatto attraversa la strada senza guardare nessuno. L'aria ha ancora il freddo della notte, e il mare sotto è piatto come un vetro." },
-      { tipo: "paragrafo", testo: "Sono rimasto fermo davanti al castello per quaranta minuti. Non ho scattato subito. Ho aspettato che la luce fosse quella giusta — quella che trasforma il bianco in oro e fa sembrare ogni muro un dipinto." },
-      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1600&q=85", didascalia: "Old Castle Oia, ore 6:12. Prima dei turisti, dopo la notte." },
-      { tipo: "citazione", testo: "Ci sono posti che devi", em: "aspettare per capire." },
-      { tipo: "paragrafo", testo: "Santorini ti insegna la pazienza. O almeno, la versione di Santorini che non trovi su Instagram. Quella che esiste solo se ti alzi presto, se cammini lento, se lasci il telefono in tasca per qualche minuto e guardi con gli occhi." }
-    ]
-  },
-  {
-    id: "la-creativita-e-una-ribellione",
-    titolo: "La creatività",
-    titolo_em: "è una ribellione.",
-    luogo: "Moda",
-    minuti: 6,
-    autore: "Francesco Amirante",
-    data: "Aprile 2026",
-    copertina: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=2000&q=85",
-    anteprima: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85",
-    intro: "Valeria Greco non vuole essere un'influencer. Non vuole un brand deal. Non vuole spiegare cosa fa in trenta secondi su TikTok. Vuole fare le cose bene, e lasciare che siano le cose a parlare.",
-    estratto: "Conversazioni con chi segue le proprie regole e costruisce qualcosa che non esisteva prima.",
-    contenuto: [
-      { tipo: "paragrafo", testo: "Lavora con tessuti campani dimenticati — stoffe che le sarte delle nonne usavano e che nessuno produceva più da vent'anni. Le ha riscoperte andando di paese in paese, bussando a porte che nessuno bussava più." },
-      { tipo: "paragrafo", testo: "«La creatività vera non è invenzione», dice. «È memoria. È guardare quello che c'era già e capire perché aveva senso.»" },
-      { tipo: "foto", immagine: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1600&q=85", didascalia: "Laboratorio di Valeria, Napoli est. Tessuti campani degli anni '60." },
-      { tipo: "citazione", testo: "Non invento nulla.", em: "Ricordo." },
-      { tipo: "paragrafo", testo: "Le sue collezioni non hanno stagioni. Non seguono le fiere. Escono quando sono pronte. Ogni pezzo è in edizione limitata non per marketing, ma perché non riesce a produrne di più senza perdere la qualità." },
-      { tipo: "paragrafo", testo: "<strong>È questo il tipo di creatività che AMIRA vuole raccontare.</strong> Non quella che urla per farsi sentire. Quella che sussurra, e per questo ti rimane dentro." }
-    ]
-  }
-];
+// ── CONFIG ──
+const GITHUB_USER = 'fraamira';
+const GITHUB_REPO = 'amira-magazine';
+const BRANCH = 'main';
+const API = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/_articoli?ref=${BRANCH}`;
 
+let ARTICOLI = [];
 let currentIndex = 0;
+
+// ── PARSE MARKDOWN FRONTMATTER ──
+function parseFrontmatter(text) {
+  const match = text.match(/^---\n([\s\S]*?)\n---/);
+  if (!match) return {};
+  const fm = {};
+  const lines = match[1].split('\n');
+  let currentKey = null;
+  let inList = false;
+  let listItems = [];
+
+  lines.forEach(line => {
+    const kvMatch = line.match(/^(\w+):\s*(.*)$/);
+    if (kvMatch) {
+      if (currentKey && inList) fm[currentKey] = listItems;
+      currentKey = kvMatch[1];
+      const val = kvMatch[2].trim().replace(/^["']|["']$/g, '');
+      if (val === '') { inList = true; listItems = []; }
+      else { inList = false; fm[currentKey] = val === 'true' ? true : val === 'false' ? false : val; }
+    } else if (line.match(/^\s*-\s/) && inList) {
+      const item = line.replace(/^\s*-\s*/, '').trim();
+      listItems.push(item);
+    } else if (line.match(/^\s+\w+:/) && currentKey === 'contenuto') {
+      // handled below
+    }
+  });
+  if (currentKey && inList) fm[currentKey] = listItems;
+  return fm;
+}
+
+// ── PARSE CONTENUTO BLOCKS ──
+function parseContenuto(text) {
+  const blocks = [];
+  // Extract contenuto section
+  const contMatch = text.match(/^contenuto:\n([\s\S]*?)^(?=\w|\s*$)/m);
+  if (!contMatch) return blocks;
+
+  const contText = contMatch[1];
+  // Find each block starting with "- tipo:"
+  const blockMatches = contText.matchAll(/- tipo:\s*(\w+)\n([\s\S]*?)(?=- tipo:|\s*$)/g);
+
+  for (const m of blockMatches) {
+    const tipo = m[1];
+    const body = m[2];
+    const block = { tipo };
+    const fields = body.matchAll(/\s+(\w+):\s*(.+)/g);
+    for (const f of fields) {
+      const val = f[2].trim().replace(/^["']|["']$/g, '');
+      block[f[1]] = val;
+    }
+    blocks.push(block);
+  }
+  return blocks;
+}
+
+// ── FETCH ARTICLES FROM GITHUB ──
+async function fetchArticoli() {
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('API error');
+    const files = await res.json();
+    const mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.json'));
+
+    const articoli = await Promise.all(mdFiles.map(async file => {
+      const r = await fetch(file.download_url);
+      const text = await r.text();
+
+      // JSON format
+      if (file.name.endsWith('.json')) {
+        try {
+          const data = JSON.parse(text);
+          data.id = file.name.replace('.json', '');
+          return data;
+        } catch(e) { return null; }
+      }
+
+      // Markdown format (from CMS)
+      if (file.name.endsWith('.md')) {
+        const fm = parseFrontmatter(text);
+        fm.id = file.name.replace('.md', '');
+
+        // Parse contenuto from raw text
+        const contBlocks = [];
+        const contSection = text.match(/^contenuto:\n([\s\S]*?)^(?=pubblicato:|$)/m);
+        if (contSection) {
+          const raw = contSection[1];
+          // Extract tipo/testo/immagine/didascalia/em blocks
+          const entries = raw.split(/\n- tipo:/g).filter(Boolean);
+          entries.forEach(entry => {
+            const lines = ('tipo:' + entry).split('\n').filter(Boolean);
+            const block = {};
+            lines.forEach(l => {
+              const m = l.match(/^\s*(\w+):\s*(.+)$/);
+              if (m) block[m[1]] = m[2].trim().replace(/^["']|["']$/g,'');
+            });
+            if (block.tipo) contBlocks.push(block);
+          });
+        }
+        fm.contenuto = contBlocks;
+        return fm;
+      }
+      return null;
+    }));
+
+    ARTICOLI = articoli
+      .filter(a => a && a.pubblicato !== false)
+      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+    renderGrid();
+  } catch(e) {
+    console.error('Errore caricamento articoli:', e);
+    document.getElementById('stories-grid').innerHTML =
+      '<div class="loading">Nessuna storia ancora. Pubblicane una dal pannello admin.</div>';
+  }
+}
 
 // ── RENDER HOME GRID ──
 function renderGrid() {
   const grid = document.getElementById('stories-grid');
+  if (!ARTICOLI.length) {
+    grid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
+    return;
+  }
   grid.innerHTML = ARTICOLI.map((art, i) => `
     <article class="story" onclick="openArticle(${i})">
-      <img src="${art.anteprima}" alt="${art.titolo}">
+      <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
       <div class="story-body">
-        <div class="story-tag">${art.luogo}</div>
-        <h3>${art.titolo} <em>${art.titolo_em}</em></h3>
-        <p>${art.estratto}</p>
+        <div class="story-tag">${art.luogo || ''}</div>
+        <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
+        <p>${art.estratto || art.intro || ''}</p>
         <span class="story-link">Leggi la storia →</span>
       </div>
     </article>
   `).join('');
 }
 
-// ── RENDER ARTICLE ──
+// ── OPEN ARTICLE ──
 function openArticle(index) {
   currentIndex = index;
   const art = ARTICOLI[index];
 
-  document.getElementById('art-cover').src = art.copertina;
-  document.getElementById('art-tag').textContent = `${art.luogo} · ${art.minuti} min`;
-  document.getElementById('art-title').innerHTML = `${art.titolo} <em>${art.titolo_em}</em>`;
-  document.getElementById('art-meta').innerHTML = `<span>${art.autore}</span><span>· ${art.data}</span>`;
-  document.getElementById('art-intro').textContent = art.intro;
+  document.getElementById('art-cover').src = art.copertina || '';
+  document.getElementById('art-tag').textContent = `${art.luogo || ''} · ${art.minuti || 5} min`;
+  document.getElementById('art-title').innerHTML = `${art.titolo || ''} <em>${art.titolo_em || ''}</em>`;
+  document.getElementById('art-meta').innerHTML = `<span>${art.autore || ''}</span><span>· ${formatDate(art.date)}</span>`;
+  document.getElementById('art-intro').textContent = art.intro || '';
 
-  // Content blocks
-  const content = art.contenuto.map(block => {
-    if (block.tipo === 'paragrafo') return `<p class="art-text">${block.testo}</p>`;
+  const contenuto = art.contenuto || [];
+  const html = contenuto.map(block => {
+    if (block.tipo === 'paragrafo') return `<p class="art-text">${block.testo || ''}</p>`;
     if (block.tipo === 'foto') return `
-      <div class="art-img-full"><img src="${block.immagine}" alt="${block.didascalia || ''}"></div>
-      ${block.didascalia ? `<p class="art-img-caption">${block.didascalia}</p>` : ''}
-    `;
+      <div class="art-img-full"><img src="${block.immagine || ''}" alt="${block.didascalia || ''}"></div>
+      ${block.didascalia ? `<p class="art-img-caption">${block.didascalia}</p>` : ''}`;
     if (block.tipo === 'citazione') return `
-      <div class="art-pullquote">«${block.testo} <em>${block.em || ''}</em>»</div>
-    `;
+      <div class="art-pullquote">«${block.testo || ''} <em>${block.em || ''}</em>»</div>`;
     return '';
   }).join('');
-  document.getElementById('art-content').innerHTML = content;
+  document.getElementById('art-content').innerHTML = html;
 
-  // Prev/next
   const prev = ARTICOLI[(index - 1 + ARTICOLI.length) % ARTICOLI.length];
   const next = ARTICOLI[(index + 1) % ARTICOLI.length];
-  document.getElementById('art-prev-title').textContent = prev.titolo + ' ' + prev.titolo_em;
-  document.getElementById('art-next-title').textContent = next.titolo + ' ' + next.titolo_em;
+  document.getElementById('art-prev-title').textContent = `${prev.titolo} ${prev.titolo_em || ''}`;
+  document.getElementById('art-next-title').textContent = `${next.titolo} ${next.titolo_em || ''}`;
 
   showPage('article');
 }
 
 function navArticle(dir) {
   openArticle((currentIndex + dir + ARTICOLI.length) % ARTICOLI.length);
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  try {
+    return new Date(d).toLocaleDateString('it-IT', {month:'long', year:'numeric'});
+  } catch(e) { return d; }
 }
 
 // ── PAGE SYSTEM ──
@@ -397,7 +457,7 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
 
 // ── INIT ──
-renderGrid();
+fetchArticoli();
 </script>
 </body>
 </html>
