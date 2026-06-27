@@ -475,8 +475,6 @@ fetchArticoli();
 
 <script>
 // ── DEEPL TRANSLATION ──
-const DEEPL_KEY = '494d9efa-2291-41c3-a25c-ca0228da01ef:fx';
-const DEEPL_URL = 'https://api-free.deepl.com/v2/translate';
 let currentLang = 'IT';
 let originalTexts = {};
 let translationCache = {};
@@ -524,23 +522,17 @@ async function translateText(text, targetLang) {
   if (translationCache[cacheKey]) return translationCache[cacheKey];
 
   try {
-    const res = await fetch(DEEPL_URL, {
+    const res = await fetch('/.netlify/functions/translate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        auth_key: DEEPL_KEY,
-        text: text,
-        source_lang: 'IT',
-        target_lang: targetLang === 'EN' ? 'EN-GB' : targetLang,
-        tag_handling: 'html'
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, lang: targetLang })
     });
     const data = await res.json();
-    const translated = data.translations?.[0]?.text || text;
+    const translated = data.translated || text;
     translationCache[cacheKey] = translated;
     return translated;
   } catch(e) {
-    console.error('DeepL error:', e);
+    console.error('Translate error:', e);
     return text;
   }
 }
