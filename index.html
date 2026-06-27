@@ -128,6 +128,13 @@
     .art-back{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.35);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:center;transition:color .2s}
     .art-back:hover{color:#fff}
 
+
+    /* LANG SWITCHER */
+    .lang-switcher{display:flex;gap:6px;align-items:center}
+    .lang-btn{font-size:11px;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.45);cursor:pointer;padding:4px 8px;border-radius:4px;border:none;background:none;transition:all .2s;font-family:inherit}
+    .lang-btn:hover{color:#fff}
+    .lang-btn.active{color:#fff;background:rgba(255,255,255,.12)}
+    .translating{opacity:.5;pointer-events:none;transition:opacity .3s}
     @media(max-width:768px){
       .nav{padding:0 20px}.nav-links{display:none}
       .hero-content{padding:0 20px}
@@ -151,6 +158,12 @@
     <a onclick="showPage('home')">Le storie</a>
     <a onclick="showPage('home')">Il magazine</a>
     <a href="https://amiravision.it" target="_blank">Lo studio</a>
+  </div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('IT')">IT</button>
+    <button class="lang-btn" onclick="setLang('EN')">EN</button>
+    <button class="lang-btn" onclick="setLang('ES')">ES</button>
+    <button class="lang-btn" onclick="setLang('FR')">FR</button>
   </div>
   <button class="nav-studio" onclick="window.open('https://amiravision.it','_blank')">amiravision.it</button>
 </nav>
@@ -458,6 +471,149 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.
 
 // ── INIT ──
 fetchArticoli();
+</script>
+
+<script>
+// ── DEEPL TRANSLATION ──
+const DEEPL_KEY = '494d9efa-2291-41c3-a25c-ca0228da01ef:fx';
+const DEEPL_URL = 'https://api-free.deepl.com/v2/translate';
+let currentLang = 'IT';
+let originalTexts = {};
+let translationCache = {};
+
+// Elements to translate (selector: field name)
+const TRANSLATE_SELECTORS = [
+  '.hero-payoff',
+  '.hero-sub',
+  '.letter-eye',
+  '.letter h2',
+  '.letter p',
+  '.q-txt',
+  '.q-src',
+  '.q-side p',
+  '.f-tag',
+  '.sec-label',
+  '.art-intro',
+  '.art-text',
+  '.art-pullquote'
+];
+
+// Save original Italian texts on first load
+function saveOriginals() {
+  if (Object.keys(originalTexts).length) return;
+  TRANSLATE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      const key = sel + '_' + i;
+      originalTexts[key] = el.innerHTML;
+    });
+  });
+  // Save story cards
+  document.querySelectorAll('.story h3, .story p, .story-tag, .story-link').forEach((el, i) => {
+    originalTexts['story_' + i] = el.innerHTML;
+  });
+  // Save article content if open
+  ['art-title','art-tag','art-meta','art-intro','art-content'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) originalTexts['#' + id] = el.innerHTML;
+  });
+}
+
+async function translateText(text, targetLang) {
+  if (targetLang === 'IT') return text;
+  const cacheKey = targetLang + '_' + text.substring(0,50);
+  if (translationCache[cacheKey]) return translationCache[cacheKey];
+
+  try {
+    const res = await fetch(DEEPL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        auth_key: DEEPL_KEY,
+        text: text,
+        source_lang: 'IT',
+        target_lang: targetLang === 'EN' ? 'EN-GB' : targetLang,
+        tag_handling: 'html'
+      })
+    });
+    const data = await res.json();
+    const translated = data.translations?.[0]?.text || text;
+    translationCache[cacheKey] = translated;
+    return translated;
+  } catch(e) {
+    console.error('DeepL error:', e);
+    return text;
+  }
+}
+
+async function setLang(lang) {
+  if (lang === currentLang) return;
+  currentLang = lang;
+
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang);
+  });
+
+  // Save originals before first translation
+  saveOriginals();
+
+  if (lang === 'IT') {
+    // Restore originals
+    TRANSLATE_SELECTORS.forEach(sel => {
+      document.querySelectorAll(sel).forEach((el, i) => {
+        const key = sel + '_' + i;
+        if (originalTexts[key]) el.innerHTML = originalTexts[key];
+      });
+    });
+    // Restore story cards
+    document.querySelectorAll('.story h3, .story p, .story-tag, .story-link').forEach((el, i) => {
+      if (originalTexts['story_' + i]) el.innerHTML = originalTexts['story_' + i];
+    });
+    return;
+  }
+
+  // Add translating class
+  document.body.classList.add('translating');
+
+  // Translate static elements
+  for (const sel of TRANSLATE_SELECTORS) {
+    const els = document.querySelectorAll(sel);
+    for (let i = 0; i < els.length; i++) {
+      const key = sel + '_' + i;
+      const original = originalTexts[key] || els[i].innerHTML;
+      const translated = await translateText(original, lang);
+      els[i].innerHTML = translated;
+    }
+  }
+
+  // Translate story cards
+  const storyEls = document.querySelectorAll('.story h3, .story p, .story-tag, .story-link');
+  for (let i = 0; i < storyEls.length; i++) {
+    const original = originalTexts['story_' + i] || storyEls[i].innerHTML;
+    storyEls[i].innerHTML = await translateText(original, lang);
+  }
+
+  document.body.classList.remove('translating');
+}
+
+// Re-translate after article opens
+const origOpenArticle = openArticle;
+window.openArticle = async function(index) {
+  origOpenArticle(index);
+  if (currentLang !== 'IT') {
+    // small delay to let DOM update
+    setTimeout(async () => {
+      const ids = ['art-title','art-tag','art-intro','art-content'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) {
+          const translated = await translateText(el.innerHTML, currentLang);
+          el.innerHTML = translated;
+        }
+      }
+    }, 100);
+  }
+};
 </script>
 </body>
 </html>
