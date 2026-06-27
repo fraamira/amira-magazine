@@ -4,6 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA vision — Magazine</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/index.html";
+        });
+      }
+    });
+  }
+</script>
   <style>
     :root{ --gold:#c9a96e; --paper:#fafaf8; --ink:#080808; --line:rgba(255,255,255,.12); }
     *{box-sizing:border-box;margin:0;padding:0}
