@@ -35,16 +35,34 @@ collections:
             widget: "object"
             fields:
               - { label: "Testo", name: "testo", widget: "text" }
-          - label: "Foto"
+          - label: "Foto singola"
             name: "foto"
             widget: "object"
             fields:
               - { label: "Immagine", name: "immagine", widget: "image" }
               - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
-          - label: "Citazione"
+          - label: "Gallery (2-4 foto)"
+            name: "gallery"
+            widget: "object"
+            fields:
+              - { label: "Foto 1", name: "foto1", widget: "image" }
+              - { label: "Foto 2", name: "foto2", widget: "image", required: false }
+              - { label: "Foto 3", name: "foto3", widget: "image", required: false }
+              - { label: "Foto 4", name: "foto4", widget: "image", required: false }
+          - label: "Citazione in evidenza"
             name: "citazione"
             widget: "object"
             fields:
               - { label: "Testo", name: "testo", widget: "string" }
               - { label: "Parte in oro", name: "em", widget: "string", required: false }
+          - label: "Clip Audio"
+            name: "audio"
+            widget: "object"
+            fields:
+              - { label: "File audio", name: "url", widget: "file", hint: "Carica MP3 o incolla URL" }
+          - label: "Video (YouTube o file)"
+            name: "video"
+            widget: "object"
+            fields:
+              - { label: "URL video", name: "url", widget: "string", hint: "Link YouTube oppure URL diretto del file video" }
       - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true }
