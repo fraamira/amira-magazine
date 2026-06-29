@@ -444,26 +444,45 @@ async function fetchArticoli() {
         const fm = parseFrontmatter(text);
         fm.id = file.name.replace('.md', '');
 
-        // Parse contenuto from raw text
+        // Parse contenuto from raw markdown - handles multiline YAML values
         const contBlocks = [];
-        const contSection = text.match(/^contenuto:\n([\s\S]*?)^(?=pubblicato:|$)/m);
+        const contSection = text.match(/^contenuto:\n([\s\S]*?)(?=^pubblicato:|^---\s*$|\Z)/m);
         if (contSection) {
           const raw = contSection[1];
-          // Extract tipo/testo/immagine/didascalia/em blocks
-          // Handle both "tipo:" and "type:" (CMS uses "type")
-          const entries = raw.split(/\n- (?:tipo|type):/g).filter(Boolean);
-          entries.forEach(entry => {
-            const lines = ('type:' + entry).split('\n').filter(Boolean);
-            const block = {};
-            lines.forEach(l => {
-              const m = l.match(/^\s*(\w+):\s*(.+)$/);
-              if (m) {
-                let val = m[2].trim().replace(/^["']|["']$/g,'');
-                // normalize "type" to "tipo"
-                const key = m[1] === 'type' ? 'tipo' : m[1];
-                block[key] = val;
+          // Split on "  - type:" or "  - tipo:" block starters
+          const blockRegex = /^  - (?:type|tipo):\s*(\w+)$/gm;
+          let match;
+          const positions = [];
+          while ((match = blockRegex.exec(raw)) !== null) {
+            positions.push({ idx: match.index, tipo: match[1] });
+          }
+          positions.forEach((pos, i) => {
+            const blockRaw = raw.slice(pos.idx, positions[i+1]?.idx ?? raw.length);
+            const block = { tipo: pos.tipo === 'type' ? pos.tipo : pos.tipo };
+            // normalize type->tipo
+            if (block.tipo) block.tipo = block.tipo;
+            
+            // Extract fields - handle multiline values (indented continuation lines)
+            const fieldRegex = /^    (\w+):\s*(.*)$/gm;
+            let fm2;
+            while ((fm2 = fieldRegex.exec(blockRaw)) !== null) {
+              const key = fm2[1];
+              let val = fm2[2].trim().replace(/^["']|["']$/g, '');
+              // Collect continuation lines (more indented)
+              const contLines = [];
+              let pos2 = fm2.index + fm2[0].length;
+              while (pos2 < blockRaw.length) {
+                const nextLine = blockRaw.slice(pos2).match(/^\n(      .+)/);
+                if (nextLine) {
+                  contLines.push(nextLine[1].trim());
+                  pos2 += nextLine[0].length;
+                } else break;
               }
-            });
+              if (contLines.length) val = val + ' ' + contLines.join(' ');
+              block[key] = val;
+            }
+            // normalize type->tipo
+            block.tipo = pos.tipo;
             if (block.tipo) contBlocks.push(block);
           });
         }
