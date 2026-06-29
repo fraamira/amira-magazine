@@ -450,13 +450,19 @@ async function fetchArticoli() {
         if (contSection) {
           const raw = contSection[1];
           // Extract tipo/testo/immagine/didascalia/em blocks
-          const entries = raw.split(/\n- tipo:/g).filter(Boolean);
+          // Handle both "tipo:" and "type:" (CMS uses "type")
+          const entries = raw.split(/\n- (?:tipo|type):/g).filter(Boolean);
           entries.forEach(entry => {
-            const lines = ('tipo:' + entry).split('\n').filter(Boolean);
+            const lines = ('type:' + entry).split('\n').filter(Boolean);
             const block = {};
             lines.forEach(l => {
               const m = l.match(/^\s*(\w+):\s*(.+)$/);
-              if (m) block[m[1]] = m[2].trim().replace(/^["']|["']$/g,'');
+              if (m) {
+                let val = m[2].trim().replace(/^["']|["']$/g,'');
+                // normalize "type" to "tipo"
+                const key = m[1] === 'type' ? 'tipo' : m[1];
+                block[key] = val;
+              }
             });
             if (block.tipo) contBlocks.push(block);
           });
