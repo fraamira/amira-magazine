@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/((?!admin|immagini|_articoli).*)", "destination": "/index.html" }
+  ]
+}
