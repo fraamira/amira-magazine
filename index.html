@@ -255,34 +255,16 @@
     .filos-strip:hover .filos-strip-arrow { transform: translateX(6px); }
 
     /* FILOS PAGE */
-    .filos-page { background: #fff; min-height: 100vh; color: #0d1f5c; }
+    .filos-page { background: #fff; min-height: 100vh; color: #0d1f5c; padding-top: 56px; }
 
     .filos-lang-switcher{display:flex;gap:6px;align-items:center}
     .filos-lang-btn{font-size:11px;font-weight:600;letter-spacing:.08em;color:rgba(13,31,92,.4);cursor:pointer;padding:4px 8px;border-radius:4px;border:none;background:none;transition:all .2s;font-family:inherit}
     .filos-lang-btn:hover{color:#0d1f5c}
     .filos-lang-btn.active{color:#0d1f5c;background:rgba(13,31,92,.1)}
-    .filos-nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 44px; height: 56px;
-      border-bottom: 0.5px solid rgba(13,31,92,.1);
-      position: sticky; top: 0; background: #fff; z-index: 150;
-    }
-    .filos-nav-logo {
-      display: flex; flex-direction: column; align-items: center;
-      line-height: 1; gap: 2px; cursor: pointer;
-    }
-    .filos-nav-amira {
-      font-size: 13px; font-weight: 800; letter-spacing: .22em;
-      color: #0d1f5c; text-indent: .22em;
-    }
-    .filos-nav-filos {
-      font-size: 7px; font-weight: 700; letter-spacing: .35em;
-      color: #2a4fa0; text-indent: .35em; text-transform: uppercase;
-    }
     .filos-back {
       font-size: 11px; font-weight: 700; letter-spacing: .14em;
       text-transform: uppercase; color: rgba(13,31,92,.4);
-      cursor: pointer; transition: color .2s;
+      cursor: pointer; transition: color .2s; display:inline-block; margin-bottom: 32px;
     }
     .filos-back:hover { color: #0d1f5c; }
 
@@ -1166,7 +1148,7 @@ window.openArticle = async function(index) {
       <div class="mag-tl-line"></div>
 
       <div style="margin-top:8px">
-        <button class="btn-pill" onclick="showPage('manifesto')" style="font-size:12px">Come nasce il progetto →</button>
+        <button class="btn-pill" onclick="showPage('manifesto')" style="font-size:12px;color:#fff;border-color:rgba(255,255,255,.5)">Come nasce il progetto →</button>
       </div>
 
     </div>
@@ -1234,21 +1216,10 @@ window.openArticle = async function(index) {
 <div class="page" id="page-filos">
   <div class="filos-page">
 
-    <nav class="filos-nav">
-      <div class="filos-nav-logo" onclick="showPage('home')">
-        <div class="filos-nav-amira">AMIRA</div>
-        <div class="filos-nav-filos">FILOS</div>
-      </div>
-      <div class="filos-lang-switcher">
-        <button class="filos-lang-btn active" onclick="setLang('IT')">IT</button>
-        <button class="filos-lang-btn" onclick="setLang('EN')">EN</button>
-        <button class="filos-lang-btn" onclick="setLang('ES')">ES</button>
-        <button class="filos-lang-btn" onclick="setLang('FR')">FR</button>
-      </div>
-      <div class="filos-back" onclick="showPage('home')">← Torna al magazine</div>
-    </nav>
+
 
     <div class="filos-hero">
+      <span class="filos-back" onclick="showPage('home')">← Torna alle storie</span>
       <div class="filos-hero-tag">Una rubrica di AMIRA vision</div>
       <h1 class="filos-hero-title">FILOS</h1>
       <p class="filos-hero-sub">Dal greco φίλος — amico. Da φιλεῖν — tendere verso l'amore.</p>
