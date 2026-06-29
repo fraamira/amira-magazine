@@ -44,10 +44,8 @@
     .nav-logo{display:flex;flex-direction:column;align-items:center;cursor:pointer;line-height:1;gap:2px}
     .nav-logo-amira{font-size:16px;font-weight:800;letter-spacing:.22em;color:#fff;text-indent:.22em}
     .nav-logo-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);text-indent:.5em}
-    .nav-links{display:flex;gap:32px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
+    .nav-links{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:28px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
     .nav-links a{cursor:pointer;transition:color .15s}.nav-links a:hover{color:#fff}
-    .nav-studio{border:.5px solid rgba(255,255,255,.35);padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;transition:all .2s;cursor:pointer;background:none}
-    .nav-studio:hover{background:#fff;color:#080808}
 
     /* HERO */
     .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -194,6 +192,15 @@
     .mag-tl-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);border:0.5px solid rgba(255,255,255,.35);flex-shrink:0}
     .mag-tl-dot--gold{background:var(--gold);border-color:var(--gold)}
     .mag-tl-text{font-size:16px;font-weight:400;color:rgba(255,255,255,.62);line-height:1.75;margin:0;max-width:480px}
+
+
+    /* SUB NAV (magazine, manifesto) */
+    .sub-nav{display:flex;align-items:center;justify-content:space-between;padding:0 44px;height:56px;border-bottom:.5px solid rgba(13,31,92,.1);background:#fff;position:sticky;top:0;z-index:150}
+    .sub-nav-logo{display:flex;align-items:baseline;gap:6px;cursor:pointer}
+    .sub-nav-amira{font-size:15px;font-weight:800;letter-spacing:.2em;color:#0d1f5c}
+    .sub-nav-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.4em;color:rgba(13,31,92,.45)}
+    .sub-nav-back{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(13,31,92,.4);cursor:pointer;transition:color .2s}
+    .sub-nav-back:hover{color:#0d1f5c}
 
     /* FILOS STRIP */
     .filos-strip {
@@ -395,8 +402,9 @@
     <div class="nav-logo-vision">vision</div>
   </div>
   <div class="nav-links">
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" href='#'>Le storie</a>
-    <a onclick="showPage('magazine')" href='#/magazine'>Il magazine</a>
+    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)">Le storie</a>
+    <a onclick="showPage('magazine')">Il magazine</a>
+    <a onclick="showPage('filos')">FILOS</a>
     <a href="https://amiravision.it" target="_blank">Lo studio</a>
   </div>
   <div class="lang-switcher">
@@ -405,7 +413,6 @@
     <button class="lang-btn" onclick="setLang('ES')">ES</button>
     <button class="lang-btn" onclick="setLang('FR')">FR</button>
   </div>
-  <button class="nav-studio" onclick="window.open('https://amiravision.it','_blank')">amiravision.it</button>
 </nav>
 
 <!-- HOME -->
@@ -819,7 +826,7 @@ function showPage(id, updateHistory = true) {
   window.scrollTo({top: 0, behavior: 'smooth'});
   // Hide main nav on pages with their own nav
   const mainNav = document.getElementById('nav');
-  mainNav.style.display = ['filos','magazine','manifesto'].includes(id) ? 'none' : 'flex';
+  mainNav.style.display = ['filos'].includes(id) ? 'none' : 'flex';
   if (updateHistory) {
     const hash = id === 'home' ? '' : id === 'article' ? '' : '#/' + id;
     history.pushState({ page: id }, '', hash || window.location.pathname);
@@ -964,7 +971,12 @@ const TRANSLATE_SELECTORS = [
   '.filos-empty p',
   '.mag-tl-text',
   '.manifesto-p',
-  '.manifesto-quote'
+  '.manifesto-quote',
+  '.filos-strip-tag',
+  '.filos-strip-cta span',
+  '.filos-grid-label',
+  '.mag-back',
+  '.sub-nav-back'
 ];
 
 // Save original Italian texts on first load
@@ -1096,7 +1108,10 @@ window.openArticle = async function(index) {
 <!-- ══ MAGAZINE PAGE ══ -->
 <div class="page" id="page-magazine">
   <div class="mag-page">
-    <div class="mag-back" onclick="showPage('home')">← Torna al magazine</div>
+    <div class="sub-nav">
+      <div class="sub-nav-logo" onclick="showPage('home')"><span class="sub-nav-amira">AMIRA</span><span class="sub-nav-vision">vision</span></div>
+      <div class="sub-nav-back" onclick="showPage('home')">← Torna</div>
+    </div>
     <div class="mag-timeline">
 
       <div class="mag-tl-logo">
@@ -1144,8 +1159,11 @@ window.openArticle = async function(index) {
 
 <!-- ══ MANIFESTO PAGE ══ -->
 <div class="page" id="page-manifesto">
+  <div class="sub-nav" style="background:#080808;border-bottom:.5px solid rgba(255,255,255,.1)">
+    <div class="sub-nav-logo" onclick="showPage('home')"><span class="sub-nav-amira">AMIRA</span><span class="sub-nav-vision">vision</span></div>
+    <div class="sub-nav-back" style="color:rgba(255,255,255,.4)" onclick="showPage('home')">← Torna</div>
+  </div>
   <div class="manifesto-body">
-    <div class="manifesto-back" onclick="showPage('home')">← Torna al magazine</div>
     <h1 class="manifesto-title">Come nasce<br><em>il progetto.</em></h1>
 
     <p class="manifesto-p">Fino a Dicembre 2020 non avevo mai letto un libro. Mi spiego: ne avevo letti tanti…da studiare, da memorizzare, da ripetere…<br>…ma non avevo mai letto un libro <em>per piacere</em>.</p>
