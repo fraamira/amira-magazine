@@ -33,7 +33,10 @@
     body{font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;background:#080808;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.35}
     a{color:inherit;text-decoration:none}
     img{display:block;width:100%;height:100%;object-fit:cover}
-    .page{display:none}.page.active{display:block}
+    .page{display:none;opacity:0;transition:opacity .35s ease}
+    .page.active{display:block;opacity:1}
+    .page.fade-in{animation:fadeIn .35s ease forwards}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
     /* READING PROGRESS */
     .read-progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:160;width:0%;transition:width .1s linear;pointer-events:none}
@@ -375,7 +378,7 @@
     }
 
         /* MANIFESTO PAGE */
-    .manifesto-body{max-width:720px;margin:0 auto;padding:72px 32px 100px}
+    .manifesto-body{max-width:720px;margin:0 auto;padding:96px 32px 100px}
     .manifesto-title{font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:48px;color:#fff}
     .manifesto-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.6)}
     .manifesto-p{font-size:18px;font-weight:400;color:rgba(255,255,255,.72);line-height:1.85;margin-bottom:28px}
@@ -827,12 +830,16 @@ function formatDate(d) {
 
 // ── PAGE SYSTEM ──
 function showPage(id, updateHistory = true) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  window.scrollTo({top: 0, behavior: 'smooth'});
-  // Hide main nav on pages with their own nav
-  const mainNav = document.getElementById('nav');
-  mainNav.style.display = ['filos','magazine','manifesto'].includes(id) ? 'none' : 'flex';
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.classList.remove('fade-in');
+  });
+  const target = document.getElementById('page-' + id);
+  target.classList.add('active');
+  // Trigger reflow then add animation
+  void target.offsetWidth;
+  target.classList.add('fade-in');
+  window.scrollTo({top: 0, behavior: 'instant'});
   if (updateHistory) {
     const hash = id === 'home' ? '' : id === 'article' ? '' : '#/' + id;
     history.pushState({ page: id }, '', hash || window.location.pathname);
@@ -1119,10 +1126,8 @@ window.openArticle = async function(index) {
 <!-- ══ MAGAZINE PAGE ══ -->
 <div class="page" id="page-magazine">
   <div class="mag-page">
-    <div class="sub-nav" style="background:#080808;border-bottom:.5px solid rgba(255,255,255,.1)">
-      <div class="sub-nav-logo" onclick="showPage('home')"><span class="sub-nav-amira" style="color:#fff">AMIRA</span><span class="sub-nav-vision" style="color:rgba(255,255,255,.45)">vision</span></div>
-      <div class="sub-nav-back" style="color:rgba(255,255,255,.4)" onclick="showPage('home')">← Torna</div>
-    </div>
+  
+    <div class="mag-back" onclick="showPage('home')">← Torna alle storie</div>
     <div class="mag-timeline">
 
       <div class="mag-tl-logo">
@@ -1170,11 +1175,9 @@ window.openArticle = async function(index) {
 
 <!-- ══ MANIFESTO PAGE ══ -->
 <div class="page" id="page-manifesto">
-  <div class="sub-nav" style="background:#080808;border-bottom:.5px solid rgba(255,255,255,.1)">
-    <div class="sub-nav-logo" onclick="showPage('home')"><span class="sub-nav-amira">AMIRA</span><span class="sub-nav-vision">vision</span></div>
-    <div class="sub-nav-back" style="color:rgba(255,255,255,.4)" onclick="showPage('home')">← Torna</div>
-  </div>
+
   <div class="manifesto-body">
+    <div class="manifesto-back" onclick="showPage('home')" style="margin-bottom:32px">← Torna alle storie</div>
     <h1 class="manifesto-title">Come nasce<br><em>il progetto.</em></h1>
 
     <p class="manifesto-p">Fino a Dicembre 2020 non avevo mai letto un libro. Mi spiego: ne avevo letti tanti…da studiare, da memorizzare, da ripetere…<br>…ma non avevo mai letto un libro <em>per piacere</em>.</p>
