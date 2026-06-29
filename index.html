@@ -45,7 +45,7 @@
     .nav-logo-amira{font-size:16px;font-weight:800;letter-spacing:.22em;color:#fff;text-indent:.22em}
     .nav-logo-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);text-indent:.5em}
     .nav-links{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:28px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
-    .nav-links a{cursor:pointer;transition:color .15s}.nav-links a:hover{color:#fff}
+    .nav-links a{cursor:pointer;transition:color .15s;text-decoration:none}.nav-links a:hover{color:#fff}.nav-t{color:rgba(255,255,255,.55)}
 
     /* HERO */
     .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -402,10 +402,10 @@
     <div class="nav-logo-vision">vision</div>
   </div>
   <div class="nav-links">
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)">Le storie</a>
-    <a onclick="showPage('magazine')">Il magazine</a>
-    <a onclick="showPage('filos')">FILOS</a>
-    <a href="https://amiravision.it" target="_blank">Lo studio</a>
+    <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Le storie</a>
+    <a href="#/magazine" onclick="event.preventDefault();showPage('magazine')" class="nav-t">Il magazine</a>
+    <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a>
+    <a href="https://amiravision.it" target="_blank" class="nav-t">Lo studio</a>
   </div>
   <div class="lang-switcher">
     <button class="lang-btn active" onclick="setLang('IT')">IT</button>
@@ -441,7 +441,7 @@
   </section>
 
   <!-- FILOS STRIP -->
-  <div class="filos-strip" onclick="showPage('filos')">
+  <div class="filos-strip" onclick="showPage('filos')" style="cursor:pointer">
     <div class="filos-strip-left">
       <div class="filos-strip-tag">Rubrica fissa · AMIRA vision</div>
       <div class="filos-strip-title">FILOS</div>
@@ -450,7 +450,7 @@
         <p class="filos-strip-pact">Nessuno è solo. Io aiuto te, tu aiuti me.<br>Per non perdere la speranza.</p>
       </div>
     </div>
-    <div class="filos-strip-cta">
+    <div class="filos-strip-cta" onclick="showPage('filos')">
       <span>Scopri FILOS</span>
       <div class="filos-strip-arrow">→</div>
     </div>
@@ -462,7 +462,7 @@
       <div class="letter-eye">Il Manifesto</div>
       <h2>C'è una storia<br><em>in ogni cosa.</em></h2>
       <p>In ogni persona che incontri, in ogni posto che visiti, in ogni brand che costruisce qualcosa di vero. Amira Vision esiste per raccontarle.</p>
-      <span class="btn-dark" onclick="showPage('manifesto')">Come nasce il progetto →</span>
+      <button class="btn-dark" onclick="showPage('manifesto')">Come nasce il progetto →</button>
     </div>
     <div class="letter-photo"><img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=85" alt="Amira"></div>
   </section>
@@ -493,8 +493,8 @@
     <div class="f-col">
       <h4>Link</h4>
       <ul>
-        <li><a href="#">Chi siamo</a></li>
-        <li><a href="#">Contatti</a></li>
+        <li><a href="#" class="f-link-1">Chi siamo</a></li>
+        <li><a href="#" class="f-link-2">Contatti</a></li>
         <li><a href="https://instagram.com/amira.vision" target="_blank">Instagram</a></li>
         <li><a href="https://amiravision.it" target="_blank">amiravision.it</a></li>
       </ul>
@@ -975,8 +975,13 @@ const TRANSLATE_SELECTORS = [
   '.filos-strip-tag',
   '.filos-strip-cta span',
   '.filos-grid-label',
-  '.mag-back',
-  '.sub-nav-back'
+  '.sub-nav-back',
+  '.nav-t',
+  '.f-col h4',
+  '.f-link-1',
+  '.f-link-2',
+  '.f-tag',
+  '.f-bottom span'
 ];
 
 // Save original Italian texts on first load
@@ -1150,7 +1155,7 @@ window.openArticle = async function(index) {
       <div class="mag-tl-line"></div>
 
       <div style="margin-top:8px">
-        <span class="btn-pill" onclick="showPage('manifesto')" style="font-size:12px;display:inline-flex">Come nasce il progetto →</span>
+        <button class="btn-pill" onclick="showPage('manifesto')" style="font-size:12px">Come nasce il progetto →</button>
       </div>
 
     </div>
