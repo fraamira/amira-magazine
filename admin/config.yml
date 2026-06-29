@@ -18,6 +18,13 @@ collections:
     fields:
       - { label: "Titolo", name: "titolo", widget: "string" }
       - { label: "Titolo corsivo", name: "titolo_em", widget: "string", required: false }
+      - label: "Rubrica"
+        name: "rubrica"
+        widget: "select"
+        default: "magazine"
+        options:
+          - { label: "Magazine (archivio generale)", value: "magazine" }
+          - { label: "FILOS — Human to Human", value: "filos" }
       - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
       - { label: "Luogo o tema", name: "luogo", widget: "string" }
       - { label: "Autore", name: "autore", widget: "string", default: "Francesco Amirante" }
@@ -59,7 +66,7 @@ collections:
             name: "audio"
             widget: "object"
             fields:
-              - { label: "File audio", name: "url", widget: "file", hint: "Carica MP3 o incolla URL" }
+              - { label: "File audio", name: "url", widget: "file" }
           - label: "Video (YouTube o file)"
             name: "video"
             widget: "object"
