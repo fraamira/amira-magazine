@@ -719,19 +719,15 @@ function renderGrid() {
   const filGrid = document.getElementById('filos-stories-grid');
   if (filGrid) {
     if (!filos.length) {
-      filGrid.innerHTML = \`<div class="filos-empty">
-        <h3>Le prime storie stanno arrivando.</h3>
-        <p>La rubrica FILOS è appena nata. Le collaborazioni sono in corso — torna presto.</p>
-      </div></div>\`;
+      filGrid.innerHTML = '<div class="filos-empty"><h3>Le prime storie stanno arrivando.</h3><p>La rubrica FILOS è appena nata. Le collaborazioni sono in corso — torna presto.</p></div>';
     } else {
-      filGrid.innerHTML = filos.map(art => {
-        const idx = ARTICOLI.indexOf(art);
-        return \`<div class="filos-card" onclick="openArticle(\${idx})">
-          <div class="filos-card-tag">\${art.luogo || 'FILOS'}</div>
-          <h3>\${art.titolo || ''} \${art.titolo_em || ''}</h3>
-          <p>\${art.estratto || art.intro || ''}</p>
-          <div class="filos-card-arr">→</div>
-        </div>\`;
+      filGrid.innerHTML = filos.map(function(art) {
+        var idx = ARTICOLI.indexOf(art);
+        return '<div class="filos-card" onclick="openArticle(' + idx + ')">' +
+          '<div class="filos-card-tag">' + (art.luogo || 'FILOS') + '</div>' +
+          '<h3>' + (art.titolo || '') + ' ' + (art.titolo_em || '') + '</h3>' +
+          '<p>' + (art.estratto || art.intro || '') + '</p>' +
+          '<div class="filos-card-arr">→</div></div>';
       }).join('');
     }
   }
@@ -1254,4 +1250,3 @@ window.openArticle = async function(index) {
 
 </body>
 </html>
-
