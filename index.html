@@ -238,8 +238,8 @@
     <div class="nav-logo-vision">vision</div>
   </div>
   <div class="nav-links">
-    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)">Le storie</a>
-    <a onclick="showPage('magazine')">Il magazine</a>
+    <a onclick="showPage('home'); setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" href='#'>Le storie</a>
+    <a onclick="showPage('magazine')" href='#/magazine'>Il magazine</a>
     <a href="https://amiravision.it" target="_blank">Lo studio</a>
   </div>
   <div class="lang-switcher">
@@ -478,6 +478,13 @@ async function fetchArticoli() {
       .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     renderGrid();
+    if (pendingRoute) {
+      const idx = ARTICOLI.findIndex(a => a.id === pendingRoute);
+      if (idx > -1) openArticle(idx, false);
+      pendingRoute = null;
+    } else {
+      handleRoute();
+    }
   } catch(e) {
     console.error('Errore caricamento articoli:', e);
     document.getElementById('stories-grid').innerHTML =
@@ -506,9 +513,18 @@ function renderGrid() {
 }
 
 // ── OPEN ARTICLE ──
-function openArticle(index) {
+function openArticle(index, updateHistory = true) {
   currentIndex = index;
   const art = ARTICOLI[index];
+  if (updateHistory && art.id) {
+    history.pushState({ page: 'article', id: art.id }, '', '#/articolo/' + art.id);
+    // Update OG meta for sharing
+    const ogImg = document.getElementById('og-image');
+    const twImg = document.getElementById('tw-image');
+    if (ogImg && art.copertina) ogImg.setAttribute('content', art.copertina);
+    if (twImg && art.copertina) twImg.setAttribute('content', art.copertina);
+    document.title = art.titolo + ' — AMIRA vision Magazine';
+  }
 
   document.getElementById('art-cover').src = art.copertina || '';
   document.getElementById('art-tag').textContent = `${art.luogo || ''} · ${art.minuti || 5} min`;
@@ -579,15 +595,46 @@ function formatDate(d) {
 }
 
 // ── PAGE SYSTEM ──
-function showPage(id) {
+function showPage(id, updateHistory = true) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
+  if (updateHistory) {
+    const hash = id === 'home' ? '' : id === 'article' ? '' : '#/' + id;
+    history.pushState({ page: id }, '', hash || window.location.pathname);
+  }
 }
 
 // ── NAV SCROLL ──
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+// ── ROUTER ──
+function handleRoute() {
+  const hash = window.location.hash;
+  if (!hash || hash === '#/') {
+    showPage('home', false);
+    return;
+  }
+  if (hash.startsWith('#/articolo/')) {
+    const id = hash.replace('#/articolo/', '');
+    const idx = ARTICOLI.findIndex(a => a.id === id);
+    if (idx > -1) {
+      openArticle(idx, false);
+    } else {
+      // Article not loaded yet — wait for fetch
+      pendingRoute = id;
+    }
+    return;
+  }
+  if (hash === '#/magazine') { showPage('magazine', false); return; }
+  if (hash === '#/manifesto') { showPage('manifesto', false); return; }
+  showPage('home', false);
+}
+
+let pendingRoute = null;
+
+window.addEventListener('popstate', handleRoute);
 
 // ── INIT ──
 fetchArticoli();
