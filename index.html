@@ -464,12 +464,12 @@
 
   <section class="quote-band">
     <div>
-      <div class="q-txt">«Le storie migliori<br>non si raccontano.<br><em>Si sentono.</em>»</div>
+      <div class="q-txt">La tua storia<br><em>è importante.</em></div>
       <div class="q-src">— Amira Vision Magazine</div>
     </div>
     <div class="q-side">
-      <p>Un magazine visivo e indipendente su persone, luoghi e talenti. Ogni storia è scelta con cura, raccontata con intenzione.</p>
-      <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Sfoglia le storie →</span>
+      <p>Hai una storia da raccontare, un progetto in cui credi, un brand che vuole essere visto? Proponici la tua storia — la raccontiamo insieme.</p>
+      <a href="https://wa.me/393202412048" target="_blank" class="btn-pill">Proponici la tua storia →</a>
     </div>
   </section>
 
@@ -822,6 +822,28 @@ function showPage(id, updateHistory = true) {
   void target.offsetWidth;
   target.classList.add('fade-in');
   window.scrollTo({top: 0, behavior: 'instant'});
+  // Adapt nav color for light/dark pages
+  const mainNav = document.getElementById('nav');
+  if (id === 'filos') {
+    mainNav.style.background = 'rgba(255,255,255,.95)';
+    mainNav.style.borderBottom = '0.5px solid rgba(13,31,92,.1)';
+    mainNav.style.backdropFilter = 'blur(20px)';
+    mainNav.querySelectorAll('a, button, .nav-logo-amira, .nav-logo-vision').forEach(el => {
+      el.style.color = id === 'filos' ? 'rgba(13,31,92,.7)' : '';
+    });
+    mainNav.querySelectorAll('.lang-btn').forEach(el => {
+      el.style.color = 'rgba(13,31,92,.5)';
+    });
+    mainNav.querySelectorAll('.lang-btn.active').forEach(el => {
+      el.style.color = '#0d1f5c';
+    });
+  } else {
+    mainNav.style.background = '';
+    mainNav.style.borderBottom = '';
+    mainNav.querySelectorAll('a, button, .nav-logo-amira, .nav-logo-vision, .lang-btn').forEach(el => {
+      el.style.color = '';
+    });
+  }
   if (updateHistory) {
     const hash = id === 'home' ? '' : id === 'article' ? '' : '#/' + id;
     history.pushState({ page: id }, '', hash || window.location.pathname);
