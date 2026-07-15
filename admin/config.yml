@@ -2,8 +2,7 @@ backend:
   name: github
   repo: fraamira/amira-magazine
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  base_url: https://decap-proxy.netlify.app
 
 media_folder: "immagini"
 public_folder: "/immagini"
