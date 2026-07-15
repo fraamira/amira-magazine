@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: fraamira/amira-magazine
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
 
 media_folder: "immagini"
 public_folder: "/immagini"
