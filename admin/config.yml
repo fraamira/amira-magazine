@@ -2,7 +2,8 @@ backend:
   name: github
   repo: fraamira/amira-magazine
   branch: main
-  base_url: https://decap-proxy.netlify.app
+  base_url: https://amira-magazine.vercel.app
+  auth_endpoint: api/auth
 
 media_folder: "immagini"
 public_folder: "/immagini"
@@ -73,5 +74,5 @@ collections:
             name: "video"
             widget: "object"
             fields:
-              - { label: "URL video", name: "url", widget: "string", hint: "Link YouTube oppure URL diretto del file video" }
+              - { label: "URL video", name: "url", widget: "string" }
       - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true }
