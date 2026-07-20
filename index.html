@@ -638,45 +638,65 @@ async function fetchArticoli() {
         const fm = parseFrontmatter(text);
         fm.id = file.name.replace('.md', '');
 
-        // Parse contenuto from raw markdown - handles multiline YAML values
+        // Parse contenuto — robust YAML block scalar handler
         const contBlocks = [];
-        const contSection = text.match(/^contenuto:\n([\s\S]*?)(?=^pubblicato:|^---\s*$|\Z)/m);
-        if (contSection) {
-          const raw = contSection[1];
-          // Split on "  - type:" or "  - tipo:" block starters
-          const blockRegex = /^  - (?:type|tipo):\s*(\w+)$/gm;
-          let match;
-          const positions = [];
-          while ((match = blockRegex.exec(raw)) !== null) {
-            positions.push({ idx: match.index, tipo: match[1] });
-          }
-          positions.forEach((pos, i) => {
-            const blockRaw = raw.slice(pos.idx, positions[i+1]?.idx ?? raw.length);
-            const block = { tipo: pos.tipo === 'type' ? pos.tipo : pos.tipo };
-            // normalize type->tipo
-            if (block.tipo) block.tipo = block.tipo;
+        const contStart = text.indexOf('\ncontenuto:');
+        const contEnd = text.indexOf('\npubblicato:', contStart);
+        if (contStart > -1) {
+          const raw = text.slice(contStart + 12, contEnd > -1 ? contEnd : undefined);
+          
+          // Split into individual blocks at "  - type:"
+          const blockParts = raw.split(/\n  - type:\s*/);
+          blockParts.shift(); // remove empty first element
+          
+          blockParts.forEach(part => {
+            const lines = part.split('\n');
+            const tipo = lines[0].trim();
+            const block = { tipo };
             
-            // Extract fields - handle multiline values (indented continuation lines)
-            const fieldRegex = /^    (\w+):\s*(.*)$/gm;
-            let fm2;
-            while ((fm2 = fieldRegex.exec(blockRaw)) !== null) {
-              const key = fm2[1];
-              let val = fm2[2].trim().replace(/^["']|["']$/g, '');
-              // Collect continuation lines (more indented)
-              const contLines = [];
-              let pos2 = fm2.index + fm2[0].length;
-              while (pos2 < blockRaw.length) {
-                const nextLine = blockRaw.slice(pos2).match(/^\n(      .+)/);
-                if (nextLine) {
-                  contLines.push(nextLine[1].trim());
-                  pos2 += nextLine[0].length;
-                } else break;
+            let currentKey = null;
+            let textLines = [];
+            let inScalar = false;
+            
+            for (let i = 1; i < lines.length; i++) {
+              const line = lines[i];
+              
+              // Skip lines that start a new block
+              if (line.match(/^  - type:/)) break;
+              
+              // Key: value line
+              const keyMatch = line.match(/^    (\w+):\s*(.*)/);
+              if (keyMatch) {
+                // Save previous key
+                if (currentKey && textLines.length) {
+                  block[currentKey] = textLines.join(' ').replace(/^[">|\-\s]+/, '').trim();
+                }
+                currentKey = keyMatch[1] === 'type' ? 'tipo' : keyMatch[1];
+                const val = keyMatch[2].trim();
+                
+                // Check if it's a block scalar (>-, >, |-, |)
+                if (val === '>-' || val === '>' || val === '|-' || val === '|' || val === '') {
+                  inScalar = val !== '';
+                  textLines = [];
+                } else {
+                  // Inline value
+                  block[currentKey] = val.replace(/^["']|["']$/g, '');
+                  currentKey = null;
+                  textLines = [];
+                  inScalar = false;
+                }
+              } else if (currentKey && line.match(/^      /)) {
+                // Continuation line (6+ spaces)
+                const cont = line.replace(/^      /, '').trim();
+                if (cont) textLines.push(cont);
               }
-              if (contLines.length) val = val + ' ' + contLines.join(' ');
-              block[key] = val;
             }
-            // normalize type->tipo
-            block.tipo = pos.tipo;
+            
+            // Save last key
+            if (currentKey && textLines.length) {
+              block[currentKey] = textLines.join(' ').replace(/^[">|\-\s]+/, '').trim();
+            }
+            
             if (block.tipo) contBlocks.push(block);
           });
         }
