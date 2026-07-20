@@ -765,11 +765,17 @@ function openArticle(index, updateHistory = true) {
   document.getElementById('art-tag').textContent = `${art.luogo || ''} · ${art.minuti || 5} min`;
   document.getElementById('art-title').innerHTML = `${art.titolo || ''} <em>${art.titolo_em || ''}</em>`;
   document.getElementById('art-meta').innerHTML = `<span>${art.autore || ''}</span><span>· ${formatDate(art.date)}</span>`;
-  document.getElementById('art-intro').textContent = art.intro || '';
+  document.getElementById('art-intro').textContent = (art.intro || '').replace(/^>-?\s*/gm, '').trim();
 
   const contenuto = art.contenuto || [];
   const html = contenuto.map(block => {
-    if (block.tipo === 'paragrafo') return `<p class="art-text">${block.testo || ''}</p>`;
+    if (block.tipo === 'paragrafo') {
+      const cleanTesto = (block.testo || '')
+        .replace(/^>-?\s*/gm, '')   // remove >- or > at line start
+        .replace(/\n/g, '<br>')     // preserve line breaks
+        .trim();
+      return '<p class="art-text">' + cleanTesto + '</p>';
+    }
     if (block.tipo === 'foto') return `
       <div class="art-img-full"><img src="${block.immagine || ''}" alt="${block.didascalia || ''}" onclick="openLightbox('${block.immagine || ''}')"></div>
       ${block.didascalia ? `<p class="art-img-caption">${block.didascalia}</p>` : ''}`;
