@@ -691,9 +691,9 @@ async function fetchArticoli() {
                 currentKey = keyMatch[1] === 'type' ? 'tipo' : keyMatch[1];
                 const val = keyMatch[2].trim();
                 
-                // Check if it's a block scalar (>-, >, |-, |)
+                // Check if it's a block scalar (>-, >, |-, |) or empty (next lines are content)
                 if (val === '>-' || val === '>' || val === '|-' || val === '|' || val === '') {
-                  inScalar = val !== '';
+                  inScalar = true;
                   textLines = [];
                 } else {
                   // Inline value
