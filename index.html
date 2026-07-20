@@ -138,10 +138,10 @@
     .art-hero{min-height:75vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
     .art-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
     .art-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,16,32,.96) 0%,rgba(8,16,32,.1) 55%)}
-    .art-hero-body{position:relative;z-index:2;padding:0 64px 64px;max-width:940px}
+    .art-hero-body{position:relative;z-index:2;padding:80px 44px 56px;max-width:100%;width:100%}
     .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
     .art-tag::before{content:'';display:block;width:20px;height:.5px;background:var(--gold)}
-    .art-title{font-size:clamp(42px,6vw,80px);font-weight:700;letter-spacing:-.04em;line-height:.92;margin-bottom:20px}
+    .art-title{font-size:clamp(32px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:20px;word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
     .art-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.65)}
     .art-meta{font-size:13px;font-weight:400;color:rgba(255,255,255,.45);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
     .art-read-time{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);border:.5px solid rgba(201,169,110,.4);padding:4px 10px;border-radius:999px}
@@ -565,25 +565,42 @@ function parseFrontmatter(text) {
   const fm = {};
   const lines = match[1].split('\n');
   let currentKey = null;
-  let inList = false;
-  let listItems = [];
+  let scalarLines = [];
+  let inScalar = false;
 
-  lines.forEach(line => {
-    const kvMatch = line.match(/^(\w+):\s*(.*)$/);
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Top-level key (no leading spaces)
+    const kvMatch = line.match(/^(\w+):\s*(.*)/);
     if (kvMatch) {
-      if (currentKey && inList) fm[currentKey] = listItems;
+      // Save previous scalar
+      if (currentKey && inScalar && scalarLines.length) {
+        fm[currentKey] = scalarLines.join(' ').trim();
+      }
       currentKey = kvMatch[1];
-      const val = kvMatch[2].trim().replace(/^["']|["']$/g, '');
-      if (val === '') { inList = true; listItems = []; }
-      else { inList = false; fm[currentKey] = val === 'true' ? true : val === 'false' ? false : val; }
-    } else if (line.match(/^\s*-\s/) && inList) {
-      const item = line.replace(/^\s*-\s*/, '').trim();
-      listItems.push(item);
-    } else if (line.match(/^\s+\w+:/) && currentKey === 'contenuto') {
-      // handled below
+      const val = kvMatch[2].trim();
+      // Block scalar indicators
+      if (val === '>-' || val === '>' || val === '|-' || val === '|') {
+        inScalar = true;
+        scalarLines = [];
+      } else {
+        inScalar = false;
+        scalarLines = [];
+        const clean = val.replace(/^["']|["']$/g, '');
+        fm[currentKey] = clean === 'true' ? true : clean === 'false' ? false : clean;
+      }
+    } else if (inScalar && line.match(/^  \S/)) {
+      // Continuation line with 2+ spaces indent
+      scalarLines.push(line.trim());
+    } else if (inScalar && line.match(/^    /)) {
+      // 4-space indent continuation
+      scalarLines.push(line.trim());
     }
-  });
-  if (currentKey && inList) fm[currentKey] = listItems;
+  }
+  // Save last scalar
+  if (currentKey && inScalar && scalarLines.length) {
+    fm[currentKey] = scalarLines.join(' ').trim();
+  }
   return fm;
 }
 
