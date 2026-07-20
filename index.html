@@ -663,8 +663,10 @@ async function fetchArticoli() {
           const raw = text.slice(contStart + 12, contEnd > -1 ? contEnd : undefined);
           
           // Split into individual blocks at "  - type:"
-          const blockParts = raw.split(/\n  - type:\s*/);
-          blockParts.shift(); // remove empty first element
+          // The raw section starts with "\n  - type: paragrafo\n    testo: ..."
+          // Split on newline + optional spaces + "- type:"
+          const blockParts = raw.split(/\n\s*- type:\s*/);
+          blockParts.shift(); // remove empty first element before first block
           
           blockParts.forEach(part => {
             const lines = part.split('\n');
