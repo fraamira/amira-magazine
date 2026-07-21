@@ -30,7 +30,8 @@ collections:
           - { label: "FILOS — Human to Human", value: "filos" }
       - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
       - { label: "Luogo o tema", name: "luogo", widget: "string" }
-      - { label: "Autore", name: "autore", widget: "string", default: "Francesco Amirante" }
+      - { label: "Articolo di (nome e cognome)", name: "autore", widget: "string", default: "Francesco Amirante" }
+      - { label: "Foto di (nome e cognome fotografo)", name: "fotografo", widget: "string", required: false, hint: "Lascia vuoto se non applicabile" }
       - { label: "Minuti di lettura", name: "minuti", widget: "number", value_type: "int", default: 5 }
       - { label: "Foto copertina", name: "copertina", widget: "image" }
       - { label: "Breve estratto", name: "estratto", widget: "string" }
