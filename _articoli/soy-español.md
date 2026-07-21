@@ -21,7 +21,7 @@ intro: >-
   That moment made me think about something: the feeling of belonging.
 contenuto:
   - type: video
-    url: https://drive.google.com/file/d/11-XZHzAtsbnHci57Gq7xhTkQnjdQPGvD/preview
+    url: https://youtube.com/shorts/POGeJDzRN1M
   - type: paragrafo
     testo: >-
       There are places, people, and moments that make you feel like you belong
