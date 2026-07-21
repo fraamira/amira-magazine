@@ -20,8 +20,6 @@ intro: >-
 
   That moment made me think about something: the feeling of belonging.
 contenuto:
-  - type: video
-    url: https://www.youtube.com/embed/POGeJDzRN1M
   - type: paragrafo
     testo: >-
       There are places, people, and moments that make you feel like you belong
