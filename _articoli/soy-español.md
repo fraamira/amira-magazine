@@ -1,6 +1,6 @@
 ---
 titolo: Soy español
-titolo_em: The sense of belonging exists. What does it mean to feel Spanish?
+titolo_em: The sense of belonging exists. What does it mean to feel Spanish??
 rubrica: magazine
 date: 2026-07-21
 luogo: Spain Triumph at the 2026 FIFA World Cup
