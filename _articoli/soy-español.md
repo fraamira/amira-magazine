@@ -25,62 +25,43 @@ contenuto:
       to what you're experiencing.
 
 
-      I wasn't born Spanish, yet I wore Spain's jersey because I wanted to feel part of those colors. I did it because something inside me made me want to. There was an energy in the air that drew me in.
-
-
-      To the most patriotic, I'll probably never be Spanish. But for a little while, I truly felt like I was.
+      I wasn't born Spanish, yet I wore Spain's jersey because I wanted to feel part of those colors. I did it because something inside me made me want to. There was an energy in the air that drew me in. To the most patriotic, I'll probably never be Spanish. But for a little while, I truly felt like I was.
   - type: paragrafo
     testo: >
-      These are the voices of some of the people I met that day.
+      But this story isn't mine alone. It's also told through the voices of the
+      people I met during these celebrations.
 
 
-      The Spanish national team's bus was only a few hundred meters away. In just a few moments, I would photograph the 2026 FIFA World Cup champions.
+
+      Spain have won. It's celebration day in Madrid. We're all waiting for the players to arrive. The Spanish national team's bus was only a few hundred meters away. In just a few moments, I would photograph the 2026 FIFA World Cup champions.
 
 
-      So would Isabel.
-
-
-      Isabel is 76 years old, born and raised in Madrid. She was there with her sister and her grandchildren. She's also been a photographer—for nearly thirty years.
+      So would Isabel. Isabel is 76 years old, born and raised in Madrid. She was there with her sister and her grandchildren. She's also been a photographer—for nearly thirty years.
 
 
       After telling me about her passion, and proudly saying, "I get less tired than the younger generations!", I asked her one simple question:
   - type: citazione
     testo: '"What does being Spanish mean to you?"'
   - type: paragrafo
-    testo: >-
-      Standing in front of us was David.
-
-
-      Twenty years old, surrounded by his friends and proudly carrying his Spanish flag.
-
-
-      After taking a few portraits of him, I asked if he wanted to answer the same question.
+    testo: Standing in front of us was David. Twenty years old, surrounded by his
+      friends and proudly carrying his Spanish flag. After taking a few
+      portraits of him, I asked if he wanted to answer the same question.
   - type: paragrafo
     testo: >-
       But I also wanted to hear that answer—and the emotions behind feeling
       Spanish—from someone who wasn't born in Spain, yet somehow feels Spanish
-      at heart.
-
-
-      Bruno's story is one of those.
+      at heart. Bruno's story is one of those.
 
 
       Originally from Peru, he says Madrid—and Spain—have "adopted" him.
   - type: paragrafo
     testo: >-
-      Then there's John.
+      Then there's John. Twenty-seven years old, he lives in Los Angeles but has
+      fallen in love with Spain, its people, and its language. Whenever he can
+      get away from work in the United States, he flies to Europe.
 
 
-      Twenty-seven years old, he lives in Los Angeles but has fallen in love with Spain, its people, and its language.
-
-
-      Whenever he can get away from work in the United States, he flies to Europe.
-
-
-      Three days before the World Cup final, he booked a last-minute flight to spend the occasion in Spain.
-
-
-      He had actually bought a ticket to Buenos Aires first—but in the end, he chose Madrid instead.
+      Three days before the World Cup final, he booked a last-minute flight to spend the occasion in Spain. (He had actually bought a ticket to Buenos Aires first—but in the end, he chose Madrid instead.)
 
 
       And there was a reason for that.
@@ -94,31 +75,18 @@ contenuto:
 
       Because sometimes I forget that a sense of belonging exists.
 
-
-      Sometimes it isn't there—or perhaps it simply isn't there in a particular place or at a particular moment.
-
-
-      Maybe it's something we have to look for.
+      Sometimes it isn't there—or perhaps it simply isn't there in a particular place or at a particular moment. Maybe it's something we have to look for.
 
 
-      Sometimes we find it in places we never imagined could feel like home.
+      Sometimes we find it in places we never imagined could feel like home. (I'm probably one of the least football-obsessed people you'll ever meet.)
 
 
-      (I'm probably one of the least football-obsessed people you'll ever meet.)
-
-
-      Many different voices can become one.
-
-
-      May there always be more people willing to embrace a Chinese stranger, an Italian, or anyone else, and say:
+      Many different voices can become one. May there always be more people willing to embrace a Chinese stranger, an Italian, or anyone else, and say:
   - type: citazione
-    testo: "\"You're one of us.\""
+    testo: "\"You're one of us!\""
   - type: paragrafo
-    testo: |-
-      I'm grateful I got to experience my own "Soy español."
-
-      And I hope there are more moments like that—
-
-      whatever "Soy español" may come to mean for each of us.
+    testo: I'm grateful I got to experience my own "Soy español." And I hope there
+      are more moments like that— whatever "Soy español" may come to mean for
+      each of us.
 pubblicato: true
 ---
