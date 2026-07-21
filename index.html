@@ -650,77 +650,26 @@ async function fetchArticoli() {
         } catch(e) { return null; }
       }
 
-      // Markdown format (from CMS)
+      // Markdown format (from CMS) — parse with js-yaml
       if (file.name.endsWith('.md')) {
-        const fm = parseFrontmatter(text);
-        fm.id = file.name.replace('.md', '');
-
-        // Parse contenuto — robust YAML block scalar handler
-        const contBlocks = [];
-        const contStart = text.indexOf('\ncontenuto:');
-        const contEnd = text.indexOf('\npubblicato:', contStart);
-        if (contStart > -1) {
-          const raw = text.slice(contStart + 12, contEnd > -1 ? contEnd : undefined);
-          
-          // Split into individual blocks at "  - type:"
-          // The raw section starts with "\n  - type: paragrafo\n    testo: ..."
-          // Split on newline + optional spaces + "- type:"
-          const blockParts = raw.split(/\n\s*- type:\s*/);
-          blockParts.shift(); // remove empty first element before first block
-          
-          blockParts.forEach(part => {
-            const lines = part.split('\n');
-            const tipo = lines[0].trim();
-            const block = { tipo };
-            
-            let currentKey = null;
-            let textLines = [];
-            let inScalar = false;
-            
-            for (let i = 1; i < lines.length; i++) {
-              const line = lines[i];
-              
-              // Skip lines that start a new block
-              if (line.match(/^  - type:/)) break;
-              
-              // Key: value line
-              const keyMatch = line.match(/^    (\w+):\s*(.*)/);
-              if (keyMatch) {
-                // Save previous key
-                if (currentKey && textLines.length) {
-                  block[currentKey] = textLines.join(' ').replace(/^[">|\-\s]+/, '').trim();
-                }
-                currentKey = keyMatch[1] === 'type' ? 'tipo' : keyMatch[1];
-                const val = keyMatch[2].trim();
-                
-                // Check if it's a block scalar (>-, >, |-, |) or empty (next lines are content)
-                if (val === '>-' || val === '>' || val === '|-' || val === '|' || val === '') {
-                  inScalar = true;
-                  textLines = [];
-                } else {
-                  // Inline value
-                  block[currentKey] = val.replace(/^["']|["']$/g, '');
-                  currentKey = null;
-                  textLines = [];
-                  inScalar = false;
-                }
-              } else if (currentKey && line.match(/^      /)) {
-                // Continuation line (6+ spaces)
-                const cont = line.replace(/^      /, '').trim();
-                if (cont) textLines.push(cont);
-              }
-            }
-            
-            // Save last key
-            if (currentKey && textLines.length) {
-              block[currentKey] = textLines.join(' ').replace(/^[">|\-\s]+/, '').trim();
-            }
-            
-            if (block.tipo) contBlocks.push(block);
+        const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
+        if (!fmMatch) return null;
+        let data = {};
+        try {
+          data = jsyaml.load(fmMatch[1]) || {};
+        } catch(e) {
+          console.error('YAML error:', file.name, e.message);
+          return null;
+        }
+        // Normalize: rename "type" -> "tipo" in contenuto blocks
+        if (Array.isArray(data.contenuto)) {
+          data.contenuto = data.contenuto.map(b => {
+            if (b && b.type && !b.tipo) { b.tipo = b.type; delete b.type; }
+            return b;
           });
         }
-        fm.contenuto = contBlocks;
-        return fm;
+        data.id = file.name.replace('.md', '');
+        return data;
       }
       return null;
     }));
@@ -1018,6 +967,7 @@ function shareArticle(type) {
 }
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 <script>
 // ── DEEPL TRANSLATION ──
 let currentLang = 'IT';
