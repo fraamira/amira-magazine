@@ -786,12 +786,19 @@ function openArticle(index, updateHistory = true) {
     if (block.tipo === 'video') {
       const src = block.url || '';
       const isYT = src.includes('youtube') || src.includes('youtu.be');
-      const isIG = src.includes('instagram');
       if (isYT) {
-        const ytId = src.match(/(?:v=|youtu\.be\/)([^&?]+)/)?.[1] || '';
-        return `<div class="art-video"><iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe></div>`;
+        // Extract video ID from any YouTube URL format
+        let ytId = '';
+        const shortMatch = src.match(/shorts\/([^?&\/]+)/);
+        const embedMatch = src.match(/embed\/([^?&\/]+)/);
+        const vMatch = src.match(/[?&]v=([^&]+)/);
+        const beMatch = src.match(/youtu\.be\/([^?&\/]+)/);
+        ytId = (shortMatch || embedMatch || vMatch || beMatch || [])[1] || '';
+        const isShort = src.includes('shorts');
+        const videoClass = isShort ? 'art-video art-video-short' : 'art-video';
+        return '<div class="' + videoClass + '"><iframe src="https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
       }
-      return `<div class="art-video"><video controls src="${src}" style="width:100%;height:100%"></video></div>`;
+      return '<div class="art-video"><video controls src="' + src + '" style="width:100%;height:100%"></video></div>';
     }
     return '';
   }).join('');
