@@ -43,6 +43,8 @@ contenuto:
       After telling me about her passion, and proudly saying, "I get less tired than the younger generations!", I asked her one simple question:
   - type: citazione
     testo: '"What does being Spanish mean to you?"'
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784594952/0721_xjdxn8.mp3
   - type: paragrafo
     testo: Standing in front of us was David. Twenty years old, surrounded by his
       friends and proudly carrying his Spanish flag. After taking a few
