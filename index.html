@@ -424,8 +424,8 @@
     <a href="https://amiravision.it" target="_blank" class="nav-t">Lo studio</a>
   </div>
   <div class="lang-switcher">
-    <button class="lang-btn active" onclick="setLang('IT')">IT</button>
-    <button class="lang-btn" onclick="setLang('EN')">EN</button>
+    <button class="lang-btn active" onclick="setLang('EN')">EN</button>
+    <button class="lang-btn" onclick="setLang('IT')">IT</button>
     <button class="lang-btn" onclick="setLang('ES')">ES</button>
     <button class="lang-btn" onclick="setLang('FR')">FR</button>
   </div>
@@ -778,11 +778,15 @@ function openArticle(index, updateHistory = true) {
         `<div class="art-gal-item" onclick="openLightbox('${src}',${i},[${imgs.map(s=>`'${s}'`).join(',')}])"><img src="${src}" alt="Foto ${i+1}" loading="lazy"></div>`
       ).join('')}</div>`;
     }
-    if (block.tipo === 'audio') return `
-      <div class="art-audio">
-        <div class="art-audio-label">🎧 Ascolta</div>
-        <audio controls src="${block.url || ''}"></audio>
-      </div>`;
+    if (block.tipo === 'audio') {
+      const trascrizione = block.trascrizione ? 
+        '<div class="art-audio-transcript"><p class="art-audio-transcript-label">Trascrizione</p><p class="art-audio-transcript-text">' + block.trascrizione + '</p></div>' : '';
+      return '<div class="art-audio">' +
+        '<div class="art-audio-label">Ascolta</div>' +
+        '<audio controls src="' + (block.url || '') + '" style="width:100%;accent-color:#c9a96e"></audio>' +
+        trascrizione +
+        '</div>';
+    }
     if (block.tipo === 'video') {
       const src = block.url || '';
       const isYT = src.includes('youtube') || src.includes('youtu.be');
@@ -979,7 +983,7 @@ function shareArticle(type) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 <script>
 // ── DEEPL TRANSLATION ──
-let currentLang = 'IT';
+let currentLang = 'EN';
 let originalTexts = {};
 let translationCache = {};
 
@@ -997,6 +1001,7 @@ const TRANSLATE_SELECTORS = [
   '.sec-label',
   '.art-intro',
   '.art-text',
+  '.art-audio-transcript-text',
   '.art-pullquote',
   '.btn-pill',
   '.btn-dark',
@@ -1024,7 +1029,7 @@ const TRANSLATE_SELECTORS = [
   '.f-bottom span'
 ];
 
-// Save original Italian texts on first load
+// Save original English texts on first load
 function saveOriginals() {
   if (Object.keys(originalTexts).length) return;
   TRANSLATE_SELECTORS.forEach(sel => {
@@ -1046,20 +1051,20 @@ function saveOriginals() {
 
 // Translate multiple texts in parallel
 async function translateBatch(texts, targetLang) {
-  const langMap = { 'EN': 'en', 'ES': 'es', 'FR': 'fr' };
+  const langMap = { 'IT': 'it', 'ES': 'es', 'FR': 'fr' };
   const target = langMap[targetLang];
+  if (!target) return texts; // EN is source, no translation needed
   
   const promises = texts.map(async (text) => {
     if (!text || !text.trim()) return text;
     const cacheKey = targetLang + '_' + text.substring(0,40);
     if (translationCache[cacheKey]) return translationCache[cacheKey];
     
-    // Strip HTML for translation
     const stripped = text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
     if (!stripped) return text;
     
     try {
-      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(stripped)}&langpair=it|${target}&de=francesco_amirante@yahoo.it`;
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(stripped)}&langpair=en|${target}&de=francesco_amirante@yahoo.it`;
       const res = await fetch(url);
       const data = await res.json();
       const translated = data.responseData?.translatedText || stripped;
@@ -1086,7 +1091,7 @@ async function setLang(lang) {
 
   saveOriginals();
 
-  if (lang === 'IT') {
+  if (lang === 'EN') {
     TRANSLATE_SELECTORS.forEach(sel => {
       document.querySelectorAll(sel).forEach((el, i) => {
         const key = sel + '_' + i;
