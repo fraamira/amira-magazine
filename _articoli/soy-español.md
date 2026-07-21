@@ -5,6 +5,7 @@ rubrica: magazine
 date: 2026-07-21
 luogo: Spain Triumph at the 2026 FIFA World Cup
 autore: Francesco Amirante
+fotografo: Francesco Amirante
 minuti: 5
 copertina: /immagini/1630717.jpg
 estratto: Exploring the meaning of belonging through the voices and images of
@@ -19,6 +20,8 @@ intro: >-
 
   That moment made me think about something: the feeling of belonging.
 contenuto:
+  - type: video
+    url: https://drive.google.com/file/d/11-XZHzAtsbnHci57Gq7xhTkQnjdQPGvD/view?usp=drive_link
   - type: paragrafo
     testo: >-
       There are places, people, and moments that make you feel like you belong
