@@ -854,7 +854,10 @@ function openArticle(index, updateHistory = true) {
         const videoClass = isShort ? 'art-video art-video-short' : 'art-video';
         return '<div class="' + videoClass + '"><iframe src="https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
       }
-      return '<div class="art-video"><video controls src="' + src + '" style="width:100%;height:100%"></video></div>';
+      const tvid = 'trv-' + Math.random().toString(36).substr(2,6);
+      const vtrascrizione = block.trascrizione ?
+        '<div class="art-transcript-wrap"><button class="art-transcript-toggle" onclick="toggleTranscript(this)">Transcript <span class="art-transcript-arrow">↓</span></button><div class="art-transcript-body" id="' + tvid + '" style="display:none"><p class="art-transcript-text">' + block.trascrizione + '</p></div></div>' : '';
+      return '<div class="art-video"><video controls src="' + src + '" style="width:100%;height:100%"></video></div>' + vtrascrizione;
     }
     return '';
   }).join('');
@@ -1097,6 +1100,16 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') lightboxNav(1, null);
 });
 
+// ── TRANSCRIPT TOGGLE ──
+function toggleTranscript(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.art-transcript-arrow');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.classList.toggle('open', !isOpen);
+  btn.style.color = isOpen ? 'rgba(255,255,255,.35)' : 'rgba(255,255,255,.7)';
+}
+
 // ── SHARE ──
 function shareArticle(type) {
   const url = window.location.href;
@@ -1133,7 +1146,7 @@ const TRANSLATE_SELECTORS = [
   '.sec-label',
   '.art-intro',
   '.art-text',
-  '.art-audio-transcript-text',
+  '.art-transcript-text',
   '.art-pullquote',
   '.btn-pill',
   '.btn-dark',
@@ -1147,6 +1160,7 @@ const TRANSLATE_SELECTORS = [
   '.filos-empty h3',
   '.filos-empty p',
   '.mag-tl-text',
+  '.mag-tl-text *',
   '.manifesto-p',
   '.manifesto-quote',
   '.gallery-intro-tag',
@@ -1350,37 +1364,37 @@ window.openArticle = async function(index) {
 
     <p class="manifesto-p">Fino a Dicembre 2020 non avevo mai letto un libro. Mi spiego: ne avevo letti tanti…da studiare, da memorizzare, da ripetere…<br>…ma non avevo mai letto un libro <em>per piacere</em>.</p>
 
-    <p class="manifesto-p">Il primo libro che ho letto per il piacere di leggere si intitola <em>"L'Utilità dell'Inutile"</em>. Così, ho scoperto che mi piace leggere. E i luoghi che adesso mi piace esplorare sono le librerie.</p>
+    <p class="manifesto-p">The first book I read for the pleasure of reading is called <em>"The Usefulness of the Useless"</em>. That's how I discovered I enjoy reading. And the places I now love to explore are bookshops.</p>
 
-    <p class="manifesto-p">Non ho il mio autore preferito, non ho un genere preferito. Mi piace leggere quello che mi piace in quel determinato momento, e che mi colpisce. Come anche per la musica o il cinema, almeno per quanto mi riguarda, ciò che mi basta è una cosa sola:</p>
+    <p class="manifesto-p">I have no favourite author, no favourite genre. I like to read what speaks to me in a given moment. As with music or cinema, at least for me, all I need is one thing:</p>
 
-    <div class="manifesto-quote"><em>una storia che mi ispiri.</em></div>
+    <div class="manifesto-quote"><em>a story that inspires me.</em></div>
 
     <p class="manifesto-p">E un altro mondo dove continuamente scopro nuove storie è…<br>…il mondo.</p>
 
     <p class="manifesto-p">Nel mondo, un po' per caso, un po' per destino, mi sta capitando di trovare delle belle storie. Queste storie si trovano in dei contenitori unici, che hanno infinite storie e storie nelle storie:<br><strong>le persone.</strong></p>
 
-    <p class="manifesto-p">E ho pensato <em>"Se aiutano me, possono aiutare anche gli altri. Non lasciare morire queste storie"</em>. Ok.</p>
+    <p class="manifesto-p">And I thought, <em>"If they help me, they can help others too. Don't let these stories die."</em> OK.</p>
 
     <div class="manifesto-break"></div>
 
-    <p class="manifesto-p">Odiavo scrivere. Lo odiavo. Mi annoiava, ma grazie a una mia professoressa del liceo, ne ho apprezzato il valore. E un libro <em>"La via dell'artista"</em> mi ha aiutato a trovare piacere nella scrittura quotidiana (quando non mi sento pigro).</p>
+    <p class="manifesto-p">I used to hate writing. I hated it. It bored me — but thanks to a high school teacher, I came to appreciate its value. And a book called <em>"The Artist's Way"</em> helped me find pleasure in daily writing (when I'm not feeling lazy).</p>
 
-    <p class="manifesto-p">Unendo tutto questo alla fotografia — anche questa un po' per caso, un po' per destino, ho riscoperto…o meglio, ho <strong>VISTO</strong> — non spiega la vita (perché è davvero complicato provarci) ma la osserva e la racconta attraverso persone, talenti, luoghi, bellezze.</p>
+    <p class="manifesto-p">Combining all of this with photography — also discovered partly by chance, partly by destiny — it doesn't explain life (because that's truly complicated to attempt) but it observes and tells it through people, talents, places, and beauty.</p>
 
-    <p class="manifesto-p">È l'incontro di più sguardi, di più visioni del mondo.</p>
+    <p class="manifesto-p">It is the meeting of many gazes, many visions of the world.</p>
 
     <div class="manifesto-break"></div>
 
     <p class="manifesto-p">Ci saranno paragrafi brevi, e altri saranno più lunghi…con delle sospensioni…e momenti più veloci: sono i miei pensieri che si trasformano in parole, e non saranno mai perfetti.<br><em>(Com'è giusto che sia)</em></p>
 
-    <p class="manifesto-p">E poi ci saranno i pensieri, le emozioni, le storie nelle storie di chi condividerà una parte di sé.</p>
+    <p class="manifesto-p">And then there will be the thoughts, emotions, and stories within stories of those who share a part of themselves.</p>
 
     <div class="manifesto-break"></div>
 
     <p class="manifesto-p">Quando trovo la storia giusta, mi sento capito…<br>non so spiegarlo…<br>mi sento che sto andando nella direzione giusta (che poi qual è chissà…)<br>Spesso mi blocco e non trovo le risposte…<br>…ma se è vero che già abbiamo tutte le risposte dentro di noi, è altrettanto vero che a volte è necessaria una luce diversa e magari un altro sguardo per vederle.</p>
 
-    <div class="manifesto-quote"><strong>AMIRA VISION</strong> è un progetto editoriale che ha alla base due principi: <em>il potere della condivisione</em> e <em>il potere del racconto</em> come forme di ispirazione.</div>
+    <div class="manifesto-quote"><strong>AMIRA VISION</strong> is an editorial project built on two principles: <em>the power of sharing</em> and <em>the power of storytelling</em> as forms of inspiration.</div>
 
     <p class="manifesto-p">Stories servono.<br>Scoprire nuove storie aiuta la nostra storia.<br><strong>Your story può continuare la mia.</strong></p>
 
