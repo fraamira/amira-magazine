@@ -5,7 +5,6 @@ backend:
   base_url: https://amira-magazine.vercel.app
   auth_endpoint: api/auth
 
-
 media_folder: "immagini"
 public_folder: "/immagini"
 
@@ -103,3 +102,15 @@ collections:
           - { label: "Immagine", name: "immagine", widget: "image" }
           - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
       - { label: "Attiva sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questa galleria sulla home" }
+
+  - name: "newsletter"
+    label: "Newsletter — Iscritti"
+    label_singular: "Iscritto"
+    folder: "_newsletter"
+    create: true
+    slug: "{{fields.email}}"
+    identifier_field: "email"
+    fields:
+      - { label: "Email", name: "email", widget: "string" }
+      - { label: "Data iscrizione", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm", date_format: "DD/MM/YYYY", time_format: "HH:mm" }
+      - { label: "Note", name: "note", widget: "string", required: false }
