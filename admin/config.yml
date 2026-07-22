@@ -71,9 +71,34 @@ collections:
             widget: "object"
             fields:
               - { label: "File audio", name: "url", widget: "file" }
+              - { label: "Trascrizione", name: "trascrizione", widget: "text", required: false, hint: "Scrivi qui il testo parlato — verrà tradotto automaticamente nelle altre lingue" }
           - label: "Video (YouTube o file)"
             name: "video"
             widget: "object"
             fields:
               - { label: "URL video", name: "url", widget: "string" }
       - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true }
+
+  - name: "gallery"
+    label: "The Gallery"
+    label_singular: "Galleria"
+    folder: "_gallery"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "titolo"
+    fields:
+      - { label: "Titolo galleria", name: "titolo", widget: "string", hint: "Es: Soy Español — A sense of belonging" }
+      - { label: "Sottotitolo (em)", name: "titolo_em", widget: "string", required: false, hint: "Parte in corsivo del titolo" }
+      - { label: "Mese", name: "mese", widget: "string", hint: "Es: July 2026" }
+      - { label: "Luogo", name: "luogo", widget: "string", hint: "Es: Madrid, Spain" }
+      - { label: "Fotografo", name: "fotografo", widget: "string", default: "Francesco Amirante" }
+      - { label: "Descrizione", name: "descrizione", widget: "text", hint: "Testo introduttivo della galleria" }
+      - { label: "Foto copertina", name: "copertina", widget: "image", hint: "Foto principale — formato orizzontale" }
+      - label: "Foto della galleria"
+        name: "foto"
+        widget: "list"
+        label_singular: "Foto"
+        fields:
+          - { label: "Immagine", name: "immagine", widget: "image" }
+          - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
+      - { label: "Attiva sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questa galleria sulla home" }
