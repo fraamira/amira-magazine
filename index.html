@@ -541,15 +541,27 @@
     </div>
   </div>
 
-  <section class="letter">
-    <div class="letter-photo"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=85" alt="Amira"></div>
-    <div class="letter-body">
-      <div class="letter-eye">Il Manifesto</div>
-      <h2>There is a story<br><em>in everything.</em></h2>
-      <p>In every person you meet, in every place you visit, in every brand that builds something real. Amira Vision exists to tell them.</p>
-      <button class="btn-dark" onclick="showPage('manifesto')">How the project began →</button>
+  <section class="letter letter-new">
+    <div class="letter-body letter-body-new">
+      <div class="letter-eye">The manifesto</div>
+      <h2>Inside each one of us<br><em>there is a story.</em></h2>
+      <p>In every person you meet, in every place you visit, in every brand that builds something real. AMIRA vision exists to tell them.</p>
+      <div class="letter-actions">
+        <button class="btn-dark" onclick="showPage('manifesto')">How the project began →</button>
+      </div>
+      <div class="newsletter-box">
+        <div class="newsletter-label">Stay updated</div>
+        <p class="newsletter-sub">New stories, new voices. No spam.</p>
+        <div class="newsletter-form">
+          <input type="email" id="nl-email" placeholder="Your email" class="newsletter-input">
+          <button class="newsletter-btn" onclick="submitNewsletter()">Subscribe</button>
+        </div>
+        <div class="newsletter-msg" id="nl-msg" style="display:none">✓ Thank you — you'll be the first to know.</div>
+      </div>
     </div>
-    <div class="letter-photo"><img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=85" alt="Amira"></div>
+    <div class="letter-cover">
+      <img src="/immagini/amira-cover.jpg" alt="AMIRA vision Magazine">
+    </div>
   </section>
 
   <section class="quote-band">
