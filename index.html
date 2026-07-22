@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA vision — Magazine</title>
-  <meta name="description" content="Un magazine su persone, places and talents. Il potere della condivisione e del racconto come forme di ispirazione." />
+  <meta name="description" content="A magazine about people, places and talents. The power of sharing and storytelling as forms of inspiration." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AMIRA vision — Magazine" />
   <meta property="og:description" content="Un magazine su persone, places and talents." />
@@ -105,14 +104,31 @@
 
     /* LETTER */
     .letter{display:grid;grid-template-columns:1fr 1.1fr 1fr}
+    .letter-new{grid-template-columns:1fr 1fr;background:var(--paper)}
     .letter-photo{min-height:420px;overflow:hidden}.letter-photo img{transition:transform .6s ease;width:100%;height:100%;object-fit:cover}.letter-photo:hover img{transform:scale(1.03)}
     .letter-body{padding:68px 50px;display:flex;flex-direction:column;justify-content:center;background:var(--paper);color:var(--ink)}
-    .letter-eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:rgba(8,8,8,.35);margin-bottom:18px}
-    .letter h2{font-size:clamp(30px,3.5vw,44px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:18px;color:var(--ink)}
+    .letter-body-new{padding:64px 56px;gap:20px;display:flex;flex-direction:column;justify-content:center}
+    .letter-cover{overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px 40px;background:var(--paper)}
+    .letter-cover img{max-height:520px;width:auto;object-fit:contain;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+    .letter-eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:rgba(8,8,8,.35);margin-bottom:0}
+    .letter h2{font-size:clamp(30px,3.5vw,44px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:0;color:var(--ink)}
     .letter h2 em{font-style:italic;font-weight:300;color:rgba(8,8,8,.55)}
-    .letter p{font-size:16px;font-weight:400;color:rgba(8,8,8,.62);line-height:1.75;margin-bottom:26px}
+    .letter p{font-size:16px;font-weight:400;color:rgba(8,8,8,.62);line-height:1.75;margin-bottom:0}
+    .letter-actions{display:flex;gap:12px;flex-wrap:wrap}
     .btn-dark{display:inline-flex;gap:10px;align-items:center;border:1.5px solid #080808;padding:12px 22px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:#080808;transition:all .2s;cursor:pointer;background:transparent}
     .btn-dark:hover{background:var(--ink);color:var(--paper)}
+    /* NEWSLETTER */
+    .newsletter-box{border-top:.5px solid rgba(8,8,8,.1);padding-top:24px;margin-top:4px}
+    .newsletter-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:rgba(8,8,8,.4);margin-bottom:6px}
+    .newsletter-sub{font-size:14px;color:rgba(8,8,8,.5);margin-bottom:14px}
+    .newsletter-form{display:flex;gap:8px}
+    .newsletter-input{flex:1;background:#fff;border:1px solid rgba(8,8,8,.2);border-radius:999px;padding:10px 18px;font-size:14px;font-family:inherit;outline:none;color:#080808;transition:border-color .2s}
+    .newsletter-input:focus{border-color:rgba(8,8,8,.5)}
+    .newsletter-input::placeholder{color:rgba(8,8,8,.3)}
+    .newsletter-btn{background:#080808;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity .2s}
+    .newsletter-btn:hover{opacity:.8}
+    .newsletter-msg{font-size:13px;color:#2a4fa0;font-weight:600;margin-top:10px}
+    @media(max-width:768px){.letter-new{grid-template-columns:1fr}.letter-cover{padding:32px 20px}.letter-body-new{padding:44px 22px}}
 
     /* QUOTE */
     .quote-band{background:#0d1a2e;border-top:.5px solid rgba(100,140,210,.15);border-bottom:.5px solid rgba(100,140,210,.15);padding:72px 44px;display:grid;grid-template-columns:1.3fr .7fr;gap:60px;align-items:center}
@@ -471,8 +487,8 @@
         <div class="hero-brand-vision">vision</div>
       </div>
       <div class="hero-rule"></div>
-      <h1 class="hero-payoff">Umani. Visioni. Storie.</h1>
-      <p class="hero-sub">The magazine in cui la condivisione è ispirazione.</p>
+      <h1 class="hero-payoff">Humans. Visions. Stories.</h1>
+      <p class="hero-sub">The magazine where sharing is inspiration.</p>
       <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Discover the stories &nbsp;→</span>
     </div>
   </header>
@@ -927,8 +943,12 @@ function showPage(id, updateHistory = true) {
     });
   }
   if (updateHistory) {
-    const hash = id === 'home' ? '' : id === 'article' ? '' : '#/' + id;
-    history.pushState({ page: id }, '', hash || window.location.pathname);
+    let hash = '';
+    if (id === 'home') hash = '/';
+    else if (id === 'article') hash = ''; // set by openArticle
+    else hash = '#/' + id;
+    if (hash && hash !== '/') history.pushState({ page: id }, '', hash);
+    else if (hash === '/') history.pushState({ page: 'home' }, '', '/');
   }
 }
 
@@ -1111,6 +1131,32 @@ function toggleTranscript(btn) {
   btn.style.color = isOpen ? 'rgba(255,255,255,.35)' : 'rgba(255,255,255,.7)';
 }
 
+// ── NEWSLETTER ──
+function submitNewsletter() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('nl-email').style.borderColor = '#e24b4a';
+    return;
+  }
+  // Save to localStorage as simple db for now
+  const subs = JSON.parse(localStorage.getItem('amira_subscribers') || '[]');
+  if (!subs.includes(email)) {
+    subs.push(email);
+    localStorage.setItem('amira_subscribers', JSON.stringify(subs));
+  }
+  // Show confirmation
+  document.getElementById('nl-msg').style.display = 'block';
+  document.getElementById('nl-email').value = '';
+  document.getElementById('nl-email').style.borderColor = '';
+  // Also save to GitHub via CMS if available
+  saveSubscriberToGithub(email);
+}
+
+async function saveSubscriberToGithub(email) {
+  // Will be implemented when CMS auth is ready
+  console.log('Subscriber:', email);
+}
+
 // ── SHARE ──
 function shareArticle(type) {
   const url = window.location.href;
@@ -1177,7 +1223,10 @@ const TRANSLATE_SELECTORS = [
   '.f-link-1',
   '.f-link-2',
   '.f-tag',
-  '.f-bottom span'
+  '.f-bottom span',
+  '.newsletter-label',
+  '.newsletter-sub',
+  '.newsletter-msg'
 ];
 
 // Save original English texts on first load
@@ -1343,7 +1392,7 @@ window.openArticle = async function(index) {
 
       <div class="mag-tl-node">
         <div class="mag-tl-dot mag-tl-dot--gold"></div>
-        <p class="mag-tl-text"><strong style="color:#fff">AMIRA vision</strong> è un progetto editoriale fondato su due principi: il potere della condivisione e il potere del racconto come forme di ispirazione.</p>
+        <p class="mag-tl-text"><strong style="color:#fff">AMIRA vision</strong> is an editorial project founded on two principles: the power of sharing and the power of storytelling as forms of inspiration.</p>
       </div>
 
       <div class="mag-tl-line"></div>
@@ -1397,7 +1446,7 @@ window.openArticle = async function(index) {
 
     <div class="manifesto-quote"><strong>AMIRA VISION</strong> is an editorial project built on two principles: <em>the power of sharing</em> and <em>the power of storytelling</em> as forms of inspiration.</div>
 
-    <p class="manifesto-p">Stories servono.<br>Scoprire nuove storie aiuta la nostra storia.<br><strong>Your story può continuare la mia.</strong></p>
+    <p class="manifesto-p">Stories matter.<br>Discovering new stories enriches our own.<br><strong>Your story can continue mine.</strong></p>
 
     <p class="manifesto-firma">— Francesco</p>
   </div>
@@ -1447,7 +1496,7 @@ window.openArticle = async function(index) {
     </div>
 
     <div class="filos-grid-section">
-      <div class="filos-grid-label">Stories FILOS</div>
+      <div class="filos-grid-label">FILOS stories</div>
       <div class="filos-grid" id="filos-stories-grid"><div class="filos-empty">
         <h3>The first stories are coming.</h3>
         <p>The FILOS column has just been born. Collaborations are underway — come back soon.</p>
