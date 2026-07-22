@@ -5,6 +5,7 @@ backend:
   base_url: https://amira-magazine.vercel.app
   auth_endpoint: api/auth
 
+
 media_folder: "immagini"
 public_folder: "/immagini"
 
