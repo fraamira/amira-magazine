@@ -20,6 +20,8 @@ intro: >-
 
   That moment made me think about something: the feeling of belonging.
 contenuto:
+  - type: video
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784757461/Post_per_rivista_dcygwe.mp4
   - type: foto
     immagine: /immagini/1630717.jpg
   - type: paragrafo
