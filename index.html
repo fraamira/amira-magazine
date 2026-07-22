@@ -226,6 +226,33 @@
     .sub-nav-back{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(13,31,92,.4);cursor:pointer;transition:color .2s}
     .sub-nav-back:hover{color:#0d1f5c}
 
+
+    /* THE GALLERY */
+    .gallery-section{background:#030508;border-top:.5px solid rgba(255,255,255,.06);border-bottom:.5px solid rgba(255,255,255,.06)}
+    .gallery-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding:48px 44px 32px}
+    .gallery-intro-left{display:flex;flex-direction:column;gap:12px}
+    .gallery-intro-tag{font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;display:flex;align-items:center;gap:12px}
+    .gallery-intro-tag::before{content:'';display:block;width:20px;height:.5px;background:#c9a96e}
+    .gallery-intro-title{font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.04em;line-height:.95;color:#fff}
+    .gallery-intro-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.5)}
+    .gallery-intro-text{font-size:15px;font-weight:400;color:rgba(255,255,255,.4);line-height:1.7;max-width:480px}
+    .gallery-intro-cta{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#c9a96e;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:opacity .2s}
+    .gallery-intro-cta:hover{opacity:.7}
+    .gallery-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:2px;cursor:pointer}
+    .gallery-cell-main{background:#0a0f1a;aspect-ratio:4/3;position:relative;overflow:hidden;transition:opacity .2s}
+    .gallery-cell-main:hover{opacity:.85}
+    .gallery-cells-side{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .gallery-cell-small{background:#080c14;aspect-ratio:1;position:relative;overflow:hidden;transition:opacity .2s}
+    .gallery-cell-small:hover{opacity:.85}
+    .gallery-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.08)}
+    @media(max-width:768px){
+      .gallery-intro{flex-direction:column;padding:36px 20px 24px;gap:16px}
+      .gallery-mosaic{grid-template-columns:1fr}
+      .gallery-cells-side{grid-template-columns:repeat(4,1fr)}
+      .gallery-cell-main{aspect-ratio:3/2}
+      .gallery-cell-small{aspect-ratio:1}
+    }
+
     /* FILOS STRIP */
     .filos-strip {
       background: #fff;
@@ -420,6 +447,7 @@
   <div class="nav-links">
     <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
     <a href="#/magazine" onclick="event.preventDefault();showPage('magazine')" class="nav-t">The magazine</a>
+    <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
     <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a>
     <a href="https://amiravision.it" target="_blank" class="nav-t">The studio</a>
   </div>
@@ -453,6 +481,30 @@
     <div class="sec-head"><span class="sec-label">Stories</span></div>
     <div class="stories-grid" id="stories-grid">
       <div class="loading">Caricamento storie...</div>
+    </div>
+  </section>
+
+
+  <!-- THE GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-intro">
+      <div class="gallery-intro-left">
+        <div class="gallery-intro-tag">The Gallery · Monthly</div>
+        <h2 class="gallery-intro-title">A digital exhibition<br><em>of the month's shots.</em></h2>
+        <p class="gallery-intro-text">Every month, one event. One person. One place. An exclusive visual story — only on AMIRA.</p>
+      </div>
+      <div class="gallery-intro-right">
+        <span class="gallery-intro-cta" onclick="showPage('gallery')">View the gallery →</span>
+      </div>
+    </div>
+    <div class="gallery-mosaic" onclick="showPage('gallery')">
+      <div class="gallery-cell-main"><div class="gallery-placeholder">Cover photo</div></div>
+      <div class="gallery-cells-side">
+        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 2</div></div>
+        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 3</div></div>
+        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 4</div></div>
+        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 5</div></div>
+      </div>
     </div>
   </section>
 
@@ -900,6 +952,7 @@ function handleRoute() {
   }
   if (hash === '#/magazine') { showPage('magazine', false); return; }
   if (hash === '#/filos') { showPage('filos', false); return; }
+  if (hash === '#/gallery') { showPage('gallery', false); return; }
   if (hash === '#/manifesto') { showPage('manifesto', false); return; }
   showPage('home', false);
 }
@@ -910,6 +963,85 @@ window.addEventListener('popstate', handleRoute);
 
 // ── INIT ──
 fetchArticoli();
+fetchGallery();
+
+// ── FETCH GALLERY ──
+async function fetchGallery() {
+  try {
+    const res = await fetch('https://api.github.com/repos/fraamira/amira-magazine/contents/_gallery?ref=main');
+    if (!res.ok) return;
+    const files = await res.json();
+    const mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.json'));
+    if (!mdFiles.length) return;
+
+    // Get most recent active gallery
+    const galleries = await Promise.all(mdFiles.map(async file => {
+      const r = await fetch(file.download_url);
+      const text = await r.text();
+      let data = {};
+      if (file.name.endsWith('.md')) {
+        const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
+        if (fmMatch) {
+          try { data = jsyaml.load(fmMatch[1]) || {}; } catch(e) {}
+        }
+      } else {
+        try { data = JSON.parse(text); } catch(e) {}
+      }
+      data.id = file.name.replace(/\.(md|json)$/, '');
+      return data;
+    }));
+
+    const active = galleries.find(g => g.attiva !== false);
+    if (active) renderGallery(active);
+  } catch(e) {
+    console.log('Gallery not yet configured');
+  }
+}
+
+function renderGallery(g) {
+  // Update home gallery section
+  const tag = document.querySelector('.gallery-intro-tag');
+  if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · ' + (g.mese || '');
+
+  const title = document.querySelector('.gallery-intro-title');
+  if (title) title.innerHTML = (g.titolo || 'The Gallery') + (g.titolo_em ? '<br><em>' + g.titolo_em + '</em>' : '');
+
+  const text = document.querySelector('.gallery-intro-text');
+  if (text) text.textContent = g.descrizione || '';
+
+  // Update mosaic photos
+  const main = document.querySelector('.gallery-cell-main');
+  if (main && g.copertina) {
+    main.innerHTML = '<img src="' + g.copertina + '" style="width:100%;height:100%;object-fit:cover">';
+  }
+
+  const smalls = document.querySelectorAll('.gallery-cell-small');
+  if (g.foto && g.foto.length) {
+    g.foto.slice(0, 4).forEach((f, i) => {
+      if (smalls[i] && f.immagine) {
+        smalls[i].innerHTML = '<img src="' + f.immagine + '" style="width:100%;height:100%;object-fit:cover">';
+      }
+    });
+  }
+
+  // Update gallery page
+  renderGalleryPage(g);
+}
+
+function renderGalleryPage(g) {
+  const page = document.getElementById('page-gallery');
+  if (!page) return;
+  const allPhotos = [g.copertina, ...(g.foto || []).map(f => f.immagine)].filter(Boolean);
+  const grid = allPhotos.map((src, i) => {
+    const cap = (g.foto || [])[i - 1]?.didascalia || '';
+    return '<div style="background:#080c14;position:relative;aspect-ratio:4/3;overflow:hidden;cursor:pointer" onclick="openLightbox(\'' + src + '\',' + i + ',[' + allPhotos.map(s => '\'' + s + '\'').join(',') + '])">' +
+      '<img src="' + src + '" style="width:100%;height:100%;object-fit:cover" loading="lazy">' +
+      (cap ? '<div style="position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-size:11px;color:rgba(255,255,255,.6)">' + cap + '</div>' : '') +
+      '</div>';
+  }).join('');
+
+  page.querySelector('div[style*="grid-template-columns"]').innerHTML = grid;
+}
 
 // ── READING PROGRESS ──
 window.addEventListener('scroll', () => {
@@ -1017,6 +1149,10 @@ const TRANSLATE_SELECTORS = [
   '.mag-tl-text',
   '.manifesto-p',
   '.manifesto-quote',
+  '.gallery-intro-tag',
+  '.gallery-intro-title',
+  '.gallery-intro-text',
+  '.gallery-intro-cta',
   '.filos-strip-tag',
   '.filos-strip-cta span',
   '.filos-grid-label',
@@ -1261,6 +1397,24 @@ window.openArticle = async function(index) {
   <span class="lightbox-arr lightbox-next" onclick="lightboxNav(1,event)">›</span>
 </div>
 
+
+
+<!-- ══ GALLERY PAGE ══ -->
+<div class="page" id="page-gallery">
+  <div style="background:#030508;min-height:100vh;padding-top:56px">
+    <div style="padding:48px 44px 32px;border-bottom:.5px solid rgba(255,255,255,.06)">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:12px"><span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · July 2026</div>
+      <h1 style="font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.92;color:#fff;margin-bottom:12px">Soy Español —<br><em style="font-style:italic;font-weight:300;color:rgba(255,255,255,.5)">A sense of belonging.</em></h1>
+      <p style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;margin-bottom:20px">Portraits, moments and emotions from the streets of Madrid the night Spain won the 2026 FIFA World Cup.</p>
+      <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);cursor:pointer" onclick="showPage('home')">← Back to stories</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
+      <div style="background:#080c14;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.08)">Photo 1</div>
+      <div style="background:#0a0f1a;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.08)">Photo 2</div>
+      <div style="background:#080c14;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.08)">Photo 3</div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ FILOS PAGE ══ -->
 <div class="page" id="page-filos">
