@@ -888,25 +888,25 @@ function openArticle(index, updateHistory = true) {
         return '<div class="art-video' + (isShort ? ' art-video-short' : '') + '"><iframe src="https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>' + transcript;
       }
 
-      // Custom AMIRA player for direct files (Cloudinary, GitHub, etc.)
-      return '<div class="amira-player" id="' + pid + '">' +
-        '<div class="amira-player-screen" onclick="amiraTogglePlay('' + pid + '')">' +
-          '<video id="' + pid + '-vid" src="' + src + '" preload="metadata" style="width:100%;height:100%;display:block;object-fit:contain"></video>' +
-          '<div class="amira-player-overlay" id="' + pid + '-overlay">' +
-            '<div class="amira-player-playbtn"><i class="ti ti-player-play" style="font-size:20px;color:#fff;margin-left:2px" aria-hidden="true"></i></div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="amira-player-controls">' +
-          '<button class="amira-ctrl-btn" onclick="amiraTogglePlay('' + pid + '')" id="' + pid + '-playbtn" aria-label="play"><i class="ti ti-player-play" aria-hidden="true"></i></button>' +
-          '<div class="amira-progress" onclick="amiraSeek(event,'' + pid + '')" id="' + pid + '-prog"><div class="amira-progress-fill" id="' + pid + '-fill"></div></div>' +
-          '<div class="amira-time" id="' + pid + '-time">0:00</div>' +
-          '<div class="amira-vol-wrap">' +
-            '<button class="amira-ctrl-btn" onclick="amiraMute('' + pid + '')" id="' + pid + '-volbtn" aria-label="volume"><i class="ti ti-volume" aria-hidden="true"></i></button>' +
-            '<div class="amira-vol-bar" onclick="amiraVol(event,'' + pid + '')"><div class="amira-vol-fill" id="' + pid + '-vfill"></div></div>' +
-          '</div>' +
-          '<button class="amira-ctrl-btn" onclick="amiraFullscreen('' + pid + '')" aria-label="fullscreen"><i class="ti ti-arrows-maximize" aria-hidden="true"></i></button>' +
-        '</div>' +
-      '</div>' + transcript;
+      // Custom AMIRA player for direct files
+      var p = pid;
+      var h = '<div class="amira-player" id="P">'.replace('P',p);
+      h += '<div class="amira-player-screen" onclick="amiraTogglePlay(this.closest(\'.amira-player\').id)">';
+      h += '<video id="P-vid" src="S" preload="metadata" style="width:100%;height:100%;display:block;object-fit:contain"></video>'.replace('P',p).replace('S',src);
+      h += '<div class="amira-player-overlay" id="P-overlay">'.replace('P',p);
+      h += '<div class="amira-player-playbtn"><i class="ti ti-player-play" style="font-size:20px;color:#fff;margin-left:2px" aria-hidden="true"></i></div>';
+      h += '</div></div>';
+      h += '<div class="amira-player-controls">';
+      h += '<button class="amira-ctrl-btn" onclick="amiraTogglePlay(this.closest(\'.amira-player\').id)" id="P-playbtn" aria-label="play"><i class="ti ti-player-play" aria-hidden="true"></i></button>'.replace('P',p);
+      h += '<div class="amira-progress" onclick="amiraSeek(event,this.closest(\'.amira-player\').id)" id="P-prog"><div class="amira-progress-fill" id="P-fill"></div></div>'.replace(/P/g,p);
+      h += '<div class="amira-time" id="P-time">0:00</div>'.replace('P',p);
+      h += '<div class="amira-vol-wrap">';
+      h += '<button class="amira-ctrl-btn" onclick="amiraMute(this.closest(\'.amira-player\').id)" id="P-volbtn" aria-label="volume"><i class="ti ti-volume" aria-hidden="true"></i></button>'.replace('P',p);
+      h += '<div class="amira-vol-bar" onclick="amiraVol(event,this.closest(\'.amira-player\').id)"><div class="amira-vol-fill" id="P-vfill"></div></div>'.replace(/P/g,p);
+      h += '</div>';
+      h += '<button class="amira-ctrl-btn" onclick="amiraFullscreen(this.closest(\'.amira-player\').id)" aria-label="fullscreen"><i class="ti ti-arrows-maximize" aria-hidden="true"></i></button>';
+      h += '</div></div>';
+      return h + transcript;
     }
     return '';
   }).join('');
