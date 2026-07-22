@@ -71,7 +71,7 @@ collections:
             widget: "object"
             fields:
               - { label: "File audio", name: "url", widget: "file" }
-              - { label: "Trascrizione", name: "trascrizione", widget: "text", required: false, hint: "Scrivi qui il testo parlato — verrà tradotto automaticamente nelle altre lingue" }
+              - { label: "Trascrizione", name: "trascrizione", widget: "text", required: false, hint: "Scrivi in italiano e inglese — tradotto automaticamente nelle altre lingue" }
           - label: "Video (YouTube o file)"
             name: "video"
             widget: "object"
