@@ -873,8 +873,11 @@ function openArticle(index, updateHistory = true) {
     if (block.tipo === 'video') {
       const src = block.url || '';
       const isYT = src.includes('youtube') || src.includes('youtu.be');
+      const pid = 'vp-' + Math.random().toString(36).substr(2,8);
+      const transcript = block.trascrizione ?
+        '<div class="art-transcript-wrap"><button class="art-transcript-toggle" onclick="toggleTranscript(this)">Transcript <span class="art-transcript-arrow">↓</span></button><div class="art-transcript-body" style="display:none"><p class="art-transcript-text">' + block.trascrizione + '</p></div></div>' : '';
+
       if (isYT) {
-        // Extract video ID from any YouTube URL format
         let ytId = '';
         const shortMatch = src.match(/shorts\/([^?&\/]+)/);
         const embedMatch = src.match(/embed\/([^?&\/]+)/);
@@ -882,13 +885,28 @@ function openArticle(index, updateHistory = true) {
         const beMatch = src.match(/youtu\.be\/([^?&\/]+)/);
         ytId = (shortMatch || embedMatch || vMatch || beMatch || [])[1] || '';
         const isShort = src.includes('shorts');
-        const videoClass = isShort ? 'art-video art-video-short' : 'art-video';
-        return '<div class="' + videoClass + '"><iframe src="https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
+        return '<div class="art-video' + (isShort ? ' art-video-short' : '') + '"><iframe src="https://www.youtube.com/embed/' + ytId + '?rel=0&modestbranding=1" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>' + transcript;
       }
-      const tvid = 'trv-' + Math.random().toString(36).substr(2,6);
-      const vtrascrizione = block.trascrizione ?
-        '<div class="art-transcript-wrap"><button class="art-transcript-toggle" onclick="toggleTranscript(this)">Transcript <span class="art-transcript-arrow">↓</span></button><div class="art-transcript-body" id="' + tvid + '" style="display:none"><p class="art-transcript-text">' + block.trascrizione + '</p></div></div>' : '';
-      return '<div class="art-video"><video controls src="' + src + '" style="width:100%;height:100%"></video></div>' + vtrascrizione;
+
+      // Custom AMIRA player for direct files (Cloudinary, GitHub, etc.)
+      return '<div class="amira-player" id="' + pid + '">' +
+        '<div class="amira-player-screen" onclick="amiraTogglePlay('' + pid + '')">' +
+          '<video id="' + pid + '-vid" src="' + src + '" preload="metadata" style="width:100%;height:100%;display:block;object-fit:contain"></video>' +
+          '<div class="amira-player-overlay" id="' + pid + '-overlay">' +
+            '<div class="amira-player-playbtn"><i class="ti ti-player-play" style="font-size:20px;color:#fff;margin-left:2px" aria-hidden="true"></i></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="amira-player-controls">' +
+          '<button class="amira-ctrl-btn" onclick="amiraTogglePlay('' + pid + '')" id="' + pid + '-playbtn" aria-label="play"><i class="ti ti-player-play" aria-hidden="true"></i></button>' +
+          '<div class="amira-progress" onclick="amiraSeek(event,'' + pid + '')" id="' + pid + '-prog"><div class="amira-progress-fill" id="' + pid + '-fill"></div></div>' +
+          '<div class="amira-time" id="' + pid + '-time">0:00</div>' +
+          '<div class="amira-vol-wrap">' +
+            '<button class="amira-ctrl-btn" onclick="amiraMute('' + pid + '')" id="' + pid + '-volbtn" aria-label="volume"><i class="ti ti-volume" aria-hidden="true"></i></button>' +
+            '<div class="amira-vol-bar" onclick="amiraVol(event,'' + pid + '')"><div class="amira-vol-fill" id="' + pid + '-vfill"></div></div>' +
+          '</div>' +
+          '<button class="amira-ctrl-btn" onclick="amiraFullscreen('' + pid + '')" aria-label="fullscreen"><i class="ti ti-arrows-maximize" aria-hidden="true"></i></button>' +
+        '</div>' +
+      '</div>' + transcript;
     }
     return '';
   }).join('');
@@ -1169,6 +1187,73 @@ function submitNewsletter() {
 async function saveSubscriberToGithub(email) {
   // Will be implemented when CMS auth is ready
   console.log('Subscriber:', email);
+}
+
+// ── AMIRA VIDEO PLAYER ──
+function amiraTogglePlay(pid) {
+  const vid = document.getElementById(pid + '-vid');
+  const overlay = document.getElementById(pid + '-overlay');
+  const btn = document.getElementById(pid + '-playbtn');
+  if (!vid) return;
+  if (vid.paused) {
+    vid.play();
+    overlay.classList.add('hidden');
+    btn.innerHTML = '<i class="ti ti-player-pause" aria-hidden="true"></i>';
+  } else {
+    vid.pause();
+    overlay.classList.remove('hidden');
+    btn.innerHTML = '<i class="ti ti-player-play" aria-hidden="true"></i>';
+  }
+  vid.ontimeupdate = () => amiraUpdateProgress(pid);
+  vid.onended = () => {
+    overlay.classList.remove('hidden');
+    btn.innerHTML = '<i class="ti ti-player-play" aria-hidden="true"></i>';
+    document.getElementById(pid + '-fill').style.width = '0%';
+  };
+}
+
+function amiraUpdateProgress(pid) {
+  const vid = document.getElementById(pid + '-vid');
+  const fill = document.getElementById(pid + '-fill');
+  const time = document.getElementById(pid + '-time');
+  if (!vid || !vid.duration) return;
+  fill.style.width = (vid.currentTime / vid.duration * 100) + '%';
+  const fmt = s => Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+  time.textContent = fmt(vid.currentTime) + ' / ' + fmt(vid.duration);
+}
+
+function amiraSeek(e, pid) {
+  const vid = document.getElementById(pid + '-vid');
+  const prog = document.getElementById(pid + '-prog');
+  if (!vid || !vid.duration) return;
+  const rect = prog.getBoundingClientRect();
+  vid.currentTime = ((e.clientX - rect.left) / rect.width) * vid.duration;
+}
+
+function amiraMute(pid) {
+  const vid = document.getElementById(pid + '-vid');
+  const btn = document.getElementById(pid + '-volbtn');
+  if (!vid) return;
+  vid.muted = !vid.muted;
+  btn.innerHTML = vid.muted ? '<i class="ti ti-volume-off" aria-hidden="true"></i>' : '<i class="ti ti-volume" aria-hidden="true"></i>';
+}
+
+function amiraVol(e, pid) {
+  const vid = document.getElementById(pid + '-vid');
+  const bar = e.currentTarget;
+  const vfill = document.getElementById(pid + '-vfill');
+  if (!vid) return;
+  const rect = bar.getBoundingClientRect();
+  const vol = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  vid.volume = vol;
+  vfill.style.width = (vol * 100) + '%';
+}
+
+function amiraFullscreen(pid) {
+  const vid = document.getElementById(pid + '-vid');
+  if (!vid) return;
+  if (vid.requestFullscreen) vid.requestFullscreen();
+  else if (vid.webkitRequestFullscreen) vid.webkitRequestFullscreen();
 }
 
 // ── SHARE ──
