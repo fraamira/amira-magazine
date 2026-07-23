@@ -84,6 +84,16 @@ contenuto:
 
 
       Originally from Peru, he says Madrid—and Spain—have "adopted" him.
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784767032/bruno_lizzetti_mondiali_mrprpp.mp3
+    trascrizione: >-
+      Hi, I'm Bruno Lizzetti, and I've been living here in Spain, in Madrid, for
+      nine years. Yesterday, Sunday, I felt incredibly emotional when Spain won
+      the World Cup for the second time, after sixteen years. Why? Because I
+      felt so happy, so excited, and truly thrilled.
+
+
+      Above all, because Spain—and Madrid in particular—is my adopted home. I've been living here for nine years, and even though I wasn't born Spanish, you could say I'm Madrilenian by adoption. Over the years, I've made countless friends and experienced unforgettable moments. Seeing Spain succeed means seeing my friends, my people, and my city succeed and celebrate.
   - type: paragrafo
     testo: >-
       Then there's John. Twenty-seven years old, he lives in Los Angeles but has
@@ -96,8 +106,8 @@ contenuto:
 
       And there was a reason for that.
   - type: paragrafo
-    testo: Here are some of the moments I documented during the Spain vs. Argentina
-      World Cup final celebrations in Madrid.
+    testo: "Here are some of the moments I documented during the Spain vs. Argentina
+      World Cup final celebrations in Madrid. "
   - type: paragrafo
     testo: >-
       Why did I write this story?
@@ -108,10 +118,10 @@ contenuto:
       Sometimes it isn't there—or perhaps it simply isn't there in a particular place or at a particular moment. Maybe it's something we have to look for.
 
 
-      Sometimes we find it in places we never imagined could feel like home. (I'm probably one of the least football-obsessed people you'll ever meet.)
+      Sometimes we find it in places we never imagined could feel like home. I'm probably one of the least football-obsessed people you'll ever meet, and yet I found that sense of belonging in the very thing I'd always felt I wasn't part of.
 
 
-      Many different voices can become one. May there always be more people willing to embrace a Chinese stranger, an Italian, or anyone else, and say:
+      May there always be more people willing to embrace a Chinese stranger, an Italian, or anyone else, and say:
   - type: citazione
     testo: "\"You're one of us!\""
   - type: paragrafo
