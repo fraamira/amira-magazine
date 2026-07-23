@@ -20,10 +20,6 @@ intro: >-
 
   That moment made me think about something: the feeling of belonging.
 contenuto:
-  - type: video
-    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784757461/Post_per_rivista_dcygwe.mp4
-  - type: foto
-    immagine: /immagini/1630717.jpg
   - type: paragrafo
     testo: >-
       There are places, people, and moments that make you feel like you belong
@@ -31,14 +27,20 @@ contenuto:
 
 
       I wasn't born Spanish, yet I wore Spain's jersey because I wanted to feel part of those colors. I did it because something inside me made me want to. There was an energy in the air that drew me in. To the most patriotic, I'll probably never be Spanish. But for a little while, I truly felt like I was.
+  - type: foto
+    immagine: /immagini/1630717.jpg
+  - type: paragrafo
+    testo: But this story isn't mine alone. It's also told through the voices of the
+      people I met during these celebrations.
+  - type: gallery
+    foto1: /immagini/p1670935.jpg
+    foto2: /immagini/p1680093.jpg
   - type: paragrafo
     testo: >
-      But this story isn't mine alone. It's also told through the voices of the
-      people I met during these celebrations.
-
-
-
-      Spain have won. It's celebration day in Madrid. We're all waiting for the players to arrive. The Spanish national team's bus was only a few hundred meters away. In just a few moments, I would photograph the 2026 FIFA World Cup champions.
+      Spain have won. It's celebration day in Madrid. We're all waiting for the
+      players to arrive. The Spanish national team's bus was only a few hundred
+      meters away. In just a few moments, I would photograph the 2026 FIFA World
+      Cup champions.
 
 
       So would Isabel. Isabel is 76 years old, born and raised in Madrid. She was there with her sister and her grandchildren. She's also been a photographer—for nearly thirty years.
@@ -49,10 +51,22 @@ contenuto:
     testo: '"What does being Spanish mean to you?"'
   - type: audio
     url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784594952/0721_xjdxn8.mp3
+    trascrizione: >-
+      For me, being Spanish is very important. I love the quality of life in
+      Spain. I love the people, how kind they are, and, well, I love everything
+      about it.
+
+
+      And when Spain wins, what I like most is that the whole country comes together and, for once, everyone can proudly wave the Spanish flag—something that doesn't usually happen because of all the political divisions.
+
+
+      I also really like it when someone who isn't from your country feels as though they are part of your country.
   - type: paragrafo
     testo: Standing in front of us was David. Twenty years old, surrounded by his
       friends and proudly carrying his Spanish flag. After taking a few
       portraits of him, I asked if he wanted to answer the same question.
+  - type: foto
+    immagine: /immagini/p1670666.jpg
   - type: paragrafo
     testo: >-
       But I also wanted to hear that answer—and the emotions behind feeling
