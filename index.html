@@ -916,7 +916,7 @@ function openArticle(index, updateHistory = true) {
   // Keep legacy refs for other code
   var legacyCover = document.getElementById('art-cover');
   if(legacyCover) legacyCover.src = coverSrc;
-  document.getElementById('art-meta').innerHTML = `<span>${art.autore || ''}</span><span>· ${formatDate(art.date)}</span>`;
+  // meta already set in hero builder above
   document.getElementById('art-intro').textContent = (art.intro || '').replace(/^>-?\s*/gm, '').trim();
 
   const contenuto = art.contenuto || [];
@@ -1147,13 +1147,13 @@ async function fetchGallery() {
 
 function renderGallery(g) {
   // Update home gallery section
-  const tag = document.querySelector('.gallery-intro-tag');
+  var tag = document.querySelector('.gallery-intro-tag');
   if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · ' + (g.mese || '');
 
-  const title = document.querySelector('.gallery-intro-title');
+  var title = document.querySelector('.gallery-intro-title');
   if (title) title.innerHTML = (g.titolo || 'The Gallery') + (g.titolo_em ? '<br><em>' + g.titolo_em + '</em>' : '');
 
-  const text = document.querySelector('.gallery-intro-text');
+  var text = document.querySelector('.gallery-intro-text');
   if (text) text.textContent = g.descrizione || '';
 
   // Update mosaic photos
