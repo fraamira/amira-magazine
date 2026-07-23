@@ -33,8 +33,9 @@ contenuto:
     testo: But this story isn't mine alone. It's also told through the voices of the
       people I met during these celebrations.
   - type: gallery
-    foto1: /immagini/p1670935.jpg
-    foto2: /immagini/p1680093.jpg
+    foto1: /immagini/p1680093.jpg
+    foto2: /immagini/p1670973.jpg
+    foto3: /immagini/p1670977.jpg
   - type: paragrafo
     testo: >
       Spain have won. It's celebration day in Madrid. We're all waiting for the
@@ -44,9 +45,12 @@ contenuto:
 
 
       So would Isabel. Isabel is 76 years old, born and raised in Madrid. She was there with her sister and her grandchildren. She's also been a photographer—for nearly thirty years.
-
-
-      After telling me about her passion, and proudly saying, "I get less tired than the younger generations!", I asked her one simple question:
+  - type: foto
+    immagine: /immagini/p1670935.jpg
+    didascalia: Isabel is 76 years old, born and raised in Madrid
+  - type: paragrafo
+    testo: 'After telling me about her passion, and proudly saying, "I get less
+      tired than the younger generations!", I asked her one simple question:'
   - type: citazione
     testo: '"What does being Spanish mean to you?"'
   - type: audio
@@ -67,6 +71,11 @@ contenuto:
       portraits of him, I asked if he wanted to answer the same question.
   - type: foto
     immagine: /immagini/p1670666.jpg
+    didascalia: David
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784766375/David_20_ruben_19_w2klrv.m4a
+    trascrizione: Being a nation, being a family. Being united is what I like most
+      about the Spanish people.
   - type: paragrafo
     testo: >-
       But I also wanted to hear that answer—and the emotions behind feeling
