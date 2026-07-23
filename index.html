@@ -470,14 +470,15 @@
       .manifesto-body{padding:80px 20px 60px}
     }
 
-        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;-webkit-tap-highlight-color:transparent}
+    @media(hover:none),(pointer:coarse){.hamburger{display:flex}.nav-links{display:none}}
     .hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:all .25s}
     .mobile-menu{display:none;position:fixed;inset:0;background:#0a1628;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:32px}
     .mobile-menu.open{display:flex}
     .mobile-menu a{font-size:22px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.7);text-decoration:none;text-transform:uppercase;cursor:pointer}
     .mobile-menu a:hover{color:#fff}
     .mobile-close{position:absolute;top:20px;right:20px;font-size:28px;color:rgba(255,255,255,.5);cursor:pointer;background:none;border:none;line-height:1}
-    @media(max-width:768px){
+    @media(max-width:900px){
       .nav{padding:0 20px}.nav-links{display:none}.hamburger{display:flex}
       .hero-content{padding:0 20px}
       .stories-section{padding:52px 20px}.stories-grid{grid-template-columns:1fr}.story{aspect-ratio:4/3}
