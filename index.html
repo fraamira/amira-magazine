@@ -504,8 +504,18 @@
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
     <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a>
   </div>
-
+  <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="closeMobileMenu()">×</button>
+  <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
+  <a onclick="closeMobileMenu();showPage('magazine')">The Magazine</a>
+  <a onclick="closeMobileMenu();showPage('gallery')">The Gallery</a>
+  <a onclick="closeMobileMenu();showPage('filos')">FILOS</a>
+</div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
