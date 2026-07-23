@@ -169,10 +169,10 @@
     .f-bottom{grid-column:1/-1;border-top:.5px solid rgba(100,140,210,.15);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:rgba(255,255,255,.2)}
 
     /* ARTICLE */
-    .art-hero{min-height:75vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
-    .art-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
-    .art-hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,16,32,.96) 0%,rgba(8,16,32,.1) 55%)}
-    .art-hero-body{position:relative;z-index:2;padding:80px 44px 56px;max-width:100%;width:100%}
+    .art-hero{position:relative;display:flex;align-items:flex-end;overflow:hidden}
+    .art-hero-img{width:100%;height:auto;display:block;max-height:100vh;object-fit:contain;object-position:center;filter:brightness(.85) saturate(.9)}
+    .art-hero-grad{position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(8,16,32,.98) 0%,rgba(8,16,32,.4) 60%,transparent 100%)}
+    .art-hero-body{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:40px 44px 48px}
     .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
     .art-tag::before{content:'';display:block;width:20px;height:.5px;background:var(--gold)}
     .art-title{font-size:clamp(32px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:20px;word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
@@ -214,8 +214,8 @@
     .art-video{margin:40px 0;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:#0d1a2e}
     .art-video iframe,.art-video video{width:100%;height:100%;border:none}
     .art-body{max-width:680px;margin:0 auto;padding:72px 32px 80px}.art-body ul,.art-body ol{list-style:none;padding:0;margin:0}.art-body li{list-style:none}
-    .art-intro{font-size:21px;font-weight:400;color:rgba(255,255,255,.88);line-height:1.65;margin-bottom:48px;border-left:2px solid var(--gold);padding-left:24px}
-    .art-text{font-size:17px;font-weight:400;color:rgba(255,255,255,.7);line-height:1.8;margin-bottom:28px}
+    .art-intro{font-size:23px;font-weight:400;color:rgba(255,255,255,.92);line-height:1.7;margin-bottom:52px;border-left:2px solid var(--gold);padding-left:28px}
+    .art-text{font-size:20px;font-weight:400;color:rgba(255,255,255,.78);line-height:1.85;margin-bottom:32px}
     .art-img-full{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:4px;margin:40px 0}
     .art-img-full img{width:100%;height:100%;object-fit:cover}
     .art-img-caption{font-size:12px;color:rgba(255,255,255,.3);margin-top:-30px;margin-bottom:40px;text-align:center;letter-spacing:.05em}
@@ -624,7 +624,7 @@
 
 <!-- ARTICLE PAGE -->
 <div class="page" id="page-article">
-  <div class="art-hero" id="art-hero">
+  <div class="art-hero" id="art-hero" style="position:relative">
     <img class="art-hero-img" id="art-cover" src="" alt="">
     <div class="art-hero-grad"></div>
     <div class="art-hero-body">
@@ -1208,25 +1208,26 @@ async function saveSubscriberToGithub(email) {
 
 // ── AMIRA VIDEO PLAYER ──
 function amiraTogglePlay(pid) {
-  const vid = document.getElementById(pid + '-vid');
-  const overlay = document.getElementById(pid + '-overlay');
-  const btn = document.getElementById(pid + '-playbtn');
+  var vid = document.getElementById(pid + '-vid');
+  var overlay = document.getElementById(pid + '-overlay');
+  var btn = document.getElementById(pid + '-playbtn');
   if (!vid) return;
+  if (!vid._amiraBound) {
+    vid._amiraBound = true;
+    vid.addEventListener('timeupdate', function(){ amiraUpdateProgress(pid); });
+    vid.addEventListener('ended', function(){
+      if(overlay) overlay.classList.remove('hidden');
+      var f = document.getElementById(pid+'-fill'); if(f) f.style.width='0%';
+      var t = document.getElementById(pid+'-time'); if(t) t.textContent='0:00';
+    });
+  }
   if (vid.paused) {
-    vid.play();
-    overlay.classList.add('hidden');
-    btn.innerHTML = '<i class="ti ti-player-pause" aria-hidden="true"></i>';
+    vid.play().catch(function(){});
+    if(overlay) overlay.classList.add('hidden');
   } else {
     vid.pause();
-    overlay.classList.remove('hidden');
-    btn.innerHTML = '<i class="ti ti-player-play" aria-hidden="true"></i>';
+    if(overlay) overlay.classList.remove('hidden');
   }
-  vid.ontimeupdate = () => amiraUpdateProgress(pid);
-  vid.onended = () => {
-    overlay.classList.remove('hidden');
-    btn.innerHTML = '<i class="ti ti-player-play" aria-hidden="true"></i>';
-    document.getElementById(pid + '-fill').style.width = '0%';
-  };
 }
 
 function amiraUpdateProgress(pid) {
