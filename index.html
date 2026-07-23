@@ -171,16 +171,16 @@
     /* ARTICLE */
     /* LAYOUT A — vertical photo left, text right */
     .art-hero{position:relative;overflow:hidden;background:#0a1628}
-    .art-hero-layout-a{display:grid;grid-template-columns:1fr 1fr;min-height:70vh}
+    .art-hero-layout-a{display:grid;grid-template-columns:1fr 1fr;height:100vh;max-height:800px}
     .art-hero-layout-b{display:flex;flex-direction:column}
     /* Layout A — photo side */
-    .art-hero-photo-a{position:relative;overflow:hidden;background:#060e1a}
-    .art-hero-photo-a img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.88) saturate(.9)}
+    .art-hero-photo-a{position:relative;overflow:hidden;background:#060e1a;height:100%}
+    .art-hero-photo-a img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:brightness(.88) saturate(.9)}
     /* Layout B — photo top */
     .art-hero-photo-b{position:relative;overflow:hidden;background:#060e1a;max-height:75vh;display:flex;align-items:center;justify-content:center}
     .art-hero-photo-b img{width:100%;height:auto;max-height:75vh;object-fit:contain;display:block;filter:brightness(.9) saturate(.9)}
     /* Text panels */
-    .art-hero-text-a{padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;background:#0a1628}
+    .art-hero-text-a{padding:56px 48px;display:flex;flex-direction:column;justify-content:center;background:#0a1628;overflow:auto}
     .art-hero-text-b{padding:40px 44px 48px;max-width:800px}
     .art-hero-img{display:none}
     .art-hero-grad{display:none}
@@ -1658,7 +1658,7 @@ window.openArticle = async function(index) {
 <div class="page" id="page-gallery">
   <div style="background:#030508;min-height:100vh;padding-top:56px">
     <div class="gallery-page-hero" style="padding:48px 44px 32px;border-bottom:.5px solid rgba(255,255,255,.06)">
-      <div class="gallery-page-tag" style="font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:12px"><span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery</div>
+      <div class="gallery-page-tag" style="font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:0"><span style="display:block;width:20px;height:.5px;background:#c9a96e;margin-right:12px;flex-shrink:0"></span>The Gallery</div>
       <h1 class="gallery-page-title" style="font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.92;color:#fff;margin-bottom:12px">The Gallery</h1>
       <p class="gallery-page-sub" style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;margin-bottom:8px"></p>
       <p class="gallery-page-meta" style="font-size:12px;color:rgba(255,255,255,.25);margin-bottom:20px"></p>
