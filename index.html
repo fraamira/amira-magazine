@@ -470,15 +470,22 @@
       .manifesto-body{padding:80px 20px 60px}
     }
 
-        @media(max-width:768px){
-      .nav{padding:0 20px}.nav-links{display:none}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+    .hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:all .25s}
+    .mobile-menu{display:none;position:fixed;inset:0;background:#0a1628;z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{font-size:22px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.7);text-decoration:none;text-transform:uppercase;cursor:pointer}
+    .mobile-menu a:hover{color:#fff}
+    .mobile-close{position:absolute;top:20px;right:20px;font-size:28px;color:rgba(255,255,255,.5);cursor:pointer;background:none;border:none;line-height:1}
+    @media(max-width:768px){
+      .nav{padding:0 20px}.nav-links{display:none}.hamburger{display:flex}
       .hero-content{padding:0 20px}
       .stories-section{padding:52px 20px}.stories-grid{grid-template-columns:1fr}.story{aspect-ratio:4/3}
       .letter{grid-template-columns:1fr}.letter-photo{min-height:260px}.letter-body{padding:44px 22px}
       .quote-band{grid-template-columns:1fr;padding:52px 20px;gap:28px}
       footer{grid-template-columns:1fr;padding:44px 20px 24px}.f-logo-amira{font-size:36px}.f-bottom{flex-direction:column;gap:6px}
       .art-hero-layout-a{grid-template-columns:1fr}.art-hero-text-a{padding:32px 20px 40px}.art-hero-text-b{padding:24px 20px 36px}.art-body{padding:48px 20px 64px}
-      .art-nav-bottom{grid-template-columns:1fr 1fr;padding:32px 20px}.art-back{display:none}
+      .art-nav-bottom{grid-template-columns:1fr 1fr;padding:32px 20px}.art-back{display:flex}
     }
   </style>
 </head>
@@ -820,7 +827,7 @@ function renderGrid() {
           <div class="story-tag">${art.luogo || ''}</div>
           <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
           <p>${art.estratto || art.intro || ''}</p>
-          <span class="story-link">Leggi la storia →</span>
+          <span class="story-link">Read the story →</span>
         </div>
       </article>`;
     }).join('');
@@ -1107,6 +1114,16 @@ function handleRoute() {
 let pendingRoute = null;
 
 window.addEventListener('popstate', handleRoute);
+
+// ── MOBILE MENU ──
+function openMobileMenu() {
+  document.getElementById('mobile-menu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 // ── INIT ──
 fetchArticoli();
