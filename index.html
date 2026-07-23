@@ -169,11 +169,23 @@
     .f-bottom{grid-column:1/-1;border-top:.5px solid rgba(100,140,210,.15);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:rgba(255,255,255,.2)}
 
     /* ARTICLE */
-    .art-hero{position:relative;display:flex;align-items:flex-end;overflow:hidden}
-    .art-hero-img{width:100%;height:auto;display:block;max-height:100vh;object-fit:contain;object-position:center;filter:brightness(.85) saturate(.9)}
-    .art-hero-grad{position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(8,16,32,.98) 0%,rgba(8,16,32,.4) 60%,transparent 100%)}
-    .art-hero-body{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:40px 44px 48px}
-    .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+    /* LAYOUT A — vertical photo left, text right */
+    .art-hero{position:relative;overflow:hidden;background:#0a1628}
+    .art-hero-layout-a{display:grid;grid-template-columns:1fr 1fr;min-height:70vh}
+    .art-hero-layout-b{display:flex;flex-direction:column}
+    /* Layout A — photo side */
+    .art-hero-photo-a{position:relative;overflow:hidden;background:#060e1a}
+    .art-hero-photo-a img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.88) saturate(.9)}
+    /* Layout B — photo top */
+    .art-hero-photo-b{position:relative;overflow:hidden;background:#060e1a;max-height:75vh;display:flex;align-items:center;justify-content:center}
+    .art-hero-photo-b img{width:100%;height:auto;max-height:75vh;object-fit:contain;display:block;filter:brightness(.9) saturate(.9)}
+    /* Text panels */
+    .art-hero-text-a{padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;background:#0a1628}
+    .art-hero-text-b{padding:40px 44px 48px;max-width:800px}
+    .art-hero-img{display:none}
+    .art-hero-grad{display:none}
+    .art-hero-body{display:none}
+    .art-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:12px}
     .art-tag::before{content:'';display:block;width:20px;height:.5px;background:var(--gold)}
     .art-title{font-size:clamp(32px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-bottom:20px;word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
     .art-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.65)}
@@ -465,7 +477,7 @@
       .letter{grid-template-columns:1fr}.letter-photo{min-height:260px}.letter-body{padding:44px 22px}
       .quote-band{grid-template-columns:1fr;padding:52px 20px;gap:28px}
       footer{grid-template-columns:1fr;padding:44px 20px 24px}.f-logo-amira{font-size:36px}.f-bottom{flex-direction:column;gap:6px}
-      .art-hero-body{padding:0 20px 44px}.art-body{padding:48px 20px 64px}
+      .art-hero-layout-a{grid-template-columns:1fr}.art-hero-text-a{padding:32px 20px 40px}.art-hero-text-b{padding:24px 20px 36px}.art-body{padding:48px 20px 64px}
       .art-nav-bottom{grid-template-columns:1fr 1fr;padding:32px 20px}.art-back{display:none}
     }
   </style>
@@ -484,12 +496,7 @@
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
     <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a>
   </div>
-  <div class="lang-switcher">
-    <button class="lang-btn active" onclick="setLang('EN')">EN</button>
-    <button class="lang-btn" onclick="setLang('IT')">IT</button>
-    <button class="lang-btn" onclick="setLang('ES')">ES</button>
-    <button class="lang-btn" onclick="setLang('FR')">FR</button>
-  </div>
+
 </nav>
 
 <!-- HOME -->
@@ -843,12 +850,22 @@ function openArticle(index, updateHistory = true) {
   const art = ARTICOLI[index];
   if (updateHistory && art.id) {
     history.pushState({ page: 'article', id: art.id }, '', '#/articolo/' + art.id);
-    // Update OG meta for sharing
-    const ogImg = document.getElementById('og-image');
-    const twImg = document.getElementById('tw-image');
-    if (ogImg && art.copertina) ogImg.setAttribute('content', art.copertina);
-    if (twImg && art.copertina) twImg.setAttribute('content', art.copertina);
-    document.title = art.titolo + ' — AMIRA vision Magazine';
+    // Update all OG/Twitter meta for article sharing
+    var artTitle = (art.titolo || '') + (art.titolo_em ? ' ' + art.titolo_em : '') + ' — AMIRA vision';
+    var artDesc = art.estratto || art.intro || 'A story on AMIRA vision Magazine.';
+    var artImg = art.copertina || 'https://amiramagazine.vercel.app/immagini/amira-cover.jpg';
+    var artUrl = 'https://amiramagazine.vercel.app/#/articolo/' + art.id;
+    document.title = artTitle;
+    var setMeta = function(id, val) { var el = document.getElementById(id); if(el) el.setAttribute('content', val); };
+    setMeta('og-title', artTitle);
+    setMeta('og-desc', artDesc);
+    setMeta('og-image', artImg);
+    setMeta('og-url', artUrl);
+    setMeta('og-type', 'article');
+    setMeta('tw-title', artTitle);
+    setMeta('tw-desc', artDesc);
+    setMeta('tw-image', artImg);
+    setMeta('meta-desc', artDesc);
   }
 
   document.getElementById('art-cover').src = art.copertina || '';
@@ -959,6 +976,18 @@ function formatDate(d) {
 
 // ── PAGE SYSTEM ──
 function showPage(id, updateHistory = true) {
+  // Reset OG to home when not on article
+  if (id === 'home') {
+    document.title = 'AMIRA vision — Magazine';
+    var setMeta = function(mid, val) { var el = document.getElementById(mid); if(el) el.setAttribute('content', val); };
+    setMeta('og-title', 'AMIRA vision — Magazine');
+    setMeta('og-desc', 'A magazine about people, places and talents.');
+    setMeta('og-image', 'https://amiramagazine.vercel.app/immagini/amira-cover.jpg');
+    setMeta('og-url', 'https://amiramagazine.vercel.app');
+    setMeta('og-type', 'website');
+    setMeta('tw-title', 'AMIRA vision — Magazine');
+    setMeta('tw-image', 'https://amiramagazine.vercel.app/immagini/amira-cover.jpg');
+  }
   document.querySelectorAll('.page').forEach(p => {
     p.classList.remove('active');
     p.classList.remove('fade-in');
