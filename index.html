@@ -274,29 +274,21 @@
 
 
 
-    /* GALLERY ARCHIVE PAGE */
-    .gallery-archive-hero{padding:72px 44px 56px;text-align:center;border-bottom:.5px solid rgba(255,255,255,.06)}
-    .gallery-archive-kicker{font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:12px}
-    .gallery-archive-kicker::before,.gallery-archive-kicker::after{content:'';display:block;width:22px;height:.5px;background:#c9a96e}
-    .gallery-archive-title{font-size:clamp(42px,6vw,76px);font-weight:800;letter-spacing:-.055em;line-height:.92;color:#fff;margin:0 0 22px}
-    .gallery-archive-subtitle{font-size:clamp(14px,1.5vw,18px);color:rgba(255,255,255,.43);line-height:1.75;max-width:720px;margin:0 auto}
-    .gallery-list-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:34px 44px 72px}
-    .gallery-list-item{position:relative;min-height:420px;aspect-ratio:4/3;background:#0b0d10;overflow:hidden;cursor:pointer;border-radius:2px}
-    .gallery-list-thumb{position:absolute;inset:0}
-    .gallery-list-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease,opacity .35s ease}
-    .gallery-list-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.28) 48%,rgba(0,0,0,.05) 72%);pointer-events:none}
-    .gallery-list-item:hover .gallery-list-thumb img{transform:scale(1.035);opacity:.9}
-    .gallery-list-info{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:26px 26px 24px;display:flex;flex-direction:column;gap:9px}
-    .gallery-list-tag{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62)}
-    .gallery-list-title{font-size:clamp(22px,2vw,31px);font-weight:700;letter-spacing:-.04em;line-height:1.03;color:#fff}
-    .gallery-list-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.72)}
-    .gallery-list-sub{display:none}
-    .gallery-list-meta{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.48)}
-    .gallery-list-cta{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#c9a96e;margin-top:3px;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
-    .gallery-list-item:hover .gallery-list-cta{opacity:1;transform:none}
-    @media(max-width:980px){.gallery-list-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:28px 24px 60px}.gallery-list-item{min-height:360px}}
-    @media(max-width:640px){.gallery-archive-hero{padding:54px 20px 42px}.gallery-list-grid{grid-template-columns:1fr;padding:20px 16px 48px;gap:14px}.gallery-list-item{min-height:330px}.gallery-list-info{padding:22px}.gallery-list-cta{opacity:1;transform:none}}
-
+    .gallery-list-item{border-bottom:.5px solid rgba(255,255,255,.06);cursor:pointer;transition:background .2s}
+    .gallery-list-item:hover{background:rgba(255,255,255,.02)}
+    .gallery-list-inner{display:grid;grid-template-columns:1fr 2fr}
+    .gallery-list-thumb{aspect-ratio:3/2;overflow:hidden;background:#0f1a2e;position:relative}
+    .gallery-list-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .gallery-list-item:hover .gallery-list-thumb img{transform:scale(1.03)}
+    .gallery-list-info{padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:10px;border-left:.5px solid rgba(255,255,255,.06)}
+    .gallery-list-tag{font-size:9px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#c9a96e}
+    .gallery-list-title{font-size:clamp(18px,2.5vw,26px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#fff}
+    .gallery-list-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.5)}
+    .gallery-list-sub{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6}
+    .gallery-list-meta{font-size:11px;color:rgba(255,255,255,.25)}
+    .gallery-list-cta{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+    .gallery-list-item:hover .gallery-list-cta{color:#c9a96e}
+    @media(max-width:768px){.gallery-list-inner{grid-template-columns:1fr}.gallery-list-info{padding:20px}}
 
     /* THE GALLERY */
     .gallery-section{background:#030508;border-top:.5px solid rgba(255,255,255,.06);border-bottom:.5px solid rgba(255,255,255,.06)}
@@ -1201,16 +1193,8 @@ async function fetchGallery() {
       return data;
     }));
 
-    ALL_GALLERIES = galleries
-      .filter(g => g.attiva !== false)
-      .sort((a, b) => {
-        const da = new Date(a.data || a.date || 0).getTime();
-        const db = new Date(b.data || b.date || 0).getTime();
-        return db - da;
-      });
-
-    renderGalleryList();
-    if (ALL_GALLERIES[0]) renderGallery(ALL_GALLERIES[0]);
+    const active = galleries.find(g => g.attiva !== false);
+    if (active) renderGallery(active);
   } catch(e) {
     console.log('Gallery not yet configured');
   }
@@ -1223,25 +1207,24 @@ function renderGalleryList() {
   var container = document.getElementById('gallery-list-container');
   if (!container) return;
   if (!ALL_GALLERIES.length) {
-    container.className = '';
-    container.innerHTML = '<div style="padding:72px 44px;text-align:center;color:rgba(255,255,255,.28);font-size:13px">Nessuna galleria disponibile.</div>';
+    container.innerHTML = '<div style="padding:64px 44px;text-align:center;color:rgba(255,255,255,.25);font-size:13px">No galleries yet.</div>';
     return;
   }
-  container.className = 'gallery-list-grid';
   container.innerHTML = ALL_GALLERIES.map(function(g, i) {
-    var thumbSrc = g.copertina || ((g.foto || [])[0] || {}).immagine || '';
+    var thumbSrc = g.copertina || '';
     var thumbHtml = thumbSrc ? '<img src="' + thumbSrc + '" alt="" loading="lazy">' : '';
-    var count = (g.foto || []).length + (g.copertina ? 1 : 0);
-    return '<article class="gallery-list-item" onclick="openGallerySingle(' + i + ')">' +
+    return '<div class="gallery-list-item" onclick="openGallerySingle(' + i + ')">' +
+      '<div class="gallery-list-inner">' +
         '<div class="gallery-list-thumb">' + thumbHtml + '</div>' +
         '<div class="gallery-list-info">' +
-          '<div class="gallery-list-tag">' + (g.mese || g.data || '') + (g.luogo ? ' · ' + g.luogo : '') + '</div>' +
-          '<div class="gallery-list-title">' + (g.titolo || 'Senza titolo') + (g.titolo_em ? ' <em>' + g.titolo_em + '</em>' : '') + '</div>' +
+          '<div class="gallery-list-tag">' + (g.mese || '') + (g.luogo ? ' · ' + g.luogo : '') + '</div>' +
+          '<div class="gallery-list-title">' + (g.titolo || '') + (g.titolo_em ? ' <em>' + g.titolo_em + '</em>' : '') + '</div>' +
           '<div class="gallery-list-sub">' + (g.descrizione || '') + '</div>' +
-          '<div class="gallery-list-meta">' + count + ' foto' + (g.fotografo ? ' · ' + g.fotografo : '') + '</div>' +
-          '<div class="gallery-list-cta">Apri la galleria →</div>' +
+          '<div class="gallery-list-meta">' + ((g.foto || []).length + 1) + ' photos' + (g.fotografo ? ' · ' + g.fotografo : '') + '</div>' +
+          '<div class="gallery-list-cta">View gallery →</div>' +
         '</div>' +
-    '</article>';
+      '</div>' +
+    '</div>';
   }).join('');
 }
 
@@ -1260,9 +1243,9 @@ function showGalleryList() {
 
 function renderGallery(g) {
   if (!ALL_GALLERIES.find(function(x){ return x.id === g.id; })) {
-    ALL_GALLERIES.unshift(g);
-    renderGalleryList();
+    ALL_GALLERIES.push(g);
   }
+  renderGalleryList();
   // Update home gallery section
   var tag = document.querySelector('.gallery-intro-tag');
   if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · ' + (g.mese || '');
@@ -1295,15 +1278,7 @@ function renderGallery(g) {
 function renderGalleryPage(g) {
   const page = document.getElementById('page-gallery');
   if (!page) return;
-  const tag = page.querySelector('.gallery-page-tag');
-  const title = page.querySelector('.gallery-page-title');
-  const sub = page.querySelector('.gallery-page-sub');
-  const meta = page.querySelector('.gallery-page-meta');
-  if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>' + (g.mese || g.data || '') + (g.luogo ? ' · ' + g.luogo : '');
-  if (title) title.innerHTML = (g.titolo || 'The Gallery') + (g.titolo_em ? ' <em style="font-weight:300;color:rgba(255,255,255,.58)">' + g.titolo_em + '</em>' : '');
-  if (sub) sub.textContent = g.descrizione || '';
   const allPhotos = [g.copertina, ...(g.foto || []).map(f => f.immagine)].filter(Boolean);
-  if (meta) meta.textContent = allPhotos.length + ' foto' + (g.fotografo ? ' · ' + g.fotografo : '');
   const grid = allPhotos.map((src, i) => {
     const cap = (g.foto || [])[i - 1]?.didascalia || '';
     return '<div style="background:#080c14;position:relative;aspect-ratio:4/3;overflow:hidden;cursor:pointer" onclick="openLightbox(\'' + src + '\',' + i + ',[' + allPhotos.map(s => '\'' + s + '\'').join(',') + '])">' +
@@ -1784,11 +1759,13 @@ window.openArticle = async function(index) {
   <div style="background:#030508;min-height:100vh;padding-top:56px">
 
     <!-- HERO -->
-    <header class="gallery-archive-hero">
-      <div class="gallery-archive-kicker">The Gallery</div>
-      <h1 class="gallery-archive-title">The Gallery</h1>
-      <p class="gallery-archive-subtitle">Una galleria digitale dedicata al reportage, aggiornata su eventi rilevanti che hanno colpito l’attenzione di Amira.</p>
-    </header>
+    <div style="text-align:center;padding:84px 44px 70px;border-bottom:.5px solid rgba(255,255,255,.06)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:10px">
+        <span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>
+      </div>
+      <h1 style="font-size:clamp(42px,6vw,78px);font-weight:800;letter-spacing:-.05em;line-height:.95;color:#fff;margin-bottom:24px">Documenting the world</h1>
+      <p style="font-size:clamp(15px,1.5vw,19px);color:rgba(255,255,255,.5);line-height:1.75;max-width:760px;margin:0 auto">A digital gallery dedicated to photojournalism, featuring compelling events that have captured Amira's attention.</p>
+    </div>
 
     <!-- GALLERY LIST -->
     <div id="gallery-list-container"></div>
