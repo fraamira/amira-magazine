@@ -96,37 +96,67 @@ contenuto:
       Above all, because Spain—and Madrid in particular—is my adopted home. I've been living here for nine years, and even though I wasn't born Spanish, you could say I'm Madrilenian by adoption. Over the years, I've made countless friends and experienced unforgettable moments. Seeing Spain succeed means seeing my friends, my people, and my city succeed and celebrate.
   - type: paragrafo
     testo: >-
-      Then there's John. Twenty-seven years old, he lives in Los Angeles but has
-      fallen in love with Spain, its people, and its language. Whenever he can
-      get away from work in the United States, he flies to Europe.
+      
+      Then, two stories unexpectedly crossed paths.
 
 
-      Three days before the World Cup final, he booked a last-minute flight to spend the occasion in Spain. (He had actually bought a ticket to Buenos Aires first—but in the end, he chose Madrid instead.)
+      John is twenty-seven years old. He lives in Los Angeles but has fallen in love with Spain—its people, its culture, and its language. Whenever he can take a break from work in the United States, he flies to Europe.
 
 
-      And there was a reason for that.
-  - type: paragrafo
-    testo: "Here are some of the moments I documented during the Spain vs. Argentina
-      World Cup final celebrations in Madrid. "
+      Three days before the World Cup final, he booked a last-minute flight to experience the occasion in Spain. He had actually bought a ticket to Buenos Aires first—but in the end, he chose Madrid instead.
+
+
+      And then there’s Fabian, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
+
+
+      John then asked him, “So, what are your plans for tonight’s match?”
+
+
+      “None,” Fabian replied.
+
+
+      Without missing a beat, John said, “Then come watch it with me.”
+
+
+      And just like that, the three of us found ourselves watching the World Cup final together.
+
+
+      The best part of the story?
+
+
+      John, from Los Angeles, was now in Spain, where he met Fabian, who was also living in Spain but had been living in Los Angeles until just a few months earlier.
+
+
+      An encounter that somehow felt meant to happen. One of those moments that brings you back home—or reminds you that home can sometimes be found in the most unexpected places.
+
+
+      Sometimes, all it takes is a simple question to turn a chance encounter into a memory you’ll carry with you forever.
   - type: paragrafo
     testo: >-
-      Why did I write this story?
+      Sometimes we forget that a sense of belonging exists.
 
 
-      Because sometimes I forget that a sense of belonging exists.
-
-      Sometimes it isn't there—or perhaps it simply isn't there in a particular place or at a particular moment. Maybe it's something we have to look for.
+      Sometimes it isn't there. Or maybe it's simply something we have to go looking for.
 
 
-      Sometimes we find it in places we never imagined could feel like home. I'm probably one of the least football-obsessed people you'll ever meet, and yet I found that sense of belonging in the very thing I'd always felt I wasn't part of.
+      Sometimes we find it in something we never imagined could be the right place for us.
 
 
-      May there always be more people willing to embrace a Chinese stranger, an Italian, or anyone else, and say:
+      I'm probably one of the least football-obsessed people you'll ever meet, and yet I found that very sense of belonging in the one thing I had always believed wasn't for me.
+
+
+      A chance encounter, a simple "yes," a willingness to say "I'll give it a try"—sometimes that's all it takes to make us feel part of something bigger.
+
+
+      May there always be more people willing to welcome a Chinese stranger, an Italian, or anyone else, and simply say:
   - type: citazione
     testo: "\"You're one of us!\""
   - type: paragrafo
-    testo: I'm grateful I got to experience my own "Soy español." And I hope there
-      are more moments like that— whatever "Soy español" may come to mean for
-      each of us.
+    testo: >-
+      I'm grateful I got to experience my own "Soy español," made possible by
+      the stories I was lucky enough to witness along the way.
+
+
+      And I hope there are many more moments like that—whatever "Soy español" may come to mean for each of us.
 pubblicato: true
 ---
