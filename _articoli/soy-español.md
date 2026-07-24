@@ -157,6 +157,6 @@ contenuto:
       the stories I was lucky enough to witness along the way.
 
 
-      And I hope there are many more moments like that—whatever "Soy español" may come to mean for each of us.
+      And I hope there are many more moments like that waiting for you—whatever "Soy español" may come to mean in your own life
 pubblicato: true
 ---
