@@ -67,7 +67,7 @@
     .nav-logo-amira{font-size:16px;font-weight:800;letter-spacing:.22em;color:#fff;text-indent:.22em}
     .nav-logo-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);text-indent:.5em}
     .nav-links{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:28px;font-size:12px;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.55);text-transform:uppercase}
-    .nav-links a{cursor:pointer;transition:color .15s;text-decoration:none}.nav-links a:hover{color:#fff}.nav-t{color:rgba(255,255,255,.55)}
+    .nav-links a{cursor:pointer;transition:color .15s;text-decoration:none}.nav-links a:hover{color:#fff}.nav-t{color:rgba(255,255,255,.45)}.nav-t.active{color:#fff;border-bottom:1px solid #c9a96e;padding-bottom:2px}
 
     /* HERO */
     .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -271,6 +271,31 @@
     .sub-nav-vision{font-size:8px;font-style:italic;font-weight:300;letter-spacing:.4em;color:rgba(13,31,92,.45)}
     .sub-nav-back{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(13,31,92,.4);cursor:pointer;transition:color .2s}
     .sub-nav-back:hover{color:#0d1f5c}
+
+
+
+    /* GALLERY ARCHIVE PAGE */
+    .gallery-archive-hero{padding:72px 44px 56px;text-align:center;border-bottom:.5px solid rgba(255,255,255,.06)}
+    .gallery-archive-kicker{font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:12px}
+    .gallery-archive-kicker::before,.gallery-archive-kicker::after{content:'';display:block;width:22px;height:.5px;background:#c9a96e}
+    .gallery-archive-title{font-size:clamp(42px,6vw,76px);font-weight:800;letter-spacing:-.055em;line-height:.92;color:#fff;margin:0 0 22px}
+    .gallery-archive-subtitle{font-size:clamp(14px,1.5vw,18px);color:rgba(255,255,255,.43);line-height:1.75;max-width:720px;margin:0 auto}
+    .gallery-list-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:34px 44px 72px}
+    .gallery-list-item{position:relative;min-height:420px;aspect-ratio:4/3;background:#0b0d10;overflow:hidden;cursor:pointer;border-radius:2px}
+    .gallery-list-thumb{position:absolute;inset:0}
+    .gallery-list-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease,opacity .35s ease}
+    .gallery-list-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.28) 48%,rgba(0,0,0,.05) 72%);pointer-events:none}
+    .gallery-list-item:hover .gallery-list-thumb img{transform:scale(1.035);opacity:.9}
+    .gallery-list-info{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:26px 26px 24px;display:flex;flex-direction:column;gap:9px}
+    .gallery-list-tag{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+    .gallery-list-title{font-size:clamp(22px,2vw,31px);font-weight:700;letter-spacing:-.04em;line-height:1.03;color:#fff}
+    .gallery-list-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.72)}
+    .gallery-list-sub{display:none}
+    .gallery-list-meta{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.48)}
+    .gallery-list-cta{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#c9a96e;margin-top:3px;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+    .gallery-list-item:hover .gallery-list-cta{opacity:1;transform:none}
+    @media(max-width:980px){.gallery-list-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:28px 24px 60px}.gallery-list-item{min-height:360px}}
+    @media(max-width:640px){.gallery-archive-hero{padding:54px 20px 42px}.gallery-list-grid{grid-template-columns:1fr;padding:20px 16px 48px;gap:14px}.gallery-list-item{min-height:330px}.gallery-list-info{padding:22px}.gallery-list-cta{opacity:1;transform:none}}
 
 
     /* THE GALLERY */
@@ -1039,6 +1064,16 @@ function formatDate(d) {
 
 // ── PAGE SYSTEM ──
 function showPage(id, updateHistory = true) {
+  // Update active nav link
+  document.querySelectorAll('.nav-t').forEach(a => a.classList.remove('active'));
+  const navMap = {'home':'stories','magazine':'magazine','gallery':'gallery','filos':'filos','article':'stories','manifesto':'magazine'};
+  const activeKey = navMap[id] || id;
+  document.querySelectorAll('.nav-t').forEach(a => {
+    if(a.textContent.toLowerCase().includes(activeKey) || 
+       (activeKey==='stories' && a.textContent.toLowerCase().includes('stories'))) {
+      a.classList.add('active');
+    }
+  });
   // Reset OG to home when not on article
   if (id === 'home') {
     document.title = 'AMIRA vision — Magazine';
@@ -1166,14 +1201,68 @@ async function fetchGallery() {
       return data;
     }));
 
-    const active = galleries.find(g => g.attiva !== false);
-    if (active) renderGallery(active);
+    ALL_GALLERIES = galleries
+      .filter(g => g.attiva !== false)
+      .sort((a, b) => {
+        const da = new Date(a.data || a.date || 0).getTime();
+        const db = new Date(b.data || b.date || 0).getTime();
+        return db - da;
+      });
+
+    renderGalleryList();
+    if (ALL_GALLERIES[0]) renderGallery(ALL_GALLERIES[0]);
   } catch(e) {
     console.log('Gallery not yet configured');
   }
 }
 
+// Store all galleries for list view
+var ALL_GALLERIES = [];
+
+function renderGalleryList() {
+  var container = document.getElementById('gallery-list-container');
+  if (!container) return;
+  if (!ALL_GALLERIES.length) {
+    container.className = '';
+    container.innerHTML = '<div style="padding:72px 44px;text-align:center;color:rgba(255,255,255,.28);font-size:13px">Nessuna galleria disponibile.</div>';
+    return;
+  }
+  container.className = 'gallery-list-grid';
+  container.innerHTML = ALL_GALLERIES.map(function(g, i) {
+    var thumbSrc = g.copertina || ((g.foto || [])[0] || {}).immagine || '';
+    var thumbHtml = thumbSrc ? '<img src="' + thumbSrc + '" alt="" loading="lazy">' : '';
+    var count = (g.foto || []).length + (g.copertina ? 1 : 0);
+    return '<article class="gallery-list-item" onclick="openGallerySingle(' + i + ')">' +
+        '<div class="gallery-list-thumb">' + thumbHtml + '</div>' +
+        '<div class="gallery-list-info">' +
+          '<div class="gallery-list-tag">' + (g.mese || g.data || '') + (g.luogo ? ' · ' + g.luogo : '') + '</div>' +
+          '<div class="gallery-list-title">' + (g.titolo || 'Senza titolo') + (g.titolo_em ? ' <em>' + g.titolo_em + '</em>' : '') + '</div>' +
+          '<div class="gallery-list-sub">' + (g.descrizione || '') + '</div>' +
+          '<div class="gallery-list-meta">' + count + ' foto' + (g.fotografo ? ' · ' + g.fotografo : '') + '</div>' +
+          '<div class="gallery-list-cta">Apri la galleria →</div>' +
+        '</div>' +
+    '</article>';
+  }).join('');
+}
+
+function openGallerySingle(idx) {
+  var g = ALL_GALLERIES[idx];
+  if (!g) return;
+  document.getElementById('gallery-list-container').style.display = 'none';
+  document.getElementById('gallery-single-view').style.display = 'block';
+  renderGalleryPage(g);
+}
+
+function showGalleryList() {
+  document.getElementById('gallery-list-container').style.display = 'block';
+  document.getElementById('gallery-single-view').style.display = 'none';
+}
+
 function renderGallery(g) {
+  if (!ALL_GALLERIES.find(function(x){ return x.id === g.id; })) {
+    ALL_GALLERIES.unshift(g);
+    renderGalleryList();
+  }
   // Update home gallery section
   var tag = document.querySelector('.gallery-intro-tag');
   if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · ' + (g.mese || '');
@@ -1206,7 +1295,15 @@ function renderGallery(g) {
 function renderGalleryPage(g) {
   const page = document.getElementById('page-gallery');
   if (!page) return;
+  const tag = page.querySelector('.gallery-page-tag');
+  const title = page.querySelector('.gallery-page-title');
+  const sub = page.querySelector('.gallery-page-sub');
+  const meta = page.querySelector('.gallery-page-meta');
+  if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>' + (g.mese || g.data || '') + (g.luogo ? ' · ' + g.luogo : '');
+  if (title) title.innerHTML = (g.titolo || 'The Gallery') + (g.titolo_em ? ' <em style="font-weight:300;color:rgba(255,255,255,.58)">' + g.titolo_em + '</em>' : '');
+  if (sub) sub.textContent = g.descrizione || '';
   const allPhotos = [g.copertina, ...(g.foto || []).map(f => f.immagine)].filter(Boolean);
+  if (meta) meta.textContent = allPhotos.length + ' foto' + (g.fotografo ? ' · ' + g.fotografo : '');
   const grid = allPhotos.map((src, i) => {
     const cap = (g.foto || [])[i - 1]?.didascalia || '';
     return '<div style="background:#080c14;position:relative;aspect-ratio:4/3;overflow:hidden;cursor:pointer" onclick="openLightbox(\'' + src + '\',' + i + ',[' + allPhotos.map(s => '\'' + s + '\'').join(',') + '])">' +
@@ -1685,16 +1782,29 @@ window.openArticle = async function(index) {
 <!-- ══ GALLERY PAGE ══ -->
 <div class="page" id="page-gallery">
   <div style="background:#030508;min-height:100vh;padding-top:56px">
-    <div class="gallery-page-hero" style="padding:48px 44px 32px;border-bottom:.5px solid rgba(255,255,255,.06)">
-      <div class="gallery-page-tag" style="font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:0"><span style="display:block;width:20px;height:.5px;background:#c9a96e;margin-right:12px;flex-shrink:0"></span>The Gallery</div>
-      <h1 class="gallery-page-title" style="font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.92;color:#fff;margin-bottom:12px">The Gallery</h1>
-      <p class="gallery-page-sub" style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;margin-bottom:8px"></p>
-      <p class="gallery-page-meta" style="font-size:12px;color:rgba(255,255,255,.25);margin-bottom:20px"></p>
-      <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);cursor:pointer" onclick="showPage('home')">← Back to stories</span>
+
+    <!-- HERO -->
+    <header class="gallery-archive-hero">
+      <div class="gallery-archive-kicker">The Gallery</div>
+      <h1 class="gallery-archive-title">The Gallery</h1>
+      <p class="gallery-archive-subtitle">Una galleria digitale dedicata al reportage, aggiornata su eventi rilevanti che hanno colpito l’attenzione di Amira.</p>
+    </header>
+
+    <!-- GALLERY LIST -->
+    <div id="gallery-list-container"></div>
+
+    <!-- SINGLE GALLERY VIEW (hidden by default) -->
+    <div id="gallery-single-view" style="display:none">
+      <div class="gallery-page-hero" style="padding:48px 44px 32px;border-bottom:.5px solid rgba(255,255,255,.06)">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);cursor:pointer;margin-bottom:24px;display:inline-block" onclick="showGalleryList()">← All galleries</span>
+        <div class="gallery-page-tag" style="font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px;display:flex;align-items:center;gap:12px"><span style="display:block;width:20px;height:.5px;background:#c9a96e"></span></div>
+        <h1 class="gallery-page-title" style="font-size:clamp(28px,4vw,52px);font-weight:700;letter-spacing:-.04em;line-height:.95;color:#fff;margin-bottom:10px">The Gallery</h1>
+        <p class="gallery-page-sub" style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:560px;margin-bottom:6px"></p>
+        <p class="gallery-page-meta" style="font-size:12px;color:rgba(255,255,255,.25)"></p>
+      </div>
+      <div class="gallery-grid-content" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px"></div>
     </div>
-    <div class="gallery-grid-content" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
-      <div style="background:#080c14;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.06)">Loading...</div>
-    </div>
+
   </div>
 </div>
 
