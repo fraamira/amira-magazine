@@ -73,7 +73,7 @@ contenuto:
     immagine: /immagini/p1670666.jpg
     didascalia: David
   - type: audio
-    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784766375/David_20_ruben_19_w2klrv.m4a
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1785267053/0728_npb1qw.mp3
     trascrizione: Being a nation, being a family. Being united is what I like most
       about the Spanish people.
   - type: paragrafo
