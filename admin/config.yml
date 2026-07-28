@@ -77,6 +77,15 @@ collections:
             widget: "object"
             fields:
               - { label: "URL video", name: "url", widget: "string" }
+      - label: "Foto extra (struttura semplice, di prova)"
+        name: "foto_extra_test"
+        widget: "list"
+        label_singular: "Foto"
+        required: false
+        hint: "Campo di test: lista semplice, non blocchi misti"
+        fields:
+          - { label: "Immagine", name: "immagine", widget: "image" }
+          - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
       - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true }
 
   - name: "gallery"
