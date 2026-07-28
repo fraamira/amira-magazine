@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA vision — Magazine</title>
   <meta name="description" content="A magazine about people, places and talents. The power of sharing and storytelling as forms of inspiration." />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="AMIRA vision — Magazine" />
-  <meta property="og:description" content="Un magazine su persone, places and talents." />
+  <meta property="og:type" content="website" id="og-type" />
+  <meta property="og:title" content="AMIRA vision — Magazine" id="og-title" />
+  <meta property="og:description" content="Un magazine su persone, places and talents." id="og-desc" />
   <meta property="og:image" id="og-image" content="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=1200&q=80" />
-  <meta property="og:url" content="https://amiramagazine.netlify.app" />
+  <meta property="og:url" content="https://amiravisionmagazine.com" id="og-url" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AMIRA vision — Magazine" />
   <meta name="twitter:image" id="tw-image" content="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=1200&q=80" />
@@ -885,12 +885,12 @@ function openArticle(index, updateHistory = true) {
   currentIndex = index;
   const art = ARTICOLI[index];
   if (updateHistory && art.id) {
-    history.pushState({ page: 'article', id: art.id }, '', '#/articolo/' + art.id);
+    history.pushState({ page: 'article', id: art.id }, '', '/articolo/' + art.id);
     // Update all OG/Twitter meta for article sharing
     var artTitle = (art.titolo || '') + (art.titolo_em ? ' ' + art.titolo_em : '') + ' — AMIRA vision';
     var artDesc = art.estratto || art.intro || 'A story on AMIRA vision Magazine.';
-    var artImg = art.copertina || 'https://amiramagazine.vercel.app/immagini/amira-cover.jpg';
-    var artUrl = 'https://amiramagazine.vercel.app/#/articolo/' + art.id;
+    var artImg = art.copertina || 'https://amiravisionmagazine.com/immagini/amira-cover.jpg';
+    var artUrl = 'https://amiravisionmagazine.com/articolo/' + art.id;
     document.title = artTitle;
     var setMeta = function(id, val) { var el = document.getElementById(id); if(el) el.setAttribute('content', val); };
     setMeta('og-title', artTitle);
@@ -1165,6 +1165,18 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.
 
 // ── ROUTER ──
 function handleRoute() {
+  const path = window.location.pathname;
+  const pathMatch = path.match(/^\/articolo\/([^/]+)\/?$/);
+  if (pathMatch) {
+    const id = decodeURIComponent(pathMatch[1]);
+    const idx = ARTICOLI.findIndex(a => a.id === id);
+    if (idx > -1) {
+      openArticle(idx, false);
+    } else {
+      pendingRoute = id;
+    }
+    return;
+  }
   const hash = window.location.hash;
   if (!hash || hash === '#/') {
     showPage('home', false);
