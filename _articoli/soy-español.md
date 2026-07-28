@@ -161,5 +161,7 @@ contenuto:
     immagine: /immagini/1630708.jpg
   - type: foto
     immagine: /immagini/1630708.jpg
+  - type: foto
+    immagine: /immagini/img_1796.jpeg
 pubblicato: true
 ---
