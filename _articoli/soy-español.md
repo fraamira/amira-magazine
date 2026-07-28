@@ -157,5 +157,7 @@ contenuto:
 
 
       And I hope there are many more moments like that waiting for you—whatever "Soy español" may come to mean in your own life
+  - type: foto
+    immagine: /immagini/1630708.jpg
 pubblicato: true
 ---
