@@ -96,7 +96,6 @@ contenuto:
       Above all, because Spain—and Madrid in particular—is my adopted home. I've been living here for nine years, and even though I wasn't born Spanish, you could say I'm Madrilenian by adoption. Over the years, I've made countless friends and experienced unforgettable moments. Seeing Spain succeed means seeing my friends, my people, and my city succeed and celebrate.
   - type: paragrafo
     testo: >-
-      
       Then, two stories unexpectedly crossed paths.
 
 
@@ -107,8 +106,8 @@ contenuto:
 
 
       And then there’s Fabian, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
-
-
+  - type: paragrafo
+    testo: >-
       John then asked him, “So, what are your plans for tonight’s match?”
 
 
