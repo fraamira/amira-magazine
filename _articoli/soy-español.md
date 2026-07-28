@@ -50,7 +50,7 @@ contenuto:
       So would Isabel. Isabel is 76 years old, born and raised in Madrid. She was there with her sister and her grandchildren. She's also been a photographer—for nearly thirty years.
   - type: foto
     immagine: /immagini/p1670935.jpg
-    didascalia: Isabel is 76 years old, born and raised in Madrid
+    didascalia: Isabel, waiting for the Spain team bus
   - type: paragrafo
     testo: 'After telling me about her passion, and proudly saying, "I get less
       tired than the younger generations!", I asked her one simple question:'
