@@ -519,7 +519,7 @@
     <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
     <a href="#/magazine" onclick="event.preventDefault();showPage('magazine')" class="nav-t">The magazine</a>
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
-    <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a>
+    <!-- FILOS temporarily hidden from nav: <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a> -->
   </div>
   <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -531,7 +531,7 @@
   <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
   <a onclick="closeMobileMenu();showPage('magazine')">The Magazine</a>
   <a onclick="closeMobileMenu();showPage('gallery')">The Gallery</a>
-  <a onclick="closeMobileMenu();showPage('filos')">FILOS</a>
+  <!-- FILOS temporarily hidden from mobile menu: <a onclick="closeMobileMenu();showPage('filos')">FILOS</a> -->
 </div>
 
 <!-- HOME -->
@@ -583,7 +583,7 @@
     </div>
   </section>
 
-  <!-- FILOS STRIP -->
+  <!-- FILOS STRIP temporarily hidden from homepage
   <div class="filos-strip" onclick="showPage('filos')" style="cursor:pointer">
     <div class="filos-strip-left">
       <div class="filos-strip-tag">Fixed column · AMIRA vision</div>
@@ -598,6 +598,7 @@
       <div class="filos-strip-arrow">→</div>
     </div>
   </div>
+  -->
 
   <section class="letter letter-new">
     <div class="letter-body letter-body-new">
@@ -1143,7 +1144,8 @@ function handleRoute() {
     return;
   }
   if (hash === '#/magazine') { showPage('magazine', false); return; }
-  if (hash === '#/filos') { showPage('filos', false); return; }
+  // FILOS temporarily hidden: direct links now fall back to home
+  if (hash === '#/filos') { showPage('home', false); return; }
   if (hash === '#/gallery') { showPage('gallery', false); return; }
   if (hash === '#/manifesto') { showPage('manifesto', false); return; }
   showPage('home', false);
@@ -1703,7 +1705,7 @@ window.openArticle = async function(index) {
     <div class="manifesto-back" onclick="showPage('home')" style="margin-bottom:32px">← Back to stories</div>
     <h1 class="manifesto-title">How it began<br><em>the project.</em></h1>
 
-    <p class="manifesto-p">Fino a Dicembre 2020 non avevo mai letto un libro. Mi spiego: ne avevo letti tanti…da studiare, da memorizzare, da ripetere…<br>…ma non avevo mai letto un libro <em>per piacere</em>.</p>
+    <p class="manifesto-p">Until December 2020 I had never read a book. Let me explain: I'd read plenty — to study, to memorise, to repeat…<br>…but I had never read a book <em>for pleasure</em>.</p>
 
     <p class="manifesto-p">The first book I read for the pleasure of reading is called <em>"The Usefulness of the Useless"</em>. That's how I discovered I enjoy reading. And the places I now love to explore are bookshops.</p>
 
@@ -1711,9 +1713,9 @@ window.openArticle = async function(index) {
 
     <div class="manifesto-quote"><em>a story that inspires me.</em></div>
 
-    <p class="manifesto-p">E un altro mondo dove continuamente scopro nuove storie è…<br>…il mondo.</p>
+    <p class="manifesto-p">And another world where I keep discovering new stories is…<br>…the world.</p>
 
-    <p class="manifesto-p">Nel mondo, un po' per caso, un po' per destino, mi sta capitando di trovare delle belle storie. Queste storie si trovano in dei contenitori unici, che hanno infinite storie e storie nelle storie:<br><strong>le persone.</strong></p>
+    <p class="manifesto-p">In the world, partly by chance, partly by fate, I keep coming across beautiful stories. These stories live inside unique containers, which hold endless stories and stories within stories:<br><strong>people.</strong></p>
 
     <p class="manifesto-p">And I thought, <em>"If they help me, they can help others too. Don't let these stories die."</em> OK.</p>
 
@@ -1727,13 +1729,13 @@ window.openArticle = async function(index) {
 
     <div class="manifesto-break"></div>
 
-    <p class="manifesto-p">Ci saranno paragrafi brevi, e altri saranno più lunghi…con delle sospensioni…e momenti più veloci: sono i miei pensieri che si trasformano in parole, e non saranno mai perfetti.<br><em>(Com'è giusto che sia)</em></p>
+    <p class="manifesto-p">There will be short paragraphs, and others will be longer…with pauses…and faster moments: they are my thoughts turning into words, and they will never be perfect.<br><em>(As it should be)</em></p>
 
     <p class="manifesto-p">And then there will be the thoughts, emotions, and stories within stories of those who share a part of themselves.</p>
 
     <div class="manifesto-break"></div>
 
-    <p class="manifesto-p">Quando trovo la storia giusta, mi sento capito…<br>non so spiegarlo…<br>mi sento che sto andando nella direzione giusta (che poi qual è chissà…)<br>Spesso mi blocco e non trovo le risposte…<br>…ma se è vero che già abbiamo tutte le risposte dentro di noi, è altrettanto vero che a volte è necessaria una luce diversa e magari un altro sguardo per vederle.</p>
+    <p class="manifesto-p">When I find the right story, I feel understood…<br>I can't quite explain it…<br>I feel like I'm heading in the right direction (though who really knows what that is…)<br>Often I get stuck and can't find the answers…<br>…but if it's true that we already carry all the answers inside us, it's equally true that sometimes we need a different light, and maybe another gaze, to see them.</p>
 
     <div class="manifesto-quote"><strong>AMIRA VISION</strong> is an editorial project built on two principles: <em>the power of sharing</em> and <em>the power of storytelling</em> as forms of inspiration.</div>
 
