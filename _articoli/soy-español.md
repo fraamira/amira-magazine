@@ -112,14 +112,30 @@ contenuto:
   - type: foto
     immagine: /immagini/p1650602.jpeg
   - type: paragrafo
-    testo: |-
+    testo: >-
       John then asked him, “So, what are your plans for tonight’s match?”
+
 
       “None,” Fabian replied.
 
+
       Without missing a beat, John said, “Then come watch it with me.”
+
+
+      That gesture was about to change Fabian's plans and leave him with a memory that would last a lifetime.
   - type: audio
     url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1785272858/fabian_btns91.mp3
+    trascrizione: >-
+      Well, I'm Colombian, but I felt very welcomed by Spanish culture. For me,
+      it's very moving to see how a country comes together, and how the world
+      comes together to support a country. You can see how this country feels
+      proud—not because of football, but because they are Spanish.
+
+
+      I don't like football. I'm not really a fan, but I feel that it's about something bigger than football. It's the feeling of belonging to something, the feeling that makes you support a team, support someone, and see people in a way that makes you feel like you're part of something.
+
+
+      I felt very comfortable, very much at home, and that gave me a sense of belonging.
   - type: paragrafo
     testo: >-
       And just like that, the three of us found ourselves watching the World Cup
