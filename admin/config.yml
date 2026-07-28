@@ -50,16 +50,16 @@ collections:
             name: "foto"
             widget: "object"
             fields:
-              - { label: "Immagine", name: "immagine", widget: "image" }
+              - { label: "Immagine", name: "immagine", widget: "file" }
               - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
           - label: "Gallery (2-4 foto)"
             name: "gallery"
             widget: "object"
             fields:
-              - { label: "Foto 1", name: "foto1", widget: "image" }
-              - { label: "Foto 2", name: "foto2", widget: "image", required: false }
-              - { label: "Foto 3", name: "foto3", widget: "image", required: false }
-              - { label: "Foto 4", name: "foto4", widget: "image", required: false }
+              - { label: "Foto 1", name: "foto1", widget: "file" }
+              - { label: "Foto 2", name: "foto2", widget: "file", required: false }
+              - { label: "Foto 3", name: "foto3", widget: "file", required: false }
+              - { label: "Foto 4", name: "foto4", widget: "file", required: false }
           - label: "Citazione in evidenza"
             name: "citazione"
             widget: "object"
