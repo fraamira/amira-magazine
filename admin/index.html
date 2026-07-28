@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA — Admin</title>
+  <!-- Explicit absolute path to config.yml: avoids relative-path resolution bugs
+       when /admin is loaded without a trailing slash -->
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
