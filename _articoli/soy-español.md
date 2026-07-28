@@ -20,6 +20,9 @@ intro: >-
 
   That moment made me think about something: the feeling of belonging.
 contenuto:
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1785274482/0728_2_gqpeq6.mp3
+    trascrizione: '"I am Spanish!"'
   - type: paragrafo
     testo: >-
       There are places, people, and moments that make you feel like you belong
@@ -27,9 +30,8 @@ contenuto:
 
 
       I wasn't born Spanish, yet I wore Spain's jersey because I wanted to feel part of those colors. I did it because something inside me made me want to. There was an energy in the air that drew me in. To the most patriotic, I'll probably never be Spanish. But for a little while, I truly felt like I was.
-  - type: gallery
-    foto1: /immagini/1630717.jpg
-    foto2: /immagini/1630708.jpg
+  - type: foto
+    immagine: /immagini/1630717.jpg
   - type: paragrafo
     testo: But this story isn't mine alone. It's also told through the voices of the
       people I met during these celebrations.
