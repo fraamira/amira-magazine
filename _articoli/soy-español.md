@@ -110,7 +110,7 @@ contenuto:
       In Los Angeles he went to the Austria vs. Spain game, and whenever he can take a break from work in the United States, he flies to Europe to recharge with Spanish energy (and jamón).
 
 
-      And then there’s Fabian, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
+      And then there’s Fabian, 28, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
   - type: foto
     immagine: /immagini/p1650602.jpeg
   - type: paragrafo
