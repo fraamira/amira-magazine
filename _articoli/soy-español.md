@@ -112,17 +112,18 @@ contenuto:
   - type: foto
     immagine: /immagini/p1650602.jpeg
   - type: paragrafo
-    testo: >-
+    testo: |-
       John then asked him, “So, what are your plans for tonight’s match?”
-
 
       “None,” Fabian replied.
 
-
       Without missing a beat, John said, “Then come watch it with me.”
-
-
-      And just like that, the three of us found ourselves watching the World Cup final together.
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1785272858/fabian_btns91.mp3
+  - type: paragrafo
+    testo: >-
+      And just like that, the three of us found ourselves watching the World Cup
+      final together.
 
 
       The best part of the story?
@@ -134,7 +135,7 @@ contenuto:
       An encounter that somehow felt meant to happen. One of those moments that brings you back home—or reminds you that home can sometimes be found in the most unexpected places.
 
 
-      Sometimes, all it takes is a simple question to turn a chance encounter into a memory you’ll carry with you forever.
+      Sometimes, all it takes is a simple question to turn a chance encounter into a memory you’ll carry with you forever. 
   - type: paragrafo
     testo: >-
       Sometimes we forget that a sense of belonging exists.
