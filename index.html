@@ -228,8 +228,8 @@
     .art-body{max-width:680px;margin:0 auto;padding:72px 32px 80px}.art-body ul,.art-body ol{list-style:none;padding:0;margin:0}.art-body li{list-style:none}
     .art-intro{font-size:23px;font-weight:400;color:rgba(255,255,255,.92);line-height:1.7;margin-bottom:52px;border-left:2px solid var(--gold);padding-left:28px}
     .art-text{font-size:20px;font-weight:400;color:rgba(255,255,255,.78);line-height:1.85;margin-bottom:32px}
-    .art-img-full{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:4px;margin:40px 0}
-    .art-img-full img{width:100%;height:100%;object-fit:cover}
+    .art-img-full{width:100%;overflow:hidden;border-radius:4px;margin:40px 0}
+    .art-img-full img{width:100%;height:auto;display:block;object-fit:contain}
     .art-img-caption{font-size:12px;color:rgba(255,255,255,.3);margin-top:-30px;margin-bottom:40px;text-align:center;letter-spacing:.05em}
     .art-pullquote{font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#fff;border-top:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid rgba(255,255,255,.15);padding:36px 0;margin:44px 0;text-align:center}
     .art-pullquote em{color:var(--gold);font-style:italic;font-weight:300}
@@ -956,7 +956,27 @@ function openArticle(index, updateHistory = true) {
   document.getElementById('art-intro').textContent = (art.intro || '').replace(/^>-?\s*/gm, '').trim();
 
   const contenuto = art.contenuto || [];
-  const html = contenuto.map(block => {
+
+  // ── EXTRA PHOTOS (top-level fields workaround) ──
+  // Decap CMS has a reproducible bug where image fields nested inside a list
+  // widget fail to save ("Failed to fetch"). Top-level image fields work fine.
+  // So extra in-body photos are stored as top-level fields (extra_foto_1..4)
+  // instead of inside the "contenuto" list, and interleaved here at render
+  // time based on an optional "after this paragraph number" position field.
+  const extraFotos = [];
+  for (let i = 1; i <= 4; i++) {
+    const img = art['extra_foto_' + i];
+    if (img) {
+      const posRaw = parseInt(art['extra_foto_' + i + '_posizione'], 10);
+      extraFotos.push({
+        immagine: img,
+        didascalia: art['extra_foto_' + i + '_didascalia'] || '',
+        posizione: isNaN(posRaw) ? null : posRaw
+      });
+    }
+  }
+
+  function renderBlock(block) {
     if (block.tipo === 'paragrafo') {
       const cleanTesto = (block.testo || '')
         .replace(/^>-?\s*/gm, '')   // remove >- or > at line start
@@ -1024,7 +1044,25 @@ function openArticle(index, updateHistory = true) {
       return h + transcript;
     }
     return '';
-  }).join('');
+  }
+
+  let paragraphCount = 0;
+  const htmlParts = [];
+  contenuto.forEach(block => {
+    if (block.tipo === 'paragrafo') paragraphCount++;
+    htmlParts.push(renderBlock(block));
+    if (block.tipo === 'paragrafo') {
+      extraFotos
+        .filter(f => f.posizione === paragraphCount)
+        .forEach(f => htmlParts.push(renderBlock({ tipo: 'foto', immagine: f.immagine, didascalia: f.didascalia })));
+    }
+  });
+  // Any extra photo with no position (or a position beyond the last paragraph) goes at the end
+  extraFotos
+    .filter(f => !f.posizione || f.posizione > paragraphCount)
+    .forEach(f => htmlParts.push(renderBlock({ tipo: 'foto', immagine: f.immagine, didascalia: f.didascalia })));
+
+  const html = htmlParts.join('');
   
   // Add share buttons at the end
   const shareHtml = `<div class="art-share">
