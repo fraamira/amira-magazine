@@ -9,7 +9,7 @@ fotografo: Francesco Amirante
 minuti: 5
 copertina: /immagini/1630708.jpg
 estratto: Exploring the meaning of belonging through the voices and images of
-  those who have embraced a Spanish identity.
+  those who have embraced a Spanish identity
 intro: >-
   On the bus taking me from a bar near the Bernabéu to Colón after France vs.
   Spain, I heard a chant.
