@@ -105,10 +105,9 @@ contenuto:
       Then, two stories unexpectedly crossed paths.
 
 
-      John is twenty-seven years old. He lives in Los Angeles but has fallen in love with Spain—its people, its culture, and its language. Whenever he can take a break from work in the United States, he flies to Europe.
+      John is twenty-seven years old. He lives in Los Angeles but has fallen in love with Spain—its people, its culture, and its language. 
 
-
-      Three days before the World Cup final, he booked a last-minute flight to experience the occasion in Spain. He had actually bought a ticket to Buenos Aires first—but in the end, he chose Madrid instead.
+      In Los Angeles he went to the Austria vs. Spain game, and whenever he can take a break from work in the United States, he flies to Europe to recharge with Spanish energy (and jamón).
 
 
       And then there’s Fabian, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
