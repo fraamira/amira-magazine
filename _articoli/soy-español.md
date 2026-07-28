@@ -7,7 +7,7 @@ luogo: Spain Triumph at the 2026 FIFA World Cup
 autore: Francesco Amirante
 fotografo: Francesco Amirante
 minuti: 5
-copertina: /immagini/1630708.jpg
+copertina: /immagini/post-per-rivista-2-.jpg
 estratto: Exploring the meaning of belonging through the voices and images of
   those who have embraced a Spanish identity.
 intro: >-
@@ -27,8 +27,9 @@ contenuto:
 
 
       I wasn't born Spanish, yet I wore Spain's jersey because I wanted to feel part of those colors. I did it because something inside me made me want to. There was an energy in the air that drew me in. To the most patriotic, I'll probably never be Spanish. But for a little while, I truly felt like I was.
-  - type: foto
-    immagine: /immagini/1630717.jpg
+  - type: gallery
+    foto1: /immagini/1630717.jpg
+    foto2: /immagini/1630708.jpg
   - type: paragrafo
     testo: But this story isn't mine alone. It's also told through the voices of the
       people I met during these celebrations.
