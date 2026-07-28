@@ -1,8 +1,8 @@
 ---
 titolo: Soy español
-titolo_em: The sense of belonging exists. What does it mean to feel Spanish??
+titolo_em: A sense of belonging where you least expect it
 rubrica: magazine
-date: 2026-07-21
+date: 2026-07-28
 luogo: Spain Triumph at the 2026 FIFA World Cup
 autore: Francesco Amirante
 fotografo: Francesco Amirante
