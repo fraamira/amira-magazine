@@ -84,6 +84,9 @@ contenuto:
 
 
       Originally from Peru, he says Madrid—and Spain—have "adopted" him.
+  - type: foto
+    immagine: /immagini/img_1352.jpeg
+    didascalia: Bruno from Perú defines himself “adopted” by Madrid
   - type: audio
     url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1784767032/bruno_lizzetti_mondiali_mrprpp.mp3
     trascrizione: >-
@@ -159,7 +162,5 @@ contenuto:
 
 
       And I hope there are many more moments like that waiting for you—whatever "Soy español" may come to mean in your own life
-  - type: foto
-    immagine: /immagini/1630708.jpg
 pubblicato: true
 ---
