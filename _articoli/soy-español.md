@@ -106,6 +106,8 @@ contenuto:
 
 
       And then there’s Fabian, a Colombian living in Madrid who had never experienced a World Cup firsthand. He met John by pure chance, and from the very first minutes of their conversation, one of those rare connections began to form—the kind that turns strangers into friends. They started talking about the cultural differences between their countries.
+  - type: foto
+    immagine: /immagini/p1650602.jpeg
   - type: paragrafo
     testo: >-
       John then asked him, “So, what are your plans for tonight’s match?”
@@ -159,9 +161,5 @@ contenuto:
       And I hope there are many more moments like that waiting for you—whatever "Soy español" may come to mean in your own life
   - type: foto
     immagine: /immagini/1630708.jpg
-  - type: foto
-    immagine: /immagini/1630708.jpg
-  - type: foto
-    immagine: /immagini/img_1796.jpeg
 pubblicato: true
 ---
