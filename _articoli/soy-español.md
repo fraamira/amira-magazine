@@ -7,7 +7,7 @@ luogo: Spain Triumph at the 2026 FIFA World Cup
 autore: Francesco Amirante
 fotografo: Francesco Amirante
 minuti: 5
-copertina: /immagini/post-per-rivista-2-.jpg
+copertina: /immagini/1630708.jpg
 estratto: Exploring the meaning of belonging through the voices and images of
   those who have embraced a Spanish identity.
 intro: >-
