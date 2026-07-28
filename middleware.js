@@ -1,11 +1,20 @@
-// Vercel Edge Middleware
+// Vercel Routing Middleware
 // Runs only for requests matching /articolo/:slug (see `config.matcher` below).
-// Regular visitors (real browsers) are passed straight through to the normal
-// single-page app, unchanged. Only known social-preview bots (WhatsApp,
-// Facebook, Telegram, Twitter/X, LinkedIn, Slack, Discord...) get back a tiny
-// static HTML page with the correct per-article title/description/image in
-// its <meta property="og:..."> tags, because those bots never execute
-// JavaScript and can't see content injected client-side.
+//
+// IMPORTANT: on a plain static project (no framework like Next.js), returning
+// `undefined` from middleware does NOT reliably fall through to the normal
+// static/rewrite handling — it can produce a 404. So every branch below
+// returns an explicit Response:
+//   - Known social-preview bots (WhatsApp, Facebook, Telegram, Twitter/X,
+//     LinkedIn, Slack, Discord...) get a tiny static HTML page with the
+//     correct per-article title/description/image in its
+//     <meta property="og:..."> tags, fetched directly from the article's
+//     markdown file on GitHub (bots never run JavaScript, so they can't see
+//     content injected client-side).
+//   - Everyone else gets the real single-page app (index.html) served
+//     directly, exactly as if this middleware didn't exist. The app's own
+//     client-side router then reads location.pathname and opens the right
+//     article.
 
 export const config = {
   matcher: '/articolo/:slug*',
@@ -14,7 +23,7 @@ export const config = {
 const BOT_UA = /facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|redditbot|Googlebot|Applebot|SkypeUriPreview|vkShare|W3C_Validator/i;
 
 const REPO_RAW_BASE = 'https://raw.githubusercontent.com/fraamira/amira-magazine/main/_articoli/';
-const SITE_ORIGIN = 'https://amiravisionmagazine.com';
+const SITE_ORIGIN = 'https://www.amiravisionmagazine.com';
 const DEFAULT_IMAGE = SITE_ORIGIN + '/immagini/amira-cover.jpg';
 
 function escapeHtml(str) {
@@ -31,22 +40,29 @@ function readField(frontmatter, name) {
   return m[1].trim().replace(/^["']|["']$/g, '');
 }
 
+async function serveApp(request) {
+  // Serve the real SPA for this request, regardless of the /articolo/:slug
+  // path — same as a normal visit to "/". The client-side router in
+  // index.html reads location.pathname to open the correct article.
+  const appUrl = new URL('/index.html', request.url);
+  return fetch(appUrl, { headers: { 'user-agent': request.headers.get('user-agent') || '' } });
+}
+
 export default async function middleware(request) {
   const ua = request.headers.get('user-agent') || '';
-  if (!BOT_UA.test(ua)) {
-    // Not a known preview bot: let the normal SPA handle this request.
-    return;
-  }
-
   const url = new URL(request.url);
   const match = url.pathname.match(/^\/articolo\/([^/]+)\/?$/);
-  if (!match) return;
+
+  if (!match || !BOT_UA.test(ua)) {
+    // Real visitor (or an unmatched path, just in case): serve the app.
+    return serveApp(request);
+  }
 
   const slug = decodeURIComponent(match[1]);
 
   try {
     const res = await fetch(REPO_RAW_BASE + encodeURIComponent(slug) + '.md');
-    if (!res.ok) return; // fall back to default SPA/meta if article not found
+    if (!res.ok) return serveApp(request);
 
     const text = await res.text();
     const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
@@ -87,8 +103,6 @@ export default async function middleware(request) {
       headers: { 'content-type': 'text/html; charset=utf-8' },
     });
   } catch (e) {
-    // Any failure (network, parsing...): don't break the site, just fall
-    // through to the normal SPA response.
-    return;
+    return serveApp(request);
   }
 }
