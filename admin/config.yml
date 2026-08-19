@@ -40,6 +40,19 @@ collections:
           - { label: "FILOS — Human to Human", value: "filos" }
       - { label: "Data", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
       - { label: "Luogo o tema", name: "luogo", widget: "string" }
+      - label: "Categoria"
+        name: "categoria"
+        widget: "select"
+        default: "People"
+        hint: "Mostrata sopra il titolo nelle card in home, come 'People', 'Places' ecc."
+        options:
+          - "People"
+          - "Places"
+          - "Food"
+          - "Arts & culture"
+          - "Style"
+          - "Society"
+          - "Travel"
       - { label: "Articolo di (nome e cognome)", name: "autore", widget: "string", default: "Francesco Amirante" }
       - { label: "Foto di (nome e cognome fotografo)", name: "fotografo", widget: "string", required: false, hint: "Lascia vuoto se non applicabile" }
       - { label: "Minuti di lettura", name: "minuti", widget: "number", value_type: "int", default: 5 }
@@ -112,30 +125,6 @@ collections:
           - { label: "Immagine", name: "immagine", widget: "image" }
           - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
       - { label: "Attiva sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questa galleria sulla home" }
-
-  - name: "video"
-    label: "The Screening Room"
-    label_singular: "Video"
-    folder: "_video"
-    create: true
-    slug: "{{slug}}"
-    identifier_field: "titolo"
-    fields:
-      - { label: "Titolo video", name: "titolo", widget: "string", hint: "Es: Madrid, behind the lens" }
-      - label: "Categoria"
-        name: "categoria"
-        widget: "select"
-        default: "Short film"
-        options:
-          - "Short film"
-          - "Mini-doc"
-          - "Behind the scenes"
-          - "Ad"
-      - { label: "Link al video", name: "video_url", widget: "string", hint: "Incolla il link YouTube, Vimeo o simili — si aprirà in una nuova scheda" }
-      - { label: "Copertina", name: "copertina", widget: "image", hint: "Immagine verticale (formato 3:4) usata come copertina della card" }
-      - { label: "Durata", name: "durata", widget: "string", required: false, hint: "Es: 3:12" }
-      - { label: "Data", name: "data", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, required: false, hint: "Usata per ordinare i video dal più recente" }
-      - { label: "Attivo sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questo video nella sezione Screening Room" }
 
   - name: "newsletter"
     label: "Newsletter — Iscritti"
