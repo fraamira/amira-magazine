@@ -130,13 +130,29 @@
     .featured-card-title{font-size:13px;color:#fff;margin:0;line-height:1.4}
     @media(max-width:768px){.featured-grid{grid-template-columns:1fr 1fr;gap:10px}.featured-section{padding:36px 20px}}
     @media(max-width:480px){.featured-grid{grid-template-columns:1fr}}
+
+    /* STUDIO + MAGAZINE, ONE IDENTITY */
+    .studio-statement{background:#0a1010;border-top:.5px solid rgba(255,255,255,.06);border-bottom:.5px solid rgba(255,255,255,.06);padding:0;display:grid;grid-template-columns:1fr 1.1fr;cursor:pointer}
+    .studio-statement-media{position:relative;aspect-ratio:4/3;background:#0a0f1a;overflow:hidden}
+    .studio-statement-media img{width:100%;height:100%;object-fit:cover}
+    .studio-statement-body{padding:56px 48px;display:flex;flex-direction:column;justify-content:center}
+    .studio-statement-tag{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#c9a96e;margin-bottom:14px}
+    .studio-statement-title{font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.1;color:#fff;margin:0 0 16px}
+    .studio-statement-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.75)}
+    .studio-statement-text{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin:0 0 18px;max-width:460px}
+    .studio-statement-cta{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);transition:color .2s}
+    .studio-statement:hover .studio-statement-cta{color:#c9a96e}
+    @media(max-width:768px){.studio-statement{grid-template-columns:1fr}.studio-statement-body{padding:36px 20px}}
     .story-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
     .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
 
     /* LETTER */
     .letter{display:grid;grid-template-columns:1fr 1.1fr 1fr}
-    .letter-new{grid-template-columns:1fr 1fr;background:var(--paper)}
+    .letter-new{grid-template-columns:1fr;background:var(--paper);text-align:center}
+    .letter-body-new{padding:80px 40px;gap:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;max-width:640px;margin:0 auto}
+    .letter-body-new .letter-actions{justify-content:center}
+    .letter-body-new .newsletter-form{justify-content:center}
     .letter-photo{min-height:420px;overflow:hidden}.letter-photo img{transition:transform .6s ease;width:100%;height:100%;object-fit:cover}.letter-photo:hover img{transform:scale(1.03)}
     .letter-body{padding:68px 50px;display:flex;flex-direction:column;justify-content:center;background:var(--paper);color:var(--ink)}
     .letter-body-new{padding:64px 56px;gap:20px;display:flex;flex-direction:column;justify-content:center}
@@ -607,29 +623,17 @@
     </div>
   </section>
 
-
-  <!-- THE GALLERY -->
-  <section class="gallery-section">
-    <div class="gallery-intro">
-      <div class="gallery-intro-left">
-        <div class="gallery-intro-tag">The Gallery · Monthly</div>
-        <h2 class="gallery-intro-title">A digital exhibition<br><em>of the month's shots.</em></h2>
-        <p class="gallery-intro-text">Every month, one event. One person. One place. An exclusive visual story — only on AMIRA.</p>
-      </div>
-      <div class="gallery-intro-right">
-        <span class="gallery-intro-cta" onclick="showPage('gallery')">View the gallery →</span>
-      </div>
-    </div>
-    <div class="gallery-mosaic" onclick="showPage('gallery')">
-      <div class="gallery-cell-main"><div class="gallery-placeholder">Cover photo</div></div>
-      <div class="gallery-cells-side">
-        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 2</div></div>
-        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 3</div></div>
-        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 4</div></div>
-        <div class="gallery-cell-small"><div class="gallery-placeholder">Photo 5</div></div>
-      </div>
+  <!-- STUDIO + MAGAZINE, ONE IDENTITY -->
+  <section class="studio-statement" onclick="showPage('magazine')">
+    <div class="studio-statement-media"><img src="/immagini/amira-cover.jpg" alt="AMIRA vision studio"></div>
+    <div class="studio-statement-body">
+      <div class="studio-statement-tag">Who we are</div>
+      <h2 class="studio-statement-title">A visual storytelling studio<br><em>with its own magazine.</em></h2>
+      <p class="studio-statement-text">We create images, films and content for those who want to tell their story with authenticity — and every month, we tell our own in AMIRA vision, the magazine born from the same work.</p>
+      <span class="studio-statement-cta">Learn more →</span>
     </div>
   </section>
+
 
   <!-- FILOS STRIP temporarily hidden from homepage
   <div class="filos-strip" onclick="showPage('filos')" style="cursor:pointer">
@@ -665,9 +669,6 @@
         </div>
         <div class="newsletter-msg" id="nl-msg" style="display:none">✓ Thank you — you'll be the first to know.</div>
       </div>
-    </div>
-    <div class="letter-cover">
-      <img src="/immagini/amira-cover.jpg" alt="AMIRA vision Magazine">
     </div>
   </section>
 
