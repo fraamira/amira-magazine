@@ -110,6 +110,26 @@
     .story:hover .story-link{color:#fff}
     .loading{text-align:center;padding:60px;color:rgba(255,255,255,.3);font-size:14px;letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1}
     .story-badge{position:absolute;z-index:2;top:16px;left:16px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);border:.5px solid rgba(255,255,255,.3);padding:3px 7px}
+
+    /* FEATURED STORIES (home) */
+    .featured-section{padding:64px 44px;background:#0a1010}
+    .featured-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+    .featured-title{font-size:clamp(22px,2.6vw,28px);font-weight:700;font-style:italic;color:#fff;margin:0}
+    .featured-cta{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9a96e;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+    .featured-cta:hover{opacity:.7}
+    .featured-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .featured-card{cursor:pointer}
+    .featured-card-media{position:relative;aspect-ratio:3/4;background:#182640;overflow:hidden}
+    .featured-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .featured-card:hover .featured-card-media img{transform:scale(1.04)}
+    .featured-card-badge{position:absolute;top:10px;left:10px;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);border:.5px solid rgba(255,255,255,.3);padding:3px 6px;background:rgba(3,5,8,.4)}
+    .featured-card-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
+    .featured-card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
+    .featured-card-play i{font-size:13px;color:#fff}
+    .featured-card-cat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c9a96e;margin:10px 0 4px}
+    .featured-card-title{font-size:13px;color:#fff;margin:0;line-height:1.4}
+    @media(max-width:768px){.featured-grid{grid-template-columns:1fr 1fr;gap:10px}.featured-section{padding:36px 20px}}
+    @media(max-width:480px){.featured-grid{grid-template-columns:1fr}}
     .story-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
     .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
@@ -326,37 +346,6 @@
     .gallery-cell-small{background:#080c14;aspect-ratio:1;position:relative;overflow:hidden;transition:opacity .2s}
     .gallery-cell-small:hover{opacity:.85}
     .gallery-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.08)}
-    /* THE SCREENING ROOM (video section) */
-    .motion-section{background:#0a1628;border-top:.5px solid rgba(255,255,255,.06);border-bottom:.5px solid rgba(255,255,255,.06);padding:48px 44px}
-    .motion-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap}
-    .motion-intro-tag{font-size:10px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;display:flex;align-items:center;gap:12px;margin-bottom:12px}
-    .motion-intro-tag::before{content:'';display:block;width:20px;height:.5px;background:#c9a96e}
-    .motion-intro-title{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-.03em;color:#fff;margin:0 0 8px}
-    .motion-intro-text{font-size:14px;color:rgba(255,255,255,.4);line-height:1.6;margin:0;max-width:440px}
-    .motion-intro-cta{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#c9a96e;cursor:pointer;white-space:nowrap;transition:opacity .2s}
-    .motion-intro-cta:hover{opacity:.7}
-    .motion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .motion-card{cursor:pointer;text-decoration:none;display:block}
-    .motion-card-media{position:relative;aspect-ratio:3/4;background:#182640;overflow:hidden}
-    .motion-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
-    .motion-card:hover .motion-card-media img{transform:scale(1.04)}
-    .motion-card-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9a96e;border:.5px solid rgba(201,169,110,.5);padding:4px 9px;background:rgba(3,5,8,.4)}
-    .motion-card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;transition:background .2s}
-    .motion-card-play i{font-size:18px;color:#fff}
-    .motion-card:hover .motion-card-play{background:rgba(201,169,110,.85);border-color:#c9a96e}
-    .motion-card-info{position:absolute;left:0;right:0;bottom:0;background:rgba(3,5,8,.92);padding:16px}
-    .motion-card-title{font-size:16px;font-weight:600;color:#fff;margin:0 0 5px;line-height:1.3}
-    .motion-card-meta{font-size:12px;color:rgba(255,255,255,.45);margin:0;display:flex;align-items:center;gap:6px}
-    .motion-empty{padding:24px 0;color:rgba(255,255,255,.25);font-size:13px}
-    @media(max-width:768px){
-      .motion-section{padding:36px 20px}
-      .motion-grid{grid-template-columns:1fr 1fr;gap:10px}
-      .motion-card-title{font-size:13px}
-      .motion-card-play{width:40px;height:40px}
-      .motion-card-play i{font-size:14px}
-    }
-    @media(max-width:480px){.motion-grid{grid-template-columns:1fr}}
-
     @media(max-width:768px){
       .gallery-intro{flex-direction:column;padding:36px 20px 24px;gap:16px}
       .gallery-mosaic{grid-template-columns:1fr}
@@ -608,28 +597,16 @@
   </header>
 
   <div id="stories-anchor"></div>
-  <section class="stories-section">
-    <div class="sec-head"><span class="sec-label">Stories</span></div>
-    <div class="stories-grid" id="stories-grid">
+  <section class="featured-section">
+    <div class="featured-head">
+      <h2 class="featured-title">Featured stories</h2>
+      <span class="featured-cta" onclick="showPage('stories')">All stories →</span>
+    </div>
+    <div class="featured-grid" id="featured-grid">
       <div class="loading">Caricamento storie...</div>
     </div>
   </section>
 
-
-  <!-- THE SCREENING ROOM (video) -->
-  <section class="motion-section">
-    <div class="motion-intro">
-      <div>
-        <div class="motion-intro-tag">Amira motion</div>
-        <h2 class="motion-intro-title">The screening room</h2>
-        <p class="motion-intro-text">Short films, mini-documentaries and behind-the-scenes clips, filmed and edited by AMIRA.</p>
-      </div>
-      <span class="motion-intro-cta" onclick="showPage('motion')">View all →</span>
-    </div>
-    <div class="motion-grid" id="motion-grid">
-      <div class="motion-empty">Loading videos…</div>
-    </div>
-  </section>
 
   <!-- THE GALLERY -->
   <section class="gallery-section">
@@ -764,20 +741,17 @@
   </div>
 </div>
 
-<!-- SCREENING ROOM PAGE (all videos) -->
-<div class="page" id="page-motion">
-  <div style="background:#0a1628;min-height:100vh;padding-top:56px">
-
+<!-- STORIES ARCHIVE PAGE (all stories) -->
+<div class="page" id="page-stories">
+  <div style="background:#050505;min-height:100vh;padding-top:56px">
     <div style="text-align:center;padding:64px 44px 48px;border-bottom:.5px solid rgba(255,255,255,.06)">
       <div style="font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px">
-        <span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>Amira motion<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>
+        <span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>All stories<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>
       </div>
-      <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.04em;line-height:.95;color:#fff;margin-bottom:16px">The screening room</h1>
-      <p style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:520px;margin:0 auto">Short films, mini-documentaries and behind-the-scenes clips, filmed and edited by AMIRA.</p>
+      <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.04em;line-height:.95;color:#fff;margin-bottom:16px">Stories</h1>
+      <p style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:520px;margin:0 auto">Every story published on AMIRA, from the most recent.</p>
     </div>
-
-    <div class="motion-grid" id="motion-grid-full" style="padding:44px"></div>
-
+    <div class="stories-grid" id="stories-grid-full" style="padding:44px"></div>
   </div>
 </div>
 
@@ -949,42 +923,71 @@ async function fetchArticoli() {
     }
   } catch(e) {
     console.error('Errore caricamento articoli:', e);
-    document.getElementById('stories-grid').innerHTML =
-      '<div class="loading">Nessuna storia ancora. Pubblicane una dal pannello admin.</div>';
+    const fg = document.getElementById('featured-grid');
+    const sg = document.getElementById('stories-grid-full');
+    if (fg) fg.innerHTML = '<div class="loading">Nessuna storia ancora. Pubblicane una dal pannello admin.</div>';
+    if (sg) sg.innerHTML = '<div class="loading">Nessuna storia ancora. Pubblicane una dal pannello admin.</div>';
   }
+}
+
+// ── CARD TEMPLATES ──
+function storyCardHtml(art, idx) {
+  const tipo = art.tipo || 'articolo';
+  const isVideo = tipo === 'video' && art.video_url;
+  const badgeLabel = isVideo ? 'Video' : (tipo === 'foto' ? 'Photo story' : 'Article');
+  const ctaLabel = isVideo ? 'Watch the video →' : (tipo === 'foto' ? 'View the photos →' : 'Read the story →');
+  const clickAttr = isVideo
+    ? `onclick="window.open('${art.video_url}','_blank')"`
+    : `onclick="openArticle(${idx})"`;
+  return `<article class="story" ${clickAttr}>
+    <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
+    <span class="story-badge ${isVideo ? 'type-video' : ''}">${badgeLabel}</span>
+    ${isVideo ? '<span class="story-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+    <div class="story-body">
+      <div class="story-tag">${art.luogo || ''}</div>
+      <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
+      <p>${art.estratto || art.intro || ''}</p>
+      <span class="story-link">${ctaLabel}</span>
+    </div>
+  </article>`;
+}
+
+function featuredCardHtml(art, idx) {
+  const tipo = art.tipo || 'articolo';
+  const isVideo = tipo === 'video' && art.video_url;
+  const badgeLabel = isVideo ? 'Video' : (tipo === 'foto' ? 'Photo story' : 'Article');
+  const clickAttr = isVideo
+    ? `onclick="window.open('${art.video_url}','_blank')"`
+    : `onclick="openArticle(${idx})"`;
+  return `<div class="featured-card" ${clickAttr}>
+    <div class="featured-card-media">
+      <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
+      <span class="featured-card-badge ${isVideo ? 'type-video' : ''}">${badgeLabel}</span>
+      ${isVideo ? '<span class="featured-card-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+    </div>
+    <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
+    <p class="featured-card-title">${art.titolo || ''}${art.titolo_em ? '. ' + art.titolo_em : ''}</p>
+  </div>`;
 }
 
 // ── RENDER HOME GRID ──
 function renderGrid() {
-  const grid = document.getElementById('stories-grid');
+  const featuredGrid = document.getElementById('featured-grid');
+  const fullGrid = document.getElementById('stories-grid-full');
   // Main grid: exclude FILOS articles
   const main = ARTICOLI.filter((a, i) => a.rubrica !== 'filos');
   const filos = ARTICOLI.filter((a, i) => a.rubrica === 'filos');
 
   if (!main.length) {
-    grid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
+    if (featuredGrid) featuredGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
+    if (fullGrid) fullGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
   } else {
-    grid.innerHTML = main.map((art, i) => {
-      const idx = ARTICOLI.indexOf(art);
-      const tipo = art.tipo || 'articolo';
-      const isVideo = tipo === 'video' && art.video_url;
-      const badgeLabel = isVideo ? 'Video' : (tipo === 'foto' ? 'Photo story' : 'Article');
-      const ctaLabel = isVideo ? 'Watch the video →' : (tipo === 'foto' ? 'View the photos →' : 'Read the story →');
-      const clickAttr = isVideo
-        ? `onclick="window.open('${art.video_url}','_blank')"`
-        : `onclick="openArticle(${idx})"`;
-      return `<article class="story" ${clickAttr}>
-        <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
-        <span class="story-badge ${isVideo ? 'type-video' : ''}">${badgeLabel}</span>
-        ${isVideo ? '<span class="story-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
-        <div class="story-body">
-          <div class="story-tag">${art.luogo || ''}</div>
-          <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
-          <p>${art.estratto || art.intro || ''}</p>
-          <span class="story-link">${ctaLabel}</span>
-        </div>
-      </article>`;
-    }).join('');
+    if (featuredGrid) {
+      featuredGrid.innerHTML = main.slice(0, 4).map(art => featuredCardHtml(art, ARTICOLI.indexOf(art))).join('');
+    }
+    if (fullGrid) {
+      fullGrid.innerHTML = main.map(art => storyCardHtml(art, ARTICOLI.indexOf(art))).join('');
+    }
   }
 
   // FILOS grid
@@ -1324,6 +1327,7 @@ function handleRoute() {
   // FILOS temporarily hidden: direct links now fall back to home
   if (hash === '#/filos') { showPage('home', false); return; }
   if (hash === '#/gallery') { showPage('gallery', false); return; }
+  if (hash === '#/stories') { showPage('stories', false); return; }
   if (hash === '#/manifesto') { showPage('manifesto', false); return; }
   showPage('home', false);
 }
@@ -1345,7 +1349,6 @@ function closeMobileMenu() {
 // ── INIT ──
 fetchArticoli();
 fetchGallery();
-fetchVideos();
 
 // ── FETCH GALLERY ──
 async function fetchGallery() {
@@ -1478,71 +1481,6 @@ function renderGalleryPage(g) {
   page.querySelector('div[style*="grid-template-columns"]').innerHTML = grid;
 }
 
-// ── FETCH VIDEOS (The Screening Room) ──
-var ALL_VIDEOS = [];
-
-async function fetchVideos() {
-  try {
-    const res = await fetch('https://api.github.com/repos/fraamira/amira-magazine/contents/_video?ref=main');
-    if (!res.ok) { renderMotionGrids(); return; }
-    const files = await res.json();
-    const mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.json'));
-    if (!mdFiles.length) { renderMotionGrids(); return; }
-
-    const videos = await Promise.all(mdFiles.map(async file => {
-      const r = await fetch(file.download_url);
-      const text = await r.text();
-      let data = {};
-      if (file.name.endsWith('.md')) {
-        const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
-        if (fmMatch) {
-          try { data = jsyaml.load(fmMatch[1]) || {}; } catch(e) {}
-        }
-      } else {
-        try { data = JSON.parse(text); } catch(e) {}
-      }
-      data.id = file.name.replace(/\.(md|json)$/, '');
-      return data;
-    }));
-
-    ALL_VIDEOS = videos.filter(v => v.attiva !== false && v.video_url);
-    // Most recent first if a date field is present
-    ALL_VIDEOS.sort((a, b) => (b.data || '').localeCompare(a.data || ''));
-    renderMotionGrids();
-  } catch(e) {
-    console.log('Videos not yet configured');
-    renderMotionGrids();
-  }
-}
-
-function motionCardHtml(v) {
-  const thumb = v.copertina ? '<img src="' + v.copertina + '" alt="" loading="lazy">' : '';
-  const cat = v.categoria || 'Video';
-  const title = v.titolo || 'Untitled';
-  const meta = v.durata ? '<i class="ti ti-clock" aria-hidden="true"></i>' + v.durata : '';
-  return '<a class="motion-card" href="' + (v.video_url || '#') + '" target="_blank" rel="noopener">' +
-    '<div class="motion-card-media">' + thumb +
-      '<div class="motion-card-badge">' + cat + '</div>' +
-      '<div class="motion-card-play"><i class="ti ti-player-play" aria-hidden="true"></i></div>' +
-      '<div class="motion-card-info">' +
-        '<p class="motion-card-title">' + title + '</p>' +
-        (meta ? '<p class="motion-card-meta">' + meta + '</p>' : '') +
-      '</div>' +
-    '</div>' +
-  '</a>';
-}
-
-function renderMotionGrids() {
-  const home = document.getElementById('motion-grid');
-  const full = document.getElementById('motion-grid-full');
-  if (!ALL_VIDEOS.length) {
-    if (home) home.innerHTML = '<div class="motion-empty">Videos coming soon.</div>';
-    if (full) full.innerHTML = '<div class="motion-empty">No videos yet.</div>';
-    return;
-  }
-  if (home) home.innerHTML = ALL_VIDEOS.slice(0, 3).map(motionCardHtml).join('');
-  if (full) full.innerHTML = ALL_VIDEOS.map(motionCardHtml).join('');
-}
 
 // ── READING PROGRESS ──
 window.addEventListener('scroll', () => {
