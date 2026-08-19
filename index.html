@@ -971,25 +971,59 @@ function featuredCardHtml(art, idx) {
   </div>`;
 }
 
+function featuredGalleryCardHtml(g, idx) {
+  return `<div class="featured-card" onclick="showPage('gallery');openGallerySingle(${idx})">
+    <div class="featured-card-media">
+      <img src="${g.copertina || ''}" alt="${g.titolo || ''}" loading="lazy">
+      <span class="featured-card-badge">Gallery</span>
+    </div>
+    <p class="featured-card-cat">${g.luogo || g.mese || ''}</p>
+    <p class="featured-card-title">${g.titolo || ''}</p>
+  </div>`;
+}
+
+// ── FEATURED STORIES (mix of articles + galleries) ──
+function renderFeatured() {
+  const featuredGrid = document.getElementById('featured-grid');
+  if (!featuredGrid) return;
+
+  const articles = ARTICOLI.filter(a => a.rubrica !== 'filos').map(a => ({
+    kind: 'article', data: a, date: new Date(a.date || 0)
+  }));
+  const galleries = ALL_GALLERIES.map(g => ({
+    kind: 'gallery', data: g, date: new Date(g.mese || 0)
+  }));
+
+  const combined = [...articles, ...galleries].sort((a, b) => b.date - a.date);
+
+  if (!combined.length) {
+    featuredGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
+    return;
+  }
+
+  featuredGrid.innerHTML = combined.slice(0, 4).map(item => {
+    if (item.kind === 'gallery') {
+      return featuredGalleryCardHtml(item.data, ALL_GALLERIES.indexOf(item.data));
+    }
+    return featuredCardHtml(item.data, ARTICOLI.indexOf(item.data));
+  }).join('');
+}
+
 // ── RENDER HOME GRID ──
 function renderGrid() {
-  const featuredGrid = document.getElementById('featured-grid');
   const fullGrid = document.getElementById('stories-grid-full');
   // Main grid: exclude FILOS articles
   const main = ARTICOLI.filter((a, i) => a.rubrica !== 'filos');
   const filos = ARTICOLI.filter((a, i) => a.rubrica === 'filos');
 
   if (!main.length) {
-    if (featuredGrid) featuredGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
     if (fullGrid) fullGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
   } else {
-    if (featuredGrid) {
-      featuredGrid.innerHTML = main.slice(0, 4).map(art => featuredCardHtml(art, ARTICOLI.indexOf(art))).join('');
-    }
     if (fullGrid) {
       fullGrid.innerHTML = main.map(art => storyCardHtml(art, ARTICOLI.indexOf(art))).join('');
     }
   }
+  renderFeatured();
 
   // FILOS grid
   const filGrid = document.getElementById('filos-stories-grid');
@@ -1377,8 +1411,14 @@ async function fetchGallery() {
       return data;
     }));
 
-    const active = galleries.find(g => g.attiva !== false);
-    if (active) renderGallery(active);
+    const active = galleries.filter(g => g.attiva !== false);
+    active.sort((a, b) => new Date(b.mese || 0) - new Date(a.mese || 0));
+    active.forEach(g => {
+      if (!ALL_GALLERIES.find(x => x.id === g.id)) ALL_GALLERIES.push(g);
+    });
+    renderGalleryList();
+    if (active[0]) updateHomeGalleryIntro(active[0]);
+    renderFeatured();
   } catch(e) {
     console.log('Gallery not yet configured');
   }
@@ -1425,38 +1465,9 @@ function showGalleryList() {
   document.getElementById('gallery-single-view').style.display = 'none';
 }
 
-function renderGallery(g) {
-  if (!ALL_GALLERIES.find(function(x){ return x.id === g.id; })) {
-    ALL_GALLERIES.push(g);
-  }
-  renderGalleryList();
-  // Update home gallery section
-  var tag = document.querySelector('.gallery-intro-tag');
-  if (tag) tag.innerHTML = '<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>The Gallery · ' + (g.mese || '');
-
-  var title = document.querySelector('.gallery-intro-title');
-  if (title) title.innerHTML = (g.titolo || 'The Gallery') + (g.titolo_em ? '<br><em>' + g.titolo_em + '</em>' : '');
-
-  var text = document.querySelector('.gallery-intro-text');
-  if (text) text.textContent = g.descrizione || '';
-
-  // Update mosaic photos
-  const main = document.querySelector('.gallery-cell-main');
-  if (main && g.copertina) {
-    main.innerHTML = '<img src="' + g.copertina + '" style="width:100%;height:100%;object-fit:cover">';
-  }
-
-  const smalls = document.querySelectorAll('.gallery-cell-small');
-  if (g.foto && g.foto.length) {
-    g.foto.slice(0, 4).forEach((f, i) => {
-      if (smalls[i] && f.immagine) {
-        smalls[i].innerHTML = '<img src="' + f.immagine + '" style="width:100%;height:100%;object-fit:cover">';
-      }
-    });
-  }
-
-  // Update gallery page
-  renderGalleryPage(g);
+function updateHomeGalleryIntro(g) {
+  // Home gallery teaser section was removed; kept as no-op for safety
+  // in case future sections reference gallery-intro-* classes again.
 }
 
 function renderGalleryPage(g) {
