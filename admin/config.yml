@@ -21,6 +21,16 @@ collections:
     fields:
       - { label: "Titolo", name: "titolo", widget: "string" }
       - { label: "Titolo corsivo", name: "titolo_em", widget: "string", required: false }
+      - label: "Tipo di storia"
+        name: "tipo"
+        widget: "select"
+        default: "articolo"
+        hint: "Decide il badge e il comportamento della card in home. I blocchi contenuto (foto, audio, video, testo) restano sempre disponibili per tutti i tipi."
+        options:
+          - { label: "Articolo", value: "articolo" }
+          - { label: "Solo video", value: "video" }
+          - { label: "Solo foto", value: "foto" }
+      - { label: "Link al video (solo se tipo = Solo video)", name: "video_url", widget: "string", required: false, hint: "Link YouTube, Vimeo ecc. Si apre in una nuova scheda invece della pagina articolo." }
       - label: "Rubrica"
         name: "rubrica"
         widget: "select"
@@ -102,6 +112,30 @@ collections:
           - { label: "Immagine", name: "immagine", widget: "image" }
           - { label: "Didascalia", name: "didascalia", widget: "string", required: false }
       - { label: "Attiva sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questa galleria sulla home" }
+
+  - name: "video"
+    label: "The Screening Room"
+    label_singular: "Video"
+    folder: "_video"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "titolo"
+    fields:
+      - { label: "Titolo video", name: "titolo", widget: "string", hint: "Es: Madrid, behind the lens" }
+      - label: "Categoria"
+        name: "categoria"
+        widget: "select"
+        default: "Short film"
+        options:
+          - "Short film"
+          - "Mini-doc"
+          - "Behind the scenes"
+          - "Ad"
+      - { label: "Link al video", name: "video_url", widget: "string", hint: "Incolla il link YouTube, Vimeo o simili — si aprirà in una nuova scheda" }
+      - { label: "Copertina", name: "copertina", widget: "image", hint: "Immagine verticale (formato 3:4) usata come copertina della card" }
+      - { label: "Durata", name: "durata", widget: "string", required: false, hint: "Es: 3:12" }
+      - { label: "Data", name: "data", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, required: false, hint: "Usata per ordinare i video dal più recente" }
+      - { label: "Attivo sulla home", name: "attiva", widget: "boolean", default: true, hint: "Mostra questo video nella sezione Screening Room" }
 
   - name: "newsletter"
     label: "Newsletter — Iscritti"
