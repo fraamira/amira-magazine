@@ -1,5 +1,6 @@
 ---
 titolo: '"The City That Looks"'
+titolo_em: Different gazes, different meanings
 tipo: articolo
 rubrica: magazine
 date: 2026-09-03
@@ -115,5 +116,68 @@ contenuto:
 
 
       And then, when I placed these two photographs next to each other, it felt completely natural to see them in conversation—as if they were two openings: one looking onto the people, and the other onto Vesuvius.
+  - type: paragrafo
+    testo: >-
+      Alessandra suggests associations, but she does not provide answers. The
+      exploration continues within the viewer.
+
+      In addition to being a photographer and a producer of campaigns for brands including Kiton and Kartell, Alessandra passionately follows projects centred on the city of Naples and its architectural heritage. And this is where the magic that occurs whenever we share our art begins: something that has a particular meaning for us may not have the same meaning for someone else. And when we discover the meanings that other people attribute to our creation, our own meaning is influenced too, and it may change from what it originally was.
+  - type: foto
+    immagine: /immagini/dscf3173.jpg
+  - type: citazione
+    testo: Different gazes, different meanings.
+  - type: paragrafo
+    testo: >-
+      The exhibition brings together the absolute - the objectivity of what is
+      in front of us at a particular
+
+      moment - and the relativity of the meaning that each of us attributes to that very same thing at that
+
+      very same moment.
+
+
+      The photograph remains. There is one meaning, but infinitely many others can emerge from it.
+
+      Each of us looks in our own way, but another person’s way of looking can complete our own.
+
+      What is most interesting is that this story was born out of spontaneity and enriched through research.
+
+
+      From an endless archive of photographs that apparently had no connection with one another - or
+
+      perhaps they did, and Alessandra simply needed time to find it - a common thread emerged.
+  - type: foto
+    immagine: /immagini/dscf3205.jpg
+  - type: paragrafo
+    testo: >-
+      It makes you think: maybe there is a connection in what I see, even if it
+      does not seem like it.
+
+      I need to look more closely!
+
+
+      It is an invitation to look more carefully, both within ourselves and around us: to discover
+
+      places we do not know, or to rediscover places we know very well by perhaps looking at them
+
+      through different eyes.
+
+
+      And Alessandra’s answer to the question we asked her at the end offers a fitting thought with
+
+      which to conclude this reflection. We asked her:
+  - type: citazione
+    testo: “What do you look at when you take a photograph?”
+    em: “I look at the shadows.”
+  - type: paragrafo
+    testo: >-
+      It made me think about the events in our lives: perhaps sometimes, in
+      order to understand an event, we need to look not at the event itself, but
+      at something behind it, beside it, above it or below it - something that
+      is not immediately clear at first glance - so that we can give it the
+      right framing, the right composition and the right meaning.
+
+
+      Often, an event has little meaning when considered in isolation. But when we begin to connect events with one another, they acquire not only a meaning, but a sense.
 pubblicato: true
 ---
