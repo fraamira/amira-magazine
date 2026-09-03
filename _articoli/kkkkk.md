@@ -87,5 +87,33 @@ contenuto:
 
 
       Beyond simply sharing this archive and bringing all these images to light, the idea is also to show just how many places we have opened up over the years, how much we have managed to make accessible, relying entirely on the strength and commitment of our own organization.
+  - type: paragrafo
+    testo: |-
+      “What are we looking at?”
+      “What was that person looking at?”
+
+      These are the first questions the viewer asks.
+
+      “Am I looking properly?”
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1788471926/Alessandra_Mustilli_-_associazioni_vkty4p.m4a
+    trascrizione: >-
+      Naples is full of millions of things. It’s just that people don’t know
+      about them, or simply don’t realize how much is actually there.
+
+
+      The idea was to play with pairs. Take these two photographs, for example: they were taken three or four years apart. This one is a detail of the Observatory up in Capodimonte, while this photograph was taken last year at the construction site of Luigi Cosenza’s Fish Market.
+
+
+      When I saw them, it was as if I were looking at the same thing. Only afterwards did I start putting things together. These photographs had been sitting there for years; they had absolutely nothing to do with one another. But when I looked at them again, they suddenly did. I started connecting them, seeing similarities between them, or sometimes very strong contrasts.
+
+
+      There’s one photograph that I feel almost connected itself to another one. I didn’t do anything—they did it entirely on their own.
+
+
+      This one is my favorite. For me, it somehow captures the meaning of the whole exhibition: the city looking at people who are looking at the things happening around them.
+
+
+      And then, when I placed these two photographs next to each other, it felt completely natural to see them in conversation—as if they were two openings: one looking onto the people, and the other onto Vesuvius.
 pubblicato: true
 ---
