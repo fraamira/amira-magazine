@@ -41,30 +41,26 @@ contenuto:
   - type: foto
     immagine: /immagini/dscf3105-2.jpg
   - type: paragrafo
-    testo: >-
-      Alessandra shared with us the process of creating the exhibition
-      installation, as well as her vision
-
-      of photography, of gazes, of the meaning we attribute to what we see, and of how that meaning
-
-      inevitably evolves over time.
+    testo: Alessandra shared with us the process of creating the exhibition
+      installation, as well as her vision of photography, of gazes, of the
+      meaning we attribute to what we see, and of how that meaning inevitably
+      evolves over time.
   - type: foto
     immagine: /immagini/dscf3167-2.jpg
   - type: paragrafo
     testo: >-
       We are in the heart of Naples, in Borgo Sant’Antonio Abate, more precisely
-      inside the former
+      inside the former 16th century Convent of Sant’Anna a Capuana. The space
+      has been brought back to life as “Obù - il Borgo”, with a truly remarkable
+      purpose, promoted by Fondazione Terzoluogo / Spazio Obù. Fondazione
+      Terzoluogo promotes the creation and development of cultural spaces in
+      order to generate new connections between places, resources and
+      communities, thereby contributing to the growth of the social heritage of
+      local areas. Through its services for children, it also tackles
+      educational poverty and supports parenting.
 
-      16th-century Convent of Sant’Anna a Capuana. The space has been brought back to life as “Obù - il
 
-      Borgo”, with a truly remarkable purpose, promoted by Fondazione Terzoluogo / Spazio Obù.
-
-      Fondazione Terzoluogo promotes the creation and development of cultural spaces in order to generate new connections between places, resources and communities, thereby contributing to the growth of the social heritage of local areas. Through its services for children, it also tackles educational poverty and supports parenting.
-
-
-      Alessandra’s photographic research was inevitably influenced by her architect’s eye, and the same was
-
-      true of the design of the installation in which the exhibition was eventually held.
+      Alessandra’s photographic research was inevitably influenced by her architect’s eye, and the same was true of the design of the installation in which the exhibition was eventually held.
   - type: foto
     immagine: /immagini/dscf3170-2.jpg
   - type: paragrafo
@@ -74,17 +70,14 @@ contenuto:
       centred on the city of Naples and its architectural heritage.
 
 
-      One of these is Open House, which contributed to the creation of the archive from which the
-
-      photographs were later selected. In this case, photography also becomes a means of communicating the results of the urban enhancement projects promoted by Open House.
+      One of these is Open House, which contributed to the creation of the archive from which the photographs were later selected. In this case, photography also becomes a means of communicating the results of the urban enhancement projects promoted by Open House.
   - type: audio
     url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1788471718/Alessandra_Mustilli_-_Open_House_teo3b7.m4a
     trascrizione: >-
       This idea came about because I have this huge archive of photographs I
-      took for Open House. Photography has been my companion throughout these
-      years, as I followed as many of the Open House visits as I could—not all
-      of them, of course, but a good number of them. I’ve been involved with
-      Open House for seven years now.
+      took for Open House.
+
+      Photography has been my companion throughout these years, as I followed as many of the Open House visits as I could—not all of them, of course, but a good number of them. I’ve been involved with Open House for seven years now.
 
 
       Beyond simply sharing this archive and bringing all these images to light, the idea is also to show just how many places we have opened up over the years, how much we have managed to make accessible, relying entirely on the strength and commitment of our own organization.
@@ -143,9 +136,7 @@ contenuto:
       What is most interesting is that this story was born out of spontaneity and enriched through research.
 
 
-      From an endless archive of photographs that apparently had no connection with one another - or
-
-      perhaps they did, and Alessandra simply needed time to find it - a common thread emerged.
+      From an endless archive of photographs that apparently had no connection with one another - or perhaps they did, and Alessandra simply needed time to find it - a common thread emerged.
   - type: foto
     immagine: /immagini/dscf3205.jpg
   - type: paragrafo
@@ -156,19 +147,13 @@ contenuto:
       I need to look more closely!
 
 
-      It is an invitation to look more carefully, both within ourselves and around us: to discover
-
-      places we do not know, or to rediscover places we know very well by perhaps looking at them
-
-      through different eyes.
+      It is an invitation to look more carefully, both within ourselves and around us: to discover places we do not know, or to rediscover places we know very well by perhaps looking at them through different eyes.
 
 
-      And Alessandra’s answer to the question we asked her at the end offers a fitting thought with
-
-      which to conclude this reflection. We asked her:
+      And Alessandra’s answer to the question we asked her at the end offers a fitting thought with which to conclude this reflection. We asked her:
   - type: citazione
-    testo: “What do you look at when you take a photograph?”
-    em: “I look at the shadows.”
+    testo: What do you look at when you take a photograph?
+    em: I look at the shadows.
   - type: paragrafo
     testo: >-
       It made me think about the events in our lives: perhaps sometimes, in
