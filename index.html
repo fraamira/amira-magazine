@@ -596,6 +596,13 @@
 </div>
 <div class="translation-status" id="translation-status" role="status" aria-live="polite"></div>
 
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="closeLightbox(event)">×</span>
+  <span class="lightbox-arr lightbox-prev" onclick="lightboxNav(-1, event)">‹</span>
+  <img id="lightbox-img" src="" alt="">
+  <span class="lightbox-arr lightbox-next" onclick="lightboxNav(1, event)">›</span>
+</div>
+
 <!-- HOME -->
 <div class="page active" id="page-home">
   <header class="hero">
@@ -1106,7 +1113,6 @@ function openArticle(index, updateHistory = true) {
     heroEl.innerHTML = '<div style="padding:80px 44px 48px;background:#0a1628"><div style="color:#c9a96e;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px">' + tagText + '</div><h1 class="art-title" style="margin-bottom:16px">' + titleHtml + '</h1><div class="art-meta">' + metaHtml + '</div></div>';
   } else {
     heroEl.innerHTML = buildHeroA(coverSrc);
-    heroEl.innerHTML = '<div style="min-height:200px;background:#060e1a;display:flex;align-items:center;justify-content:center"><div style="color:rgba(255,255,255,.2);font-size:12px">Loading...</div></div>';
   }
 
   // Keep legacy refs for other code
