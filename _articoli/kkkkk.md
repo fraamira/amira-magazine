@@ -7,7 +7,7 @@ luogo: napoli
 categoria: People
 autore: Francesco Amirante
 minuti: 5
-copertina: /immagini/dscf3102.jpg
+copertina: /immagini/dscf3102-2.jpg
 estratto: jhhjhj
 intro: jkhjkhjhkjhjhjhjk
 pubblicato: true
