@@ -1,5 +1,5 @@
 ---
-titolo: The City That Looks
+titolo: '"The City That Looks"'
 tipo: articolo
 rubrica: magazine
 date: 2026-09-03
@@ -36,5 +36,28 @@ intro: >-
   And the “something” we are telling you about is "The City That Looks", by Alessandra Mustilli, held
 
   in Naples in October 2025.
+contenuto:
+  - type: foto
+    immagine: /immagini/dscf3105-2.jpg
+  - type: paragrafo
+    testo: >-
+      Alessandra shared with us the process of creating the exhibition
+      installation, as well as her vision
+
+      of photography, of gazes, of the meaning we attribute to what we see, and of how that meaning
+
+      inevitably evolves over time.
+  - type: foto
+    immagine: /immagini/dscf3167-2.jpg
+  - type: paragrafo
+    testo: >-
+      We are in the heart of Naples, in Borgo Sant’Antonio Abate, more precisely
+      inside the former
+
+      16th-century Convent of Sant’Anna a Capuana. The space has been brought back to life as “Obù - il
+
+      Borgo”, with a truly remarkable purpose, promoted by Fondazione Terzoluogo / Spazio Obù.
+
+      Fondazione Terzoluogo promotes the creation and development of cultural spaces in order to generate new connections between places, resources and communities, thereby contributing to the growth of the social heritage of local areas. Through its services for children, it also tackles educational poverty and supports parenting.
 pubblicato: true
 ---
