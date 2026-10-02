@@ -188,7 +188,7 @@ contenuto:
       …simple when you truly understand it.
   - type: paragrafo
     testo: >-
-      his might seem like the end of the story.
+      This might seem like the end of the story.
 
 
       But there is another city that found its way into Alessandra’s heart: Turin.
