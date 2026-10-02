@@ -60,5 +60,73 @@ contenuto:
   - type: citazione
     testo: “It made me
     em: the woman I am today.”
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1790936590/audio_cambiamenti_d_agostino_dxvssy.m4a
+    trascrizione: "So many changes, both in my personal life and in my professional
+      life.Change really motivates me. I’m the kind of woman who needs new
+      challenges and new inspiration to feel fulfilled.I’m from Naples, and
+      while I was living there, I spent a significant period of time in the
+      Kingdom of Bahrain. It was an experience that shaped me, inspired me, and
+      made me the woman I am today. Later, for professional reasons related to
+      my husband’s career, we moved to Salerno. It was a city that welcomed me
+      wonderfully. I built a wonderful practice there and developed
+      relationships with so many patients. But then life took me to yet another
+      city, where I moved almost a year ago: Turin. I came to Turin because my
+      children brought me here. So it was my family and the people I love who
+      brought me to this city. And since, as I said, I’m someone who loves new
+      challenges — I’m determined and persistent — I decided to open another
+      practice in Turin. We never stop. Never."
+  - type: paragrafo
+    testo: >-
+      And this is only the beginning of the story.
+
+      Alessandra returned to Italy, but not to her beloved Naples.
+
+      For reasons connected to her husband Giovanni’s career, she chose a new place: Salerno.
+
+      Her love for Naples remained unchanged, but Salerno surprised her.
+
+      It welcomed her.
+  - type: foto
+    immagine: /immagini/1630708.jpg
+    didascalia: alessandra nel suo studio a salerno
+  - type: paragrafo
+    testo: >-
+      In Salerno, she opened her aesthetic medicine clinic, which today has
+      become a trusted point of reference for her patients.
+
+
+      Change is also a word deeply connected to the world of aesthetic medicine.
+
+
+      Our skin changes every day.
+
+      It tells the story of what we have lived through.
+
+
+      At this point, someone might say: “People who turn to aesthetic medicine don’t accept themselves,” or “They should seek psychological help instead.”
+
+
+      If we are talking about true aesthetic medicine, however, that debate doesn’t really apply.
+
+
+      If we are talking about those who promote dramatically altering facial features, or those who advocate volume at all costs, then yes.
+
+
+      Fortunately, we are talking about the first kind.
+
+
+      Alessandra’s philosophy is to “soften the passage of time.”
+
+      So much so that it has become her signature phrase: “The doc who softens time.”
+
+
+      And the art of regeneration can also be found in her hands.
+
+
+      According to her experience and her approach, an aesthetic medicine procedure is not necessarily something negative.
+
+
+      The story of one of her patients is a perfect example.
 pubblicato: true
 ---
