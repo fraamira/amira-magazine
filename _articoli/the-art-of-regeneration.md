@@ -128,5 +128,30 @@ contenuto:
 
 
       The story of one of her patients is a perfect example.
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1790937495/audio_paziente_d_agostino_z0k6ra.mp3
+    trascrizione: >-
+      There is one patient in particular who changed me and deeply moved me.
+
+
+      I met this woman after she discovered me through social media and booked a consultation. She told me a very difficult story. She had lost her husband when her son was ten years old, and from that moment on, she had completely stopped taking care of herself. All she thought about was work and her son. Nothing else.
+
+
+      One day, her son said to her, “Mom, if you love me, you need to take care of yourself too.”
+
+
+      She came to my practice, and together we began a wonderful journey. Today, she is a different woman. She has started living again, and she now has a partner as well.
+
+
+
+
+      So I feel that I’ve been part of this transformation. That means a lot to me, and her story has stayed in my heart for this very reason.
+
+
+
+      This is why I always say that aesthetic medicine is about both physical and emotional well-being.
+
+
+      Looking better, having firmer, brighter skin — or, as we say today, having more of a “glow” — can help us. It can help us feel better about ourselves and even give us greater confidence as we face life’s challenges.
 pubblicato: true
 ---
