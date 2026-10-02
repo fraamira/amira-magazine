@@ -153,5 +153,68 @@ contenuto:
 
 
       Looking better, having firmer, brighter skin — or, as we say today, having more of a “glow” — can help us. It can help us feel better about ourselves and even give us greater confidence as we face life’s challenges.
+  - type: paragrafo
+    testo: >+
+      Our thoughts shape our reality, but reality shapes our thoughts too.
+
+
+      Alessandra looks at the future through the present, with optimism.
+
+
+      And she brings that same outlook into her work through small gestures — injectable or non-injectable, depending on how adventurous the patient happens to be — giving an extra smile to those who place their trust in her.
+
+
+      Her empathy allows her to connect with potential patients… even through a screen.
+
+
+      Her communication is light and approachable, while remaining informative.
+
+  - type: audio
+    url: https://res.cloudinary.com/p6tqgtnv/video/upload/v1790937819/audio_comunicazione_social_d_agostino_x5ybdx.mp3
+    trascrizione: >-
+      I create content that may seem light and accessible, in the sense that I
+      try to explain scientific concepts in a simple way.
+
+
+      I need to reach an audience that isn’t familiar with medicine. They’re not doctors, and I’m not presenting a scientific paper at a medical conference. So the way you communicate has to be adapted to the audience in front of you.
+
+
+      It’s like when a teacher at school has to explain a very difficult concept: they need to make it simple enough for their students to understand.
+
+
+      I believe that this ability usually comes from having a deep understanding of the subject, because you can only make a difficult concept…
+
+
+      …simple when you truly understand it.
+  - type: paragrafo
+    testo: >-
+      his might seem like the end of the story.
+
+
+      But there is another city that found its way into Alessandra’s heart: Turin.
+
+
+      Two of her three children were already living there, and for the love of them, Alessandra decided to embrace yet another change: opening a new aesthetic medicine centre in Turin.
+
+
+      Her new centre will focus on regenerative aesthetic medicine, with treatment protocols designed to work deep within the skin, using approaches such as polynucleotides and biostimulants.
+
+
+      In the meantime, her words leave us with something to think about.
+
+
+      Listening to her gives you a particular feeling: the desire to become more open to change and to whatever life might place in your path.
+
+
+      Sometimes, we stop.
+
+
+      We convince ourselves that what we already have is all that is meant for us, when in reality, we don’t even know everything that might be out there waiting for us.
+
+
+      Perhaps change — whether big or small — is the key to adding just a little more…
+
+
+      GLOW! (Is that how you say it?)
 pubblicato: true
 ---
