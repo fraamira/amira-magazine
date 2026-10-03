@@ -57,6 +57,8 @@ contenuto:
       It was an experience that changed her life.
 
       Her expertise was enriched by international perspectives, while the experience strengthened her determination and courage.
+  - type: foto
+    immagine: /immagini/2134ce43-133d-36f1-cdad-9ec9d89965f8.jpg
   - type: citazione
     testo: “It made me
     em: the woman I am today.”
