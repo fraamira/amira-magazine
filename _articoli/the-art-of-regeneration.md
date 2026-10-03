@@ -88,8 +88,8 @@ contenuto:
 
       It welcomed her.
   - type: foto
-    immagine: /immagini/1630708.jpg
-    didascalia: alessandra nel suo studio a salerno
+    immagine: /immagini/img_6171.jpg
+    didascalia: Alessandra at her aesthetic medicine clinic in Salerno.
   - type: paragrafo
     testo: >-
       In Salerno, she opened her aesthetic medicine clinic, which today has
@@ -186,6 +186,10 @@ contenuto:
 
 
       …simple when you truly understand it.
+  - type: gallery
+    foto1: /immagini/img_6172.jpg
+    foto2: /immagini/12c8f886-b085-12f1-d1d9-268343b00f52.jpg
+    foto3: /immagini/img_6175.jpg
   - type: paragrafo
     testo: >-
       This might seem like the end of the story.
