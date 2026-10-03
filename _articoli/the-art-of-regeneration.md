@@ -38,7 +38,7 @@ intro: >-
   And we couldn’t help but talk to her about exactly that: The Art of Regeneration.
 contenuto:
   - type: foto
-    immagine: /immagini/2134ce43-133d-36f1-cdad-9ec9d89965f8.jpg
+    immagine: /immagini/img_6214.jpg
   - type: paragrafo
     testo: >-
       Some people are afraid of moving house.
