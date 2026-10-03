@@ -1,6 +1,6 @@
 ---
 titolo: The Art of Regeneration
-titolo_em: Between Italy and the UAE, Where Change Brings New Light with Dr.
+titolo_em: Between Italy and Bahrain, Where Change Brings New Light with Dr.
   Alessandra D’Agostino
 tipo: articolo
 rubrica: magazine
