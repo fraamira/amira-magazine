@@ -10,7 +10,7 @@ categoria: People
 autore: Francesco Amirante
 fotografo: Francesco Amirante
 minuti: 5
-copertina: /immagini/2134ce43-133d-36f1-cdad-9ec9d89965f8.jpg
+copertina: /immagini/img_6214.jpg
 estratto: Reflections on change and self-care through the perspective of
   aesthetic doctor Dr. Alessandra D’Agostino.
 intro: >-
