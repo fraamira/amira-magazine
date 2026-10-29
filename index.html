@@ -654,12 +654,12 @@
 
 <div class="read-progress" id="read-progress"></div>
 <nav class="nav" id="nav">
-  <div class="nav-logo" onclick="showPage('home')">
+  <div class="nav-logo notranslate" translate="no" onclick="showPage('home')">
     <div class="nav-logo-amira">AMIRA</div>
     <div class="nav-logo-vision">vision</div>
   </div>
   <div class="nav-links">
-    <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
+    <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t notranslate" translate="no">Stories</a>
     <a href="#/vision" onclick="event.preventDefault();showPage('magazine')" class="nav-t">Our vision</a>
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t" data-gallery-link hidden>The Gallery</a>
     <a href="/componi-la-tua-storia" class="nav-t" onclick="return openStoryChoice(event)">Tell your story</a>
@@ -679,7 +679,7 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <button class="mobile-close" onclick="closeMobileMenu()">×</button>
-  <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
+  <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)" class="notranslate" translate="no">Stories</a>
   <a onclick="closeMobileMenu();showPage('magazine')">Our vision</a>
   <a onclick="closeMobileMenu();showPage('gallery')" data-gallery-link hidden>The Gallery</a>
   <a href="/componi-la-tua-storia" onclick="closeMobileMenu();return openStoryChoice(event)">Tell your story</a>
@@ -724,7 +724,7 @@
       <canvas id="heroEye"></canvas>
     </div>
     <div class="home-hero-text">
-      <div class="home-hero-logo" aria-label="AMIRA vision">
+      <div class="home-hero-logo notranslate" translate="no" aria-label="AMIRA vision">
         <span class="home-hero-amira">AMIRA</span>
         <span class="home-hero-vision">vision</span>
       </div>
@@ -806,7 +806,7 @@
 
   <footer>
     <div>
-      <div class="f-logo-wrap">
+      <div class="f-logo-wrap notranslate" translate="no">
         <div class="f-logo-amira">AMIRA</div>
         <div class="f-logo-vision">vision</div>
       </div>
@@ -1054,6 +1054,15 @@ async function fetchArticoli() {
 }
 
 // ── CARD TEMPLATES ──
+// Titles of stories made with a client are proper names (brands, places): keep them out of Google Translate.
+function titleHtml(art) {
+  const t = art.titolo || '';
+  return art.con ? '<span class="notranslate" translate="no">' + t + '</span>' : t;
+}
+function conHtml(art) {
+  return 'With <span class="notranslate" translate="no">' + art.con + '</span>';
+}
+
 // ── MEZZI: how a story is told (words, photo, video, audio, social) ──
 // A story is one thing; the media it uses are shown as badges and drive the filter.
 // Uses the CMS field "mezzi" when set, otherwise derives it from tipo and blocks.
@@ -1093,8 +1102,8 @@ function storyCardHtml(art, idx) {
     ${mezziBadgesHtml(art, 'story-badge')}
     <div class="story-body">
       <div class="story-tag">${art.categoria || art.luogo || ''}</div>
-      <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
-      ${art.con ? `<div class="story-con">With ${art.con}</div>` : ''}
+      <h3>${titleHtml(art)} <em>${art.titolo_em || ''}</em></h3>
+      ${art.con ? `<div class="story-con">${conHtml(art)}</div>` : ''}
       <p>${art.estratto || art.intro || ''}</p>
       <span class="story-link">${ctaLabel}</span>
     </div>
@@ -1108,8 +1117,8 @@ function featuredCardHtml(art, idx) {
       ${mezziBadgesHtml(art, 'featured-card-badge')}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
-    <p class="featured-card-title">${art.titolo || ''}${art.titolo_em ? '. <em>' + art.titolo_em + '</em>' : ''}</p>
-    ${art.con ? `<p class="featured-card-con">With ${art.con}</p>` : ''}
+    <p class="featured-card-title">${titleHtml(art)}${art.titolo_em ? '. <em>' + art.titolo_em + '</em>' : ''}</p>
+    ${art.con ? `<p class="featured-card-con">${conHtml(art)}</p>` : ''}
   </div>`;
 }
 
@@ -1214,7 +1223,7 @@ function openArticle(index, updateHistory = true) {
   var coverSrc = art.copertina || '';
   var heroEl = document.getElementById('art-hero');
   var tagText = (art.luogo || '') + ' · ' + (art.minuti || 5) + ' min';
-  var titleHtml = (art.titolo || '') + (art.titolo_em ? ' <em>' + art.titolo_em + '</em>' : '');
+  var titleHtml = window.titleHtml(art) + (art.titolo_em ? ' <em>' + art.titolo_em + '</em>' : '');
   var fotoByHtml = art.fotografo ? '<span class="art-meta-sep">·</span><span class="art-meta-label">Photos by</span><span>' + art.fotografo + '</span>' : '';
   var metaHtml = (art.autore ? '<span class="art-meta-label">Article by</span><span>' + art.autore + '</span>' : '') +
     fotoByHtml +
@@ -1380,7 +1389,7 @@ function openArticle(index, updateHistory = true) {
   const behindHtml = (art.con || links) ? `<div class="behind">
     <div class="behind-label">Behind the story</div>
     <dl class="behind-list">
-      ${art.con ? `<dt>With</dt><dd>${art.con}</dd>` : ''}
+      ${art.con ? `<dt>With</dt><dd class="notranslate" translate="no">${art.con}</dd>` : ''}
       ${mezziTxt ? `<dt>Told with</dt><dd>${mezziTxt}</dd>` : ''}
       ${art.date ? `<dt>Year</dt><dd>${String(art.date).slice(0, 4)}</dd>` : ''}
     </dl>
