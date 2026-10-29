@@ -149,25 +149,26 @@
     .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
 
-    /* HOME HERO: three words + photos */
-    .home-hero{min-height:100vh;background:#0a1010;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:center;padding:120px 44px 72px}
-    .home-hero-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:28px}
-    .home-hero-title{font-size:clamp(64px,9vw,150px);font-weight:700;letter-spacing:-.055em;line-height:.9;color:#fff;margin:0 0 32px}
+    /* HOME HERO: big logo + the eye */
+    .home-hero{min-height:100vh;background:#05080c;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding:110px 44px 64px;overflow:hidden}
+    .home-hero-logo{display:flex;flex-direction:column;align-items:flex-start;line-height:1;margin-bottom:30px}
+    .home-hero-amira{font-size:clamp(64px,10vw,168px);font-weight:800;letter-spacing:.16em;color:#fff;line-height:.9;margin-right:-.16em}
+    .home-hero-vision{font-size:clamp(18px,2.6vw,44px);font-style:italic;font-weight:300;letter-spacing:.62em;color:rgba(255,255,255,.7);margin-top:14px;padding-left:.12em}
+    .home-hero-rule{width:48px;height:.5px;background:rgba(255,255,255,.35);margin-bottom:30px}
+    .home-hero-title{font-size:clamp(28px,3.4vw,52px);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:#fff;margin:0 0 20px}
     .home-hero-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.78)}
-    .home-hero-sub{font-size:clamp(16px,1.5vw,19px);font-weight:300;line-height:1.6;color:rgba(255,255,255,.7);max-width:520px;margin:0 0 36px}
+    .home-hero-sub{font-size:clamp(16px,1.4vw,18px);font-weight:300;line-height:1.65;color:rgba(255,255,255,.68);max-width:500px;margin:0 0 34px}
     .home-hero-sub em{font-style:italic;color:#fff}
     .home-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
     .home-hero-link{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);text-decoration:none}
     .home-hero-link:hover{color:#c9a96e}
-    .home-hero-photos{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:min(76vh,720px)}
-    .hp{position:relative;overflow:hidden;background:#141c1c;cursor:pointer}
-    .hp-1{grid-row:1 / span 2}
-    .hp img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
-    .hp:hover img{transform:scale(1.04)}
-    .hp-cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(to top,rgba(10,16,16,.85),rgba(10,16,16,0));font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
-    @media(max-width:900px){.home-hero{grid-template-columns:1fr;gap:40px;padding:104px 20px 48px;min-height:auto}.home-hero-photos{height:72vw}}
+    .home-hero-eye{position:relative;aspect-ratio:1/1;width:100%;max-height:82vh;justify-self:center}
+    .home-hero-eye canvas,.home-hero-eye .eye-static{position:absolute;inset:0;width:100%;height:100%}
+    .home-hero-eye .eye-static{object-fit:cover;display:none;-webkit-mask-image:radial-gradient(circle,#000 45%,transparent 72%);mask-image:radial-gradient(circle,#000 45%,transparent 72%)}
+    @media(prefers-reduced-motion:reduce){.home-hero-eye canvas{display:none}.home-hero-eye .eye-static{display:block}}
+    @media(max-width:900px){.home-hero{grid-template-columns:1fr;padding:96px 20px 40px;min-height:auto;gap:12px}.home-hero-eye{order:-1;width:86%;max-height:none}.home-hero-logo{align-items:flex-start}}
 
-    /* OUR VISION PAGE */
+    
     .vis{background:#0a1010;color:#fff;padding-top:56px}
     .vis section{padding:96px 44px;max-width:1280px;margin:0 auto}
     .vis-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px}
@@ -675,16 +676,21 @@
 <div class="page active" id="page-home">
   <header class="home-hero">
     <div class="home-hero-text">
-      <div class="home-hero-kicker">AMIRA vision · Studio &amp; Magazine</div>
-      <h1 class="home-hero-title">Humans.<br><em>Visions.</em><br>Stories.</h1>
+      <div class="home-hero-logo" aria-label="AMIRA vision">
+        <span class="home-hero-amira">AMIRA</span>
+        <span class="home-hero-vision">vision</span>
+      </div>
+      <div class="home-hero-rule"></div>
+      <h1 class="home-hero-title">Humans. <em>Visions.</em> Stories.</h1>
       <p class="home-hero-sub">A visual storytelling studio <em>with its own magazine.</em> We tell stories through words, photography, video and sound — choosing the medium for the person in front of us.</p>
       <div class="home-hero-actions">
         <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Discover the stories &nbsp;→</span>
         <a class="home-hero-link" href="/componi-la-tua-storia">Tell your story →</a>
       </div>
     </div>
-    <div class="home-hero-photos" id="hero-photos" aria-label="Recent stories">
-      <div class="hp hp-1"></div><div class="hp hp-2"></div><div class="hp hp-3"></div>
+    <div class="home-hero-eye" aria-hidden="true">
+      <img class="eye-static" src="/images/eye-bg.jpg" alt="">
+      <canvas id="heroEye"></canvas>
     </div>
   </header>
 
@@ -1073,23 +1079,6 @@ function featuredGalleryCardHtml(g, idx) {
   </div>`;
 }
 
-// ── HOME HERO PHOTOS ──
-// Three recent stories fill the photo mosaic beside the headline (stories marked
-// "in evidenza" in the CMS come first).
-function renderHeroPhotos(combined) {
-  const tiles = document.querySelectorAll('#hero-photos .hp');
-  if (!tiles.length) return;
-  const picks = [...combined.filter(i => i.data.in_evidenza), ...combined.filter(i => !i.data.in_evidenza)]
-    .filter(i => i.data.copertina).slice(0, tiles.length);
-  picks.forEach((item, n) => {
-    const d = item.data, t = tiles[n];
-    t.innerHTML = `<img src="${d.copertina}" alt="${d.titolo || ''}" loading="${n ? 'lazy' : 'eager'}"><span class="hp-cap">${d.titolo || ''}</span>`;
-    t.onclick = item.kind === 'gallery'
-      ? () => { showPage('gallery'); openGallerySingle(ALL_GALLERIES.indexOf(d)); }
-      : () => openArticle(ARTICOLI.indexOf(d));
-  });
-}
-
 // ── FEATURED STORIES (mix of articles + galleries) ──
 function renderFeatured() {
   const featuredGrid = document.getElementById('featured-grid');
@@ -1108,8 +1097,6 @@ function renderFeatured() {
     featuredGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
     return;
   }
-
-  renderHeroPhotos(combined);
 
   featuredGrid.innerHTML = combined.map(item => {
     if (item.kind === 'gallery') {
@@ -1640,6 +1627,233 @@ window.addEventListener('scroll', () => {
     artImg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
   }
 }, { passive: true });
+
+// ── HERO EYE (from amiravision.it) ──
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Hero eye animation
+    (function() {
+      const canvas = document.getElementById('heroEye');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+      let w, h, filaments = [], sparkles = [], dustParticles = [];
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        // Cap DPR at 1 for better perf — canvas is 35% opacity anyway
+        const dpr = 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        w = rect.width; h = rect.height;
+      }
+      resize();
+
+      function init() {
+        filaments = []; sparkles = []; dustParticles = [];
+        // Drastically reduced counts for perf
+        const fCount = 160;
+        for (let i = 0; i < fCount; i++) {
+          const angle = (i / fCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.05;
+          filaments.push({
+            angle, lengthFactor: 0.7 + Math.random() * 0.8,
+            segments: 18 + Math.floor(Math.random() * 10),
+            waveFreq: 1 + Math.random() * 5, waveAmp: 0.02 + Math.random() * 0.12,
+            brightness: 0.3 + Math.random() * 0.7, phase: Math.random() * Math.PI * 2,
+            thickness: 0.3 + Math.random() * 1.4, speed: 0.5 + Math.random() * 1.5,
+            flicker: Math.random() * 0.5,
+            growthDelay: Math.random() * 0.5,
+            growthDuration: 0.35 + Math.random() * 0.25,
+          });
+        }
+        for (let i = 0; i < 80; i++) {
+          sparkles.push({
+            angle: Math.random() * Math.PI * 2, distFactor: 0.3 + Math.random() * 0.9,
+            size: 0.4 + Math.random() * 1.5, brightness: 0.5 + Math.random() * 0.5,
+            twinkle: Math.random() * Math.PI * 2, twinkleSpeed: 0.03 + Math.random() * 0.08,
+          });
+        }
+        for (let i = 0; i < 150; i++) {
+          dustParticles.push({
+            angle: Math.random() * Math.PI * 2, distFactor: 1.0 + Math.random() * 1.5,
+            size: 0.3 + Math.random() * 0.8, brightness: 0.15 + Math.random() * 0.5,
+            twinkle: Math.random() * Math.PI * 2, twinkleSpeed: 0.01 + Math.random() * 0.03,
+            driftAngle: (Math.random() - 0.5) * 0.0008,
+          });
+        }
+      }
+      init();
+
+      let time = 0;
+      const CYCLE = 8;
+      let heroInView = true;
+      let pageVisible = !document.hidden;
+      const heroEl = canvas.parentElement;
+      const heroObs = new IntersectionObserver(entries => {
+        heroInView = entries[0].isIntersecting;
+      }, { threshold: 0 });
+      if (heroEl) heroObs.observe(heroEl);
+
+      // Handle tab visibility to prevent time jump on return
+      document.addEventListener('visibilitychange', () => {
+        pageVisible = !document.hidden;
+      });
+
+      // Cap to ~30fps instead of 60fps
+      const FRAME_MS = 1000 / 30;
+      let lastFrame = 0;
+
+      function animate(ts) {
+        requestAnimationFrame(animate);
+        if (!heroInView || !pageVisible) { lastFrame = ts; return; }
+        if (ts - lastFrame < FRAME_MS) return;
+        lastFrame = ts;
+        time += 0.012;
+        const cycleTime = (time % CYCLE) / CYCLE;
+        const cx = w / 2, cy = h / 2;
+        const irisR = Math.min(w, h) * 0.38;
+        const pupilR = irisR * 0.28;
+
+        ctx.clearRect(0, 0, w, h);
+        const amb = ctx.createRadialGradient(cx, cy, 0, cx, cy, irisR * 2.2);
+        amb.addColorStop(0, 'rgba(24, 95, 165, 0.12)');
+        amb.addColorStop(0.4, 'rgba(10, 50, 120, 0.08)');
+        amb.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = amb; ctx.fillRect(0, 0, w, h);
+
+        dustParticles.forEach(p => {
+          p.twinkle += p.twinkleSpeed; p.angle += p.driftAngle;
+          const tw = 0.3 + Math.abs(Math.sin(p.twinkle)) * 0.7;
+          const dist = irisR * p.distFactor;
+          ctx.fillStyle = `rgba(100, 180, 250, ${p.brightness * tw * 0.5})`;
+          ctx.beginPath();
+          ctx.arc(cx + Math.cos(p.angle) * dist, cy + Math.sin(p.angle) * dist, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        const glowPulse = 0.85 + Math.sin(cycleTime * Math.PI * 2) * 0.15;
+        const ig = ctx.createRadialGradient(cx, cy, pupilR * 0.8, cx, cy, irisR * 1.2);
+        ig.addColorStop(0, `rgba(30, 80, 180, ${0.5 * glowPulse})`);
+        ig.addColorStop(0.3, `rgba(50, 130, 230, ${0.35 * glowPulse})`);
+        ig.addColorStop(0.7, `rgba(30, 100, 200, ${0.2 * glowPulse})`);
+        ig.addColorStop(1, 'rgba(20, 60, 140, 0)');
+        ctx.fillStyle = ig;
+        ctx.beginPath(); ctx.arc(cx, cy, irisR * 1.3, 0, Math.PI * 2); ctx.fill();
+
+        function getGrowth(f) {
+          let t = (cycleTime - f.growthDelay + 1) % 1;
+          if (t < f.growthDuration) return 1 - Math.pow(1 - t / f.growthDuration, 2.5);
+          const holdEnd = f.growthDuration + 0.3;
+          if (t < holdEnd) return 1;
+          return 1 - Math.pow((t - holdEnd) / (1 - holdEnd), 1.5);
+        }
+
+        function drawFilamentPath(f, segs) {
+          const length = irisR * f.lengthFactor;
+          ctx.beginPath();
+          for (let s = 0; s <= segs; s++) {
+            const t = s / f.segments;
+            const r = pupilR + (length - pupilR) * t;
+            const wave = Math.sin(t * f.waveFreq * Math.PI + f.phase + time * f.speed) * f.waveAmp * r;
+            const pa = f.angle + Math.PI / 2;
+            const chaos = Math.sin(t * 8 + f.phase * 2) * 2 * t;
+            const px = cx + Math.cos(f.angle) * r + Math.cos(pa) * (wave + chaos);
+            const py = cy + Math.sin(f.angle) * r + Math.sin(pa) * (wave + chaos);
+            if (s === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+        }
+
+        // Pass 1: outer glow
+        filaments.forEach(f => {
+          const g = getGrowth(f); if (g <= 0.01) return;
+          const flick = 1 - f.flicker * (0.5 + Math.sin(time * 3 + f.phase) * 0.5);
+          const pulse = (0.7 + Math.sin(time * 1.5 * f.speed + f.phase) * 0.3) * flick;
+          const b = f.brightness * pulse * g;
+          const segs = Math.max(2, Math.floor(f.segments * g));
+          ctx.strokeStyle = `rgba(50, 130, 230, ${b * 0.25})`;
+          ctx.lineWidth = f.thickness * 3; ctx.lineCap = 'round';
+          drawFilamentPath(f, segs); ctx.stroke();
+        });
+        // Pass 2: main
+        filaments.forEach(f => {
+          const g = getGrowth(f); if (g <= 0.01) return;
+          const flick = 1 - f.flicker * (0.5 + Math.sin(time * 3 + f.phase) * 0.5);
+          const pulse = (0.7 + Math.sin(time * 1.5 * f.speed + f.phase) * 0.3) * flick;
+          const b = f.brightness * pulse * g;
+          const segs = Math.max(2, Math.floor(f.segments * g));
+          ctx.strokeStyle = `rgba(120, 200, 255, ${b * 0.9})`;
+          ctx.lineWidth = f.thickness;
+          drawFilamentPath(f, segs); ctx.stroke();
+        });
+        // Pass 3: core + tips
+        filaments.forEach(f => {
+          const g = getGrowth(f); if (g <= 0.01) return;
+          const flick = 1 - f.flicker * (0.5 + Math.sin(time * 3 + f.phase) * 0.5);
+          const pulse = (0.7 + Math.sin(time * 1.5 * f.speed + f.phase) * 0.3) * flick;
+          const b = f.brightness * pulse * g;
+          if (b < 0.5) return;
+          const segs = Math.max(2, Math.floor(f.segments * g));
+          ctx.strokeStyle = `rgba(220, 240, 255, ${b * 0.5})`;
+          ctx.lineWidth = f.thickness * 0.35;
+          drawFilamentPath(f, segs); ctx.stroke();
+
+          if (g < 1 && g > 0.05) {
+            const length = irisR * f.lengthFactor;
+            const tr = pupilR + (length - pupilR) * g;
+            const tw = Math.sin(g * f.waveFreq * Math.PI + f.phase + time * f.speed) * f.waveAmp * tr;
+            const pa = f.angle + Math.PI / 2;
+            const tch = Math.sin(g * 8 + f.phase * 2) * 2 * g;
+            const tx = cx + Math.cos(f.angle) * tr + Math.cos(pa) * (tw + tch);
+            const ty = cy + Math.sin(f.angle) * tr + Math.sin(pa) * (tw + tch);
+            ctx.fillStyle = `rgba(200, 230, 255, ${b * 0.9})`;
+            ctx.beginPath(); ctx.arc(tx, ty, f.thickness * 1.2, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = `rgba(100, 180, 255, ${b * 0.4})`;
+            ctx.beginPath(); ctx.arc(tx, ty, f.thickness * 4, 0, Math.PI * 2); ctx.fill();
+          }
+        });
+
+        sparkles.forEach(s => {
+          s.twinkle += s.twinkleSpeed;
+          const tw = Math.max(0, Math.sin(s.twinkle));
+          const growthAt = Math.max(0, Math.min(1, (cycleTime - 0.2) * 2));
+          if (s.distFactor > growthAt * 1.2) return;
+          const a = s.brightness * tw;
+          if (a < 0.05) return;
+          const dist = pupilR + (irisR - pupilR) * s.distFactor;
+          const px = cx + Math.cos(s.angle) * dist;
+          const py = cy + Math.sin(s.angle) * dist;
+          ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
+          ctx.beginPath(); ctx.arc(px, py, s.size, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = `rgba(150, 220, 255, ${a * 0.3})`;
+          ctx.beginPath(); ctx.arc(px, py, s.size * 5, 0, Math.PI * 2); ctx.fill();
+        });
+
+        // Pupil
+        const pe = ctx.createRadialGradient(cx, cy, pupilR * 0.8, cx, cy, pupilR * 1.15);
+        pe.addColorStop(0, 'rgba(0, 0, 5, 1)');
+        pe.addColorStop(0.7, 'rgba(30, 80, 180, 0.6)');
+        pe.addColorStop(1, 'rgba(50, 130, 230, 0)');
+        ctx.fillStyle = pe;
+        ctx.beginPath(); ctx.arc(cx, cy, pupilR * 1.15, 0, Math.PI * 2); ctx.fill();
+
+        const pg = ctx.createRadialGradient(cx - pupilR * 0.15, cy - pupilR * 0.1, 0, cx, cy, pupilR);
+        pg.addColorStop(0, 'rgba(5, 15, 35, 1)');
+        pg.addColorStop(0.7, 'rgba(0, 2, 8, 1)');
+        pg.addColorStop(1, 'rgba(0, 0, 0, 1)');
+        ctx.fillStyle = pg;
+        ctx.beginPath(); ctx.arc(cx, cy, pupilR, 0, Math.PI * 2); ctx.fill();
+
+        const hlX = cx + pupilR * 0.2, hlY = cy - pupilR * 0.15;
+        const hg = ctx.createRadialGradient(hlX, hlY, 0, hlX, hlY, pupilR * 0.55);
+        hg.addColorStop(0, 'rgba(80, 160, 255, 0.9)');
+        hg.addColorStop(0.3, 'rgba(50, 120, 220, 0.5)');
+        hg.addColorStop(0.7, 'rgba(30, 80, 180, 0.15)');
+        hg.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = hg;
+        ctx.beginPath(); ctx.arc(hlX, hlY, pupilR * 0.55, 0, Math.PI * 2); ctx.fill();
+      }
+      requestAnimationFrame(animate);
+      window.addEventListener('resize', () => { resize(); init(); }, { passive: true });
+    })();
+}
 
 // ── LIGHTBOX ──
 let lbImages = [];
