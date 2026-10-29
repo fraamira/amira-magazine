@@ -816,7 +816,8 @@
 // ── CONFIG ──
 const GITHUB_USER = 'fraamira';
 const GITHUB_REPO = 'amira-magazine';
-const BRANCH = 'main';
+// Preview deployments of the sito-unico branch read stories from that branch; the live site reads main.
+const BRANCH = /-git-sito-unico-/.test(location.hostname) ? 'sito-unico' : 'main';
 const API = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/_articoli?ref=${BRANCH}`;
 
 let ARTICOLI = [];
@@ -1462,7 +1463,7 @@ fetchGallery();
 // ── FETCH GALLERY ──
 async function fetchGallery() {
   try {
-    const res = await fetch('https://api.github.com/repos/fraamira/amira-magazine/contents/_gallery?ref=main');
+    const res = await fetch('https://api.github.com/repos/fraamira/amira-magazine/contents/_gallery?ref=' + BRANCH);
     if (!res.ok) return;
     const files = await res.json();
     const mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.json'));
