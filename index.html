@@ -112,7 +112,7 @@
     .story-badge{position:absolute;z-index:2;top:16px;left:16px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);border:.5px solid rgba(255,255,255,.3);padding:3px 7px}
 
     /* FEATURED STORIES (home) */
-    .featured-section{padding:64px 44px;background:#0a1010}
+    .featured-section{padding:64px 44px;background:#0a1628}
     .featured-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
     .featured-title{font-size:clamp(22px,2.6vw,28px);font-weight:700;font-style:italic;color:#fff;margin:0}
     .featured-subtitle{font-size:15px;font-weight:300;color:rgba(255,255,255,.5);margin-top:8px;max-width:460px;line-height:1.5}
@@ -150,11 +150,12 @@
     .story-play i{font-size:16px;color:#fff}
 
     /* HOME HERO: logo, three words and subtitle centred, the eye behind */
-    .home-hero{position:relative;min-height:100vh;background:#05080c;display:flex;align-items:center;justify-content:center;padding:110px 32px 72px;overflow:hidden;text-align:center}
-    .home-hero-eye{position:absolute;left:50%;top:50%;width:min(110vh,120vw);aspect-ratio:1/1;transform:translate(-50%,-50%);opacity:.45;pointer-events:none}
+    .home-hero{position:relative;min-height:100vh;background:#0a1628;display:flex;align-items:center;justify-content:center;padding:110px 32px 72px;overflow:hidden;text-align:center}
+    .home-hero-paper{position:absolute;inset:0;background:url(/images/paper-navy.jpg) center/cover no-repeat;opacity:.7;pointer-events:none}
+    .home-hero-eye{position:absolute;left:50%;top:50%;width:min(110vh,120vw);aspect-ratio:1/1;transform:translate(-50%,-50%);opacity:.4;mix-blend-mode:screen;pointer-events:none}
     .home-hero-eye canvas,.home-hero-eye .eye-static{position:absolute;inset:0;width:100%;height:100%}
     .home-hero-eye .eye-static{object-fit:cover;display:none;-webkit-mask-image:radial-gradient(circle,#000 40%,transparent 70%);mask-image:radial-gradient(circle,#000 40%,transparent 70%)}
-    .home-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(5,8,12,.35) 0%,rgba(5,8,12,.15) 45%,rgba(5,8,12,.85) 100%);pointer-events:none}
+    .home-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,22,40,.25) 0%,rgba(10,22,40,.1) 45%,rgba(10,22,40,.75) 100%);pointer-events:none}
     .home-hero-text{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:900px}
     .home-hero-logo{display:flex;flex-direction:column;align-items:center;line-height:1;margin-bottom:30px}
     .home-hero-amira{font-size:clamp(60px,10vw,160px);font-weight:800;letter-spacing:.2em;text-indent:.2em;color:#fff;line-height:.9}
@@ -171,8 +172,25 @@
     @media(max-width:768px){.home-hero{padding:96px 20px 56px}.home-hero-eye{width:150vw}}
 
     [data-gallery-link][hidden]{display:none !important}
+    /* TELL YOUR STORY CHOICE */
+    .story-choice{position:fixed;inset:0;z-index:300;background:rgba(5,12,24,.82);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
+    .story-choice[hidden]{display:none}
+    .story-choice-box{position:relative;width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#0a1628 url(/images/paper-navy.jpg) center/cover;border:.5px solid rgba(100,140,210,.3);padding:48px}
+    .story-choice-close{position:absolute;top:12px;right:12px;width:44px;height:44px;border:0;background:transparent;color:rgba(255,255,255,.7);font-size:28px;cursor:pointer}
+    .story-choice-close:hover{color:#fff}
+    .story-choice-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:14px}
+    .story-choice-title{font-size:clamp(28px,3.6vw,44px);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:#fff;margin:0 0 32px}
+    .story-choice-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.8)}
+    .story-choice-options{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .story-choice-opt{display:flex;flex-direction:column;gap:12px;padding:28px;border:.5px solid rgba(255,255,255,.25);background:rgba(5,12,24,.45);color:#fff;text-decoration:none;transition:border-color .2s,background .2s}
+    .story-choice-opt:hover,.story-choice-opt:focus-visible{border-color:#c9a96e;background:rgba(5,12,24,.65);outline:none}
+    .story-choice-num{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+    .story-choice-opt strong{font-size:24px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+    .story-choice-opt span:not(.story-choice-num):not(.story-choice-go){font-size:15px;font-weight:300;line-height:1.6;color:rgba(255,255,255,.72)}
+    .story-choice-go{margin-top:auto;padding-top:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c9a96e}
+    @media(max-width:700px){.story-choice-box{padding:40px 20px 24px}.story-choice-options{grid-template-columns:1fr}}
     /* OUR VISION PAGE */
-    .vis{background:#0a1010;color:#fff;padding-top:56px}
+    .vis{background:#0a1628;color:#fff;padding-top:56px}
     .vis section{padding:96px 44px;max-width:1280px;margin:0 auto}
     .vis-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px}
     .vis-title{font-size:clamp(44px,6.5vw,104px);font-weight:700;letter-spacing:-.05em;line-height:.95;margin:0 0 36px;max-width:1100px}
@@ -644,7 +662,7 @@
     <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
     <a href="#/vision" onclick="event.preventDefault();showPage('magazine')" class="nav-t">Our vision</a>
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t" data-gallery-link hidden>The Gallery</a>
-    <a href="/componi-la-tua-storia" class="nav-t">Tell your story</a>
+    <a href="/componi-la-tua-storia" class="nav-t" onclick="return openStoryChoice(event)">Tell your story</a>
     <!-- FILOS temporarily hidden from nav: <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a> -->
   </div>
   <div class="nav-actions">
@@ -663,8 +681,29 @@
   <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
   <a onclick="closeMobileMenu();showPage('magazine')">Our vision</a>
   <a onclick="closeMobileMenu();showPage('gallery')" data-gallery-link hidden>The Gallery</a>
-  <a href="/componi-la-tua-storia">Tell your story</a>
+  <a href="/componi-la-tua-storia" onclick="closeMobileMenu();return openStoryChoice(event)">Tell your story</a>
   <!-- FILOS temporarily hidden from mobile menu: <a onclick="closeMobileMenu();showPage('filos')">FILOS</a> -->
+</div>
+<div class="story-choice" id="story-choice" role="dialog" aria-modal="true" aria-labelledby="story-choice-title" hidden onclick="if(event.target===this)closeStoryChoice()">
+  <div class="story-choice-box">
+    <button type="button" class="story-choice-close" aria-label="Close" onclick="closeStoryChoice()">×</button>
+    <div class="story-choice-kicker">Tell your story</div>
+    <h2 class="story-choice-title" id="story-choice-title">How can we <em>tell it together?</em></h2>
+    <div class="story-choice-options">
+      <a class="story-choice-opt" href="/componi-la-tua-storia">
+        <span class="story-choice-num">01 — For your brand</span>
+        <strong>A project for your brand</strong>
+        <span>Photography, video and social content for your business, your work or your event — from the brief to delivery.</span>
+        <span class="story-choice-go">Compose your story →</span>
+      </a>
+      <a class="story-choice-opt" href="https://wa.me/393202412048?text=Hi%20Amira%2C%20I%20have%20a%20story%20I%27d%20like%20to%20share%20with%20the%20magazine%3A%20" target="_blank" rel="noopener">
+        <span class="story-choice-num">02 — For the magazine</span>
+        <strong>A story for AMIRA vision</strong>
+        <span>You, someone you know or a place has a story worth telling? Write to us: if it inspires us, we'll tell it in the magazine.</span>
+        <span class="story-choice-go">Write to us on WhatsApp →</span>
+      </a>
+    </div>
+  </div>
 </div>
 <div class="translation-status" id="translation-status" role="status" aria-live="polite"></div>
 
@@ -678,6 +717,7 @@
 <!-- HOME -->
 <div class="page active" id="page-home">
   <header class="home-hero">
+    <div class="home-hero-paper" aria-hidden="true"></div>
     <div class="home-hero-eye" aria-hidden="true">
       <img class="eye-static" src="/images/eye-bg.jpg" alt="">
       <canvas id="heroEye"></canvas>
@@ -689,10 +729,10 @@
       </div>
       <div class="home-hero-rule"></div>
       <h1 class="home-hero-title">Humans. <em>Visions.</em> Stories.</h1>
-      <p class="home-hero-sub">A visual storytelling studio <em>with its own magazine.</em> We tell stories through words, photography, video and sound — choosing the medium for the person in front of us.</p>
+      <p class="home-hero-sub">A visual storytelling studio <em>with its own magazine.</em><br>What's your vision?</p>
       <div class="home-hero-actions">
         <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Discover the stories &nbsp;→</span>
-        <a class="home-hero-link" href="/componi-la-tua-storia">Tell your story →</a>
+        <a class="home-hero-link" href="/componi-la-tua-storia" onclick="return openStoryChoice(event)">Tell your story →</a>
       </div>
     </div>
   </header>
@@ -758,8 +798,7 @@
     <div class="q-side">
       <p>Do you have a story to tell, a project you believe in, a brand that wants to be seen? Share your story with us — we will tell it together.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-      <a href="https://wa.me/393202412048" target="_blank" class="btn-pill">Share your story →</a>
-      <a href="/componi-la-tua-storia" class="btn-pill" style="background:rgba(255,255,255,.04)">Compose your story →</a>
+      <a href="/componi-la-tua-storia" class="btn-pill" onclick="return openStoryChoice(event)">Tell your story →</a>
     </div>
     </div>
   </section>
@@ -782,7 +821,7 @@
         <li><a href="#" class="f-link-1">About us</a></li>
         <li><a href="#" class="f-link-2">Contact</a></li>
         <li><a href="https://instagram.com/amira.vision" target="_blank">Instagram</a></li>
-        <li><a href="/componi-la-tua-storia">Tell your story</a></li>
+        <li><a href="/componi-la-tua-storia" onclick="return openStoryChoice(event)">Tell your story</a></li>
       </ul>
     </div>
     <div class="f-bottom">
@@ -822,7 +861,7 @@
 
 <!-- STORIES ARCHIVE PAGE (all stories) -->
 <div class="page" id="page-stories">
-  <div style="background:#050505;min-height:100vh;padding-top:56px">
+  <div style="background:#0a1628;min-height:100vh;padding-top:56px">
     <div style="text-align:center;padding:64px 44px 48px;border-bottom:.5px solid rgba(255,255,255,.06)">
       <div style="font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#c9a96e;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px">
         <span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>All stories<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>
@@ -1345,7 +1384,7 @@ function openArticle(index, updateHistory = true) {
       ${art.date ? `<dt>Year</dt><dd>${String(art.date).slice(0, 4)}</dd>` : ''}
     </dl>
     ${links ? `<div class="behind-links">${links}</div>` : ''}
-    <a class="behind-cta" href="/componi-la-tua-storia">Tell us your story →</a>
+    <a class="behind-cta" href="/componi-la-tua-storia" onclick="return openStoryChoice(event)">Tell us your story →</a>
   </div>` : '';
 
   document.getElementById('art-content').innerHTML = html + behindHtml + shareHtml;
@@ -1862,6 +1901,21 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 if (SHOW_GALLERY) document.querySelectorAll('[data-gallery-link]').forEach(a => a.hidden = false);
 
+// ── TELL YOUR STORY: choose brand project or magazine story ──
+function openStoryChoice(e) {
+  if (e) e.preventDefault();
+  const d = document.getElementById('story-choice');
+  d.hidden = false;
+  document.body.style.overflow = 'hidden';
+  d.querySelector('.story-choice-opt').focus();
+  return false;
+}
+function closeStoryChoice() {
+  document.getElementById('story-choice').hidden = true;
+  document.body.style.overflow = '';
+}
+document.getElementById('story-choice').addEventListener('keydown', e => { if (e.key === 'Escape') closeStoryChoice(); });
+
 // ── LIGHTBOX ──
 let lbImages = [];
 let lbIndex = 0;
@@ -2079,7 +2133,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="vis-num">01 — The studio</div>
         <h2>We tell <em>your</em> story.</h2>
         <p>Images, films and content for people, brands and institutions who want to be told with authenticity. From the first conversation to the finished work.</p>
-        <a class="vis-link" href="/componi-la-tua-storia">Tell us your story →</a>
+        <a class="vis-link" href="/componi-la-tua-storia" onclick="return openStoryChoice(event)">Tell us your story →</a>
       </div>
       <div class="vis-col">
         <div class="vis-num">02 — The magazine</div>
@@ -2109,7 +2163,7 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
       <p class="vis-close"><strong>AMIRA vision</strong> is founded on two principles: the power of sharing and the power of storytelling as forms of inspiration.</p>
       <div class="vis-actions">
-        <a class="btn-pill" href="/componi-la-tua-storia">Tell your story &nbsp;→</a>
+        <a class="btn-pill" href="/componi-la-tua-storia" onclick="return openStoryChoice(event)">Tell your story &nbsp;→</a>
         <a class="btn-pill" href="https://wa.me/393202412048" target="_blank" rel="noopener" style="background:rgba(255,255,255,.04)">WhatsApp</a>
       </div>
     </section>
