@@ -3,10 +3,6 @@ titolo: The Art of Regeneration
 titolo_em: Between Italy and Bahrain, Where Change Brings New Light with Dr.
   Alessandra D’Agostino
 tipo: articolo
-mezzi: [parole, foto, video, social]
-con: "Dr. Alessandra D'Agostino"
-link_esterno: "https://www.instagram.com/p/DUVFBnFlGtE/"
-link_label: "See the social & video project"
 rubrica: magazine
 date: 2026-10-02
 luogo: Aesthetic Medicine
