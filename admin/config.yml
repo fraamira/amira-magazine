@@ -126,6 +126,7 @@ collections:
             widget: "object"
             fields:
               - { label: "URL video", name: "url", widget: "string" }
+      - { label: "Copertina della home", name: "in_evidenza", widget: "boolean", default: false, required: false, hint: "Attiva per mettere questa storia a tutto schermo in apertura della home. Se nessuna è attiva, va in copertina la più recente." }
       - { label: "Pubblica", name: "pubblicato", widget: "boolean", default: true }
 
   - name: "gallery"
