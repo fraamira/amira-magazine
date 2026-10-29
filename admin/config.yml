@@ -30,7 +30,24 @@ collections:
           - { label: "Articolo", value: "articolo" }
           - { label: "Solo video", value: "video" }
           - { label: "Solo foto", value: "foto" }
-      - { label: "Link al video (solo se tipo = Solo video)", name: "video_url", widget: "string", required: false, hint: "Link YouTube, Vimeo ecc. Si apre in una nuova scheda invece della pagina articolo." }
+      - { label: "Link al video (solo se tipo = Solo video)", name: "video_url", widget: "string", required: false, hint: "Link YouTube, Vimeo ecc. Si apre in una nuova scheda invece della pagina articolo. Lascia vuoto per aprire la pagina della storia." }
+      - label: "Raccontata con"
+        name: "mezzi"
+        widget: "select"
+        multiple: true
+        required: false
+        hint: "I badge sulla card e il filtro in home. Se lasci vuoto, vengono ricavati dai blocchi che aggiungi."
+        options:
+          - { label: "Parole", value: "parole" }
+          - { label: "Foto", value: "foto" }
+          - { label: "Video", value: "video" }
+          - { label: "Audio", value: "audio" }
+          - { label: "Social", value: "social" }
+      - { label: "Con (cliente o protagonista)", name: "con", widget: "string", required: false, hint: "Es: Laboratorio Rubinacci. Compare sulla card e nel box 'Dietro la storia'. Lascia vuoto per le storie solo della rivista." }
+      - { label: "Link esterno", name: "link_esterno", widget: "string", required: false, hint: "Es: il post o il reel su Instagram" }
+      - { label: "Testo del link esterno", name: "link_label", widget: "string", required: false, default: "Watch on Instagram" }
+      - { label: "Secondo link", name: "link_2", widget: "string", required: false }
+      - { label: "Testo del secondo link", name: "link_2_label", widget: "string", required: false }
       - label: "Rubrica"
         name: "rubrica"
         widget: "select"
@@ -53,12 +70,21 @@ collections:
           - "Style"
           - "Society"
           - "Travel"
-      - { label: "Articolo di (nome e cognome)", name: "autore", widget: "string", default: "Francesco Amirante" }
+          - "Brand"
+      - { label: "Articolo di (nome e cognome)", name: "autore", widget: "string", default: "Francesco Amirante", required: false }
       - { label: "Foto di (nome e cognome fotografo)", name: "fotografo", widget: "string", required: false, hint: "Lascia vuoto se non applicabile" }
       - { label: "Minuti di lettura", name: "minuti", widget: "number", value_type: "int", default: 5 }
       - { label: "Foto copertina", name: "copertina", widget: "image" }
-      - { label: "Breve estratto", name: "estratto", widget: "string" }
-      - { label: "Testo introduttivo", name: "intro", widget: "text" }
+      - { label: "Foto extra 1", name: "extra_foto_1", widget: "image", required: false, hint: "Foto aggiuntive della storia (utile per le storie solo foto)" }
+      - { label: "Foto extra 1 — dopo il paragrafo n°", name: "extra_foto_1_posizione", widget: "number", value_type: "int", required: false, hint: "Vuoto = in fondo" }
+      - { label: "Foto extra 2", name: "extra_foto_2", widget: "image", required: false }
+      - { label: "Foto extra 2 — dopo il paragrafo n°", name: "extra_foto_2_posizione", widget: "number", value_type: "int", required: false }
+      - { label: "Foto extra 3", name: "extra_foto_3", widget: "image", required: false }
+      - { label: "Foto extra 3 — dopo il paragrafo n°", name: "extra_foto_3_posizione", widget: "number", value_type: "int", required: false }
+      - { label: "Foto extra 4", name: "extra_foto_4", widget: "image", required: false }
+      - { label: "Foto extra 4 — dopo il paragrafo n°", name: "extra_foto_4_posizione", widget: "number", value_type: "int", required: false }
+      - { label: "Breve estratto", name: "estratto", widget: "string", required: false }
+      - { label: "Testo introduttivo", name: "intro", widget: "text", required: false }
       - label: "Contenuto articolo"
         name: "contenuto"
         widget: "list"

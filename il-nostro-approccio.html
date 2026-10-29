@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Il Nostro Approccio — Amira Vision Social</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0b1f3a; --navy-dark: #061525; --navy-mid: #0d2540;
+    --blue: #4da8f0; --blue-dark: #185fa5; --blue-light: #7ec8f7;
+    --text-muted: #7a9fc0; --text-light: #a8c8e8; --border: rgba(77,168,240,0.2);
+    --gold: #e8c46b;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: #fff; }
+
+  .preview-banner { background: var(--gold); color: #1a1400; text-align: center; padding: 10px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.05em; }
+
+  section { padding: 100px 48px; position: relative; overflow: hidden; }
+  .inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+  .inner-wide { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+
+  /* HERO / INTRO */
+  .social-hero { background: radial-gradient(ellipse at 30% 20%, rgba(77,168,240,0.15) 0%, transparent 55%), radial-gradient(ellipse at 75% 80%, rgba(232,196,107,0.08) 0%, transparent 55%), var(--navy-dark); text-align: center; padding: 120px 48px 100px; }
+  .sh-eyebrow { font-size: 12px; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; margin-bottom: 22px; font-weight: 600; }
+  .sh-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: clamp(34px, 5.5vw, 58px); line-height: 1.15; margin-bottom: 24px; }
+  .sh-title em { color: var(--blue-light); font-style: italic; font-weight: 300; }
+  .sh-sub { font-size: 16px; color: var(--text-muted); max-width: 620px; margin: 0 auto; line-height: 1.8; font-weight: 300; }
+
+  /* NARRATIVE BLOCKS */
+  .narrative-block { border-top: 0.5px solid var(--border); }
+  .nb-eyebrow { font-size: 11px; letter-spacing: 0.2em; color: var(--blue); text-transform: uppercase; margin-bottom: 18px; font-weight: 600; }
+  .nb-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: clamp(24px, 3vw, 32px); margin-bottom: 26px; line-height: 1.3; }
+  .nb-body { font-size: 16px; line-height: 1.95; color: var(--text-light); font-weight: 300; }
+  .nb-body p { margin-bottom: 20px; }
+  .nb-body strong { color: #fff; font-weight: 600; }
+  .nb-body em { color: var(--blue-light); font-style: italic; }
+
+  /* BIG STATEMENT */
+  .statement { background: linear-gradient(135deg, var(--navy-mid), var(--navy-dark)); text-align: center; padding: 100px 48px; }
+  .statement-text { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: clamp(28px, 4.5vw, 46px); line-height: 1.3; max-width: 800px; margin: 0 auto; }
+  .statement-text .dim { color: var(--text-muted); font-weight: 300; }
+  .statement-text .bright { color: var(--gold); }
+  .statement-divider { width: 50px; height: 2px; background: var(--gold); margin: 32px auto 0; }
+
+  /* PROMO CALLOUT (esempio di ciò che NON siamo sempre) */
+  .promo-callout { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 30px 0; }
+  .promo-chip { background: rgba(255,255,255,0.04); border: 1px dashed rgba(122,159,192,0.4); color: #6a8aa8; font-size: 13px; padding: 10px 18px; border-radius: 20px; font-weight: 600; text-decoration: line-through; text-decoration-color: rgba(255,100,100,0.4); }
+
+  /* BALANCE DIAGRAM */
+  .balance-visual { display: flex; align-items: center; justify-content: center; gap: 0; margin: 40px 0; flex-wrap: wrap; }
+  .balance-item { text-align: center; padding: 28px 32px; }
+  .balance-item .bi-icon { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background: rgba(77,168,240,0.1); border: 0.5px solid rgba(77,168,240,0.3); display: flex; align-items: center; justify-content: center; }
+  .balance-item .bi-icon svg { width: 24px; height: 24px; stroke: var(--blue-light); fill: none; stroke-width: 1.6; }
+  .balance-item .bi-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 15px; margin-bottom: 6px; }
+  .balance-item .bi-desc { font-size: 12.5px; color: var(--text-muted); max-width: 160px; line-height: 1.6; }
+  .balance-plus { font-size: 22px; color: var(--gold); font-weight: 300; padding: 0 8px; }
+
+  /* CONSULTANCY LIST */
+  .consultancy-list { display: flex; flex-direction: column; gap: 30px; margin-top: 40px; }
+  .consultancy-item { display: grid; grid-template-columns: 44px 56px 1fr; align-items: start; gap: 20px; padding-bottom: 30px; border-bottom: 0.5px solid rgba(232,196,107,0.12); }
+  .consultancy-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ci-num { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 22px; color: rgba(232,196,107,0.35); line-height: 1; padding-top: 6px; }
+  .ci-icon { width: 56px; height: 56px; border-radius: 14px; background: rgba(232,196,107,0.08); border: 0.5px solid rgba(232,196,107,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ci-icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+  .ci-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 17px; color: #fff; margin-bottom: 8px; }
+  .ci-desc { font-size: 14px; color: var(--text-light); line-height: 1.75; font-weight: 300; }
+
+  .consultancy-closer { text-align: center; margin-top: 50px; font-size: 17px; color: var(--text-light); font-weight: 300; font-family: 'Raleway', sans-serif; }
+  .consultancy-closer strong { color: var(--gold); font-weight: 800; }
+
+  @media (max-width: 640px) {
+    .consultancy-item { grid-template-columns: 36px 44px 1fr; gap: 12px; }
+    .ci-icon { width: 44px; height: 44px; border-radius: 10px; }
+    .ci-icon svg { width: 18px; height: 18px; }
+    .ci-num { font-size: 17px; }
+  }
+
+  @media (max-width: 980px) {
+    section { padding: 70px 24px; }
+    .balance-visual { gap: 10px; }
+    .balance-plus { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO INTRO -->
+<section class="social-hero">
+  <div class="inner">
+    <div class="sh-eyebrow">Amira Vision Social</div>
+    <h1 class="sh-title">L'incontro tra <em>creatività</em><br>e performance.</h1>
+    <p class="sh-sub">Non pubblichiamo contenuti per riempire un calendario. Costruiamo una presenza che si fa ricordare — e che, mese dopo mese, si misura.</p>
+  </div>
+</section>
+
+<!-- BLOCCO 1: A COSA SERVONO I SOCIAL -->
+<section class="narrative-block">
+  <div class="inner">
+    <div class="nb-eyebrow">Partiamo da una domanda semplice</div>
+    <div class="nb-title">A cosa servono davvero i social?</div>
+    <div class="nb-body">
+      <p>Ti ricordi i cartelloni pubblicitari per strada? I social sono la stessa cosa, ma digitale: una <strong>vetrina</strong> in cui esponi la tua realtà a chi la sta cercando.</p>
+      <p>Un buon contenuto, autentico, è già di per sé un valore aggiunto. Non basta apparire — bisogna essere <strong>riconoscibili</strong>. Per questo costruiamo una narrazione, un personaggio riconoscibile, una <strong>community che ti sceglie perché si ricorda di te</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BIG STATEMENT -->
+<section class="statement">
+  <div class="statement-text">
+    <span class="dim">Tutti facciamo le stesse cose.</span><br>
+    La differenza sta nel <span class="bright">dirle a modo tuo</span>.
+  </div>
+  <div class="statement-divider"></div>
+</section>
+
+<!-- BLOCCO 2: NON SOLO PROMOZIONE -->
+<section class="narrative-block">
+  <div class="inner">
+    <div class="nb-eyebrow">Come ci distinguiamo</div>
+    <div class="nb-title">Non è (solo) una promozione.</div>
+    <div class="nb-body">
+      <p>Amira si distingue perché i contenuti non sono sempre — perché ogni tanto servono — quelli che ti aspetti:</p>
+      <div class="promo-callout">
+        <span class="promo-chip">PROMO! VIENI DA ME!</span>
+        <span class="promo-chip">LO SAI COS'È IL BOTOX? NO.</span>
+      </div>
+      <p>I nostri video tirano fuori il tuo modo di pensare, di relazionarti con le persone, la tua <strong>umanità</strong>.</p>
+      <p>Perché compri il prosciutto dalla salumeria di fiducia? Per il prezzo? Forse no — magari è anche la più cara. Per la qualità, senz'altro, che giustifica il prezzo. Ma se sei disposto a pagare quella qualità a quel prezzo, è perché quella persona ti trasmette <em>fiducia</em>, <em>empatia</em>, e diventa il tuo punto di riferimento.</p>
+      <p>Con i social succede lo stesso. E <strong>crescere organicamente è fondamentale</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCCO 3: EQUILIBRIO CRESCITA/FIDELIZZAZIONE -->
+<section class="narrative-block">
+  <div class="inner">
+    <div class="nb-eyebrow">L'altra metà della storia</div>
+    <div class="nb-title">Crescere non basta. Bisogna anche restare.</div>
+    <div class="nb-body">
+      <p>I social non servono solo per crescere senza fine. Sono un supporto fondamentale anche alla <strong>fidelizzazione</strong> dei clienti che hai già.</p>
+      <p>Immagina se ti arrivassero improvvisamente migliaia di nuovi clienti tutti insieme: non riusciresti a gestirli, e si diffonderebbe la fama che non sai gestire la clientela. Immagina invece se, di pari passo con le nuove richieste, ottenessi anche una <strong>fidelizzazione più forte</strong> di chi ti conosce già — magari di chi si era dimenticato che offri anche quel servizio.</p>
+    </div>
+
+    <div class="balance-visual">
+      <div class="balance-item">
+        <div class="bi-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="bi-label">Divulgazione</div>
+        <div class="bi-desc">Farti conoscere da chi non ti conosce ancora.</div>
+      </div>
+      <div class="balance-plus">+</div>
+      <div class="balance-item">
+        <div class="bi-icon"><svg viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+        <div class="bi-label">Crescita</div>
+        <div class="bi-desc">Nuovi clienti, in un ritmo che puoi gestire.</div>
+      </div>
+      <div class="balance-plus">+</div>
+      <div class="balance-item">
+        <div class="bi-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="bi-label">Fidelizzazione</div>
+        <div class="bi-desc">Chi ti conosce già, che torna a sceglierti.</div>
+      </div>
+    </div>
+
+    <div class="nb-body" style="text-align:center; margin-top: 10px;">
+      <p><strong>Equilibrio tra divulgazione, crescita e fidelizzazione: una performance equilibrata.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- COSA INCLUDE LA CONSULENZA -->
+<section class="narrative-block consultancy-section">
+  <div class="inner">
+    <div class="nb-eyebrow">Prima di accendere una telecamera</div>
+    <div class="nb-title">Fare social non è (solo) girare un video.</div>
+    <div class="nb-body">
+      <p>Dietro ogni contenuto che vedi c'è un lavoro che non si vede — ed è quello che fa davvero la differenza.</p>
+    </div>
+
+    <div class="consultancy-list">
+      <div class="consultancy-item">
+        <div class="ci-num">01</div>
+        <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="ci-text">
+          <div class="ci-title">Analisi della comunicazione</div>
+          <div class="ci-desc">Studiamo il tuo modo di parlare, di relazionarti, i tuoi gesti naturali: la base per costruire contenuti che sembrano davvero te, non un copione recitato.</div>
+        </div>
+      </div>
+
+      <div class="consultancy-item">
+        <div class="ci-num">02</div>
+        <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        <div class="ci-text">
+          <div class="ci-title">Tono di voce del brand</div>
+          <div class="ci-desc">Definiamo insieme un tono coerente — elegante, diretto, ironico, autorevole — che si riconosca in ogni contenuto, dal reel alla didascalia.</div>
+        </div>
+      </div>
+
+      <div class="consultancy-item">
+        <div class="ci-num">03</div>
+        <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div class="ci-text">
+          <div class="ci-title">Costruzione della "sceneggiatura"</div>
+          <div class="ci-desc">Scriviamo una storia intorno a te: quella che ti trasforma da professionista a personaggio riconoscibile, con un filo narrativo che il pubblico può seguire nel tempo.</div>
+        </div>
+      </div>
+
+      <div class="consultancy-item">
+        <div class="ci-num">04</div>
+        <div class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <div class="ci-text">
+          <div class="ci-title">Studio preventivo del business</div>
+          <div class="ci-desc">Prima di accendere una telecamera, ci informiamo sulla tua attività, i tuoi prodotti, il tuo pubblico: i contenuti nascono già mirati al target giusto. A volte capita anche di improvvisare sul momento — e spesso sono proprio quelli i più spontanei. Ma possiamo permettercelo solo perché la conoscenza di base c'è già.</div>
+        </div>
+      </div>
+
+      <div class="consultancy-item">
+        <div class="ci-num">05</div>
+        <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="ci-text">
+          <div class="ci-title">Valutazione delle sponsorizzazioni</div>
+          <div class="ci-desc">Non sono sempre necessarie — ma quando lo sono, secondo la nostra esperienza fanno davvero la differenza. Le valutiamo caso per caso, non le proponiamo per principio.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="consultancy-closer">Questo è ciò che intendiamo per <strong>consulenza</strong> — non solo produzione.</div>
+  </div>
+</section>
+
+
+</body>
+</html>

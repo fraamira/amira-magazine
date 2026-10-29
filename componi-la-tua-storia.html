@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Componi la tua storia — Amira Vision</title>
+<meta name="description" content="Rispondi a poche domande e scopri il pacchetto Amira Vision pensato per la tua storia." />
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0b1f3a; --navy-dark: #061525; --navy-mid: #0d2540;
+    --blue: #4da8f0; --blue-dark: #185fa5; --blue-light: #7ec8f7;
+    --text-muted: #7a9fc0; --text-light: #a8c8e8; --border: rgba(77,168,240,0.2);
+    --green: #25d366;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: #fff; min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--navy-dark); position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 0 24px; height: 64px; border-bottom: 0.5px solid var(--border); }
+  .nav-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; max-width: 1400px; }
+  .nav-back { justify-self: start; color: var(--text-light); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .nav-back:hover { color: #fff; }
+  .nav-logo { justify-self: center; display: flex; flex-direction: column; align-items: center; line-height: 1; text-decoration: none; }
+  .nav-logo .nl { font-family: 'Raleway', sans-serif; font-size: 17px; font-weight: 900; color: var(--blue); letter-spacing: 0.22em; text-indent: 0.22em; }
+  .nav-logo .ns { font-size: 8px; font-weight: 300; color: var(--blue-light); letter-spacing: 0.5em; text-indent: 0.5em; margin-top: 2px; }
+  .nav-spacer { justify-self: end; width: 60px; }
+
+  /* PROGRESS */
+  .progress-track { height: 3px; background: rgba(77,168,240,0.12); width: 100%; position: sticky; top: 64px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue-dark), var(--blue)); width: 0%; transition: width 0.4s ease; }
+
+  /* STAGE */
+  .stage-wrap { min-height: calc(100vh - 67px); display: flex; align-items: center; justify-content: center; padding: 56px 24px; position: relative; overflow: hidden; }
+  .stage-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(77,168,240,0.12) 0%, transparent 55%), radial-gradient(ellipse at 75% 80%, rgba(77,168,240,0.08) 0%, transparent 55%); pointer-events: none; }
+  .stage { max-width: 640px; width: 100%; position: relative; z-index: 2; }
+  .stage.fade-in { animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+  .q-eyebrow { font-size: 11px; letter-spacing: 0.22em; color: var(--blue); text-transform: uppercase; margin-bottom: 18px; font-weight: 600; text-align: center; }
+  .q-title { font-family: 'Raleway', sans-serif; font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; color: #fff; text-align: center; line-height: 1.25; margin-bottom: 10px; }
+  .q-subtitle { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 40px; font-weight: 300; }
+
+  /* OPTIONS */
+  .options-grid { display: grid; gap: 14px; margin-bottom: 8px; }
+  .options-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .options-grid.cols-1 { grid-template-columns: 1fr; }
+  .option-card { position: relative; background: rgba(255,255,255,0.03); border: 1px solid rgba(77,168,240,0.18); border-radius: 16px; padding: 20px 22px; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.15s; display: flex; align-items: flex-start; gap: 14px; }
+  .option-card:hover { border-color: rgba(77,168,240,0.5); transform: translateY(-2px); }
+  .option-card.selected { border-color: var(--blue); background: rgba(77,168,240,0.1); }
+  .option-mark { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(77,168,240,0.4); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .option-card.type-multi .option-mark { border-radius: 6px; }
+  .option-card.selected .option-mark { background: var(--blue); border-color: var(--blue); }
+  .option-mark svg { width: 12px; height: 12px; stroke: #fff; fill: none; stroke-width: 3; opacity: 0; transition: opacity 0.15s; }
+  .option-card.selected .option-mark svg { opacity: 1; }
+  .option-text .ol { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .option-text .od { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; font-weight: 300; }
+
+  .q-hint { font-size: 12px; color: #4a6a8a; text-align: center; margin-top: 22px; font-style: italic; }
+
+  /* ACTIONS */
+  .stage-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 44px; }
+  .btn-back { background: transparent; color: var(--text-muted); border: none; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 10px 4px; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .btn-back:hover { color: #fff; }
+  .btn-back:disabled { opacity: 0; pointer-events: none; }
+  .btn-next { background: var(--blue); color: #fff; border: none; padding: 14px 34px; border-radius: 30px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s, opacity 0.2s; }
+  .btn-next:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-next:disabled { opacity: 0.35; pointer-events: none; }
+
+  /* INTRO */
+  .intro-stage { text-align: center; }
+  .intro-badge { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; background: rgba(77,168,240,0.1); color: var(--blue); border: 0.5px solid rgba(77,168,240,0.3); border-radius: 20px; padding: 10px 22px; margin-bottom: 30px; }
+  .intro-badge .ib-main { font-size: 12px; letter-spacing: 0.2em; font-weight: 600; }
+  .intro-stage h1 { font-family: 'Raleway', sans-serif; font-size: clamp(30px, 5vw, 48px); font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
+  .intro-stage h1 span { color: var(--blue-light); font-style: italic; font-weight: 300; display: block; }
+  .intro-stage p { color: var(--text-muted); font-size: 15.5px; line-height: 1.85; max-width: 480px; margin: 0 auto 40px; font-weight: 300; }
+  .intro-meta { display: flex; justify-content: center; gap: 28px; margin-bottom: 44px; flex-wrap: wrap; }
+  .intro-meta-item { text-align: center; }
+  .intro-meta-item .im-num { font-family: 'Raleway', sans-serif; font-size: 22px; font-weight: 900; color: var(--blue); }
+  .intro-meta-item .im-label { font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
+  .btn-start { background: var(--blue); color: #fff; border: none; padding: 16px 40px; border-radius: 30px; font-size: 15.5px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+  .btn-start:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+  /* CONTACT STEP */
+  .contact-form-grid { display: flex; flex-direction: column; gap: 12px; }
+  .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cf-input { background: rgba(255,255,255,0.05); border: 0.5px solid rgba(77,168,240,0.25); color: #fff; border-radius: 10px; padding: 14px 16px; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; width: 100%; transition: border-color 0.2s; }
+  .cf-input::placeholder { color: #3a5a7a; }
+  .cf-input:focus { border-color: var(--blue); }
+
+  .textgroup-form { display: flex; flex-direction: column; gap: 18px; }
+  .tg-field { display: flex; flex-direction: column; gap: 8px; }
+  .tg-label { font-size: 13px; color: var(--text-light); font-weight: 500; }
+  .tg-input { resize: none; font-family: 'DM Sans', sans-serif; }
+  textarea.tg-input { min-height: 80px; }
+
+  /* SUMMARY */
+  .summary-card { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(77,168,240,0.25); border-radius: 20px; padding: 40px 36px; }
+  .summary-eyebrow { font-size: 11px; letter-spacing: 0.2em; color: var(--blue); text-transform: uppercase; margin-bottom: 14px; text-align: center; }
+  .summary-headline { font-family: 'Raleway', sans-serif; font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 22px; line-height: 1.3; }
+  .summary-narrative { font-size: 15px; color: var(--text-light); line-height: 1.9; text-align: center; margin-bottom: 30px; font-weight: 300; }
+  .summary-narrative strong { color: #fff; font-weight: 600; }
+  .summary-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 30px; }
+  .summary-tag { background: rgba(77,168,240,0.12); border: 0.5px solid rgba(77,168,240,0.3); color: var(--blue-light); font-size: 12px; padding: 7px 14px; border-radius: 20px; }
+  .summary-divider { height: 0.5px; background: rgba(77,168,240,0.2); margin: 28px 0; }
+  .why-label { font-size: 11px; letter-spacing: 0.18em; color: var(--blue); text-transform: uppercase; margin-bottom: 16px; text-align: center; }
+  .why-list { display: flex; flex-direction: column; gap: 12px; }
+  .why-item { font-size: 13.5px; color: var(--text-light); line-height: 1.7; font-weight: 300; padding-left: 18px; position: relative; }
+  .why-item::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+  .why-item strong { color: #fff; font-weight: 600; }
+
+  .pkg-card { background: linear-gradient(135deg, rgba(77,168,240,0.1), rgba(77,168,240,0.02)); border: 0.5px solid rgba(77,168,240,0.3); border-radius: 16px; padding: 24px 26px; }
+  .pkg-label { font-size: 10.5px; letter-spacing: 0.16em; color: var(--blue-light); text-transform: uppercase; margin-bottom: 8px; }
+  .pkg-title { font-family: 'Raleway', sans-serif; font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+  .pkg-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 300; line-height: 1.6; }
+  .pkg-specs { display: flex; flex-direction: column; gap: 8px; }
+  .pkg-spec { font-size: 13px; color: var(--text-light); padding-left: 20px; position: relative; }
+  .pkg-spec::before { content: '✓'; position: absolute; left: 0; color: var(--blue); font-weight: 700; font-size: 12px; }
+  .summary-note { font-size: 12.5px; color: #5a80a0; text-align: center; line-height: 1.7; margin-bottom: 26px; font-style: italic; }
+  .summary-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+  .submit-btn { flex: 1; min-width: 180px; padding: 16px; border-radius: 30px; font-size: 15px; cursor: pointer; font-weight: 500; font-family: 'DM Sans', sans-serif; border: none; background: var(--blue); color: #fff; transition: background 0.2s, transform 0.1s, opacity 0.2s; }
+  .submit-btn:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.6; cursor: default; }
+  .submit-success { flex: 1; text-align: center; padding: 16px; border-radius: 30px; background: rgba(37,211,102,0.12); border: 0.5px solid rgba(37,211,102,0.4); color: #4ee08a; font-size: 15px; font-weight: 500; }
+  .approach-btn { display: block; width: 100%; text-align: center; margin-top: 12px; padding: 16px; border-radius: 30px; background: rgba(77,168,240,0.1); border: 0.5px solid rgba(77,168,240,0.35); color: var(--blue-light); font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.2s, transform 0.1s; }
+  .approach-btn:hover { background: rgba(77,168,240,0.2); transform: translateY(-1px); }
+  .restart-link { display: block; text-align: center; margin-top: 24px; font-size: 12.5px; color: #4a6a8a; text-decoration: underline; cursor: pointer; }
+  .restart-link:hover { color: var(--text-muted); }
+
+  @media (max-width: 640px) {
+    .options-grid.cols-2 { grid-template-columns: 1fr; }
+    .cf-row { grid-template-columns: 1fr; }
+    .summary-card { padding: 30px 22px; }
+    .stage-wrap { padding: 40px 18px; }
+    .intro-meta { gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← <span>Torna al sito</span></a>
+    <a href="index.html" class="nav-logo"><span class="nl">AMIRA</span><span class="ns">vision</span></a>
+    <div class="nav-spacer"></div>
+  </div>
+</nav>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="stage-wrap">
+  <div class="stage-glow"></div>
+  <div class="stage fade-in" id="stage"></div>
+</div>
+
+<script>
+/* ---------------------------------------------------------
+   COMPONI LA TUA STORIA — quiz interattivo
+   Nessun preventivo viene calcolato qui: alla fine il pacchetto
+   viene riassunto e inviato allo studio (WhatsApp / email),
+   così Amira Vision sa già cosa proporre nel preventivo reale.
+--------------------------------------------------------- */
+
+const STATE = {
+  services: [],
+  location: [],
+  fotoType: [],
+  videoType: [],
+  socialPlatforms: [],
+  socialComplexity: [],
+  socialFrequenza: [],
+  socialAIUse: [],
+  socialManagement: [],
+  socialAds: [],
+  socialInfluencer: [],
+  website: [],
+  settore: [],
+  businessName: '', businessStory: '', businessLinks: '', idealCustomer: '', positioning: '',
+  obiettivo: [],
+  tempistiche: [],
+  nome: '', cognome: '', email: ''
+};
+
+const CHECK_SVG = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+
+const QUESTIONS = [
+  {
+    key: 'services', type: 'multi', cols: 1,
+    eyebrow: 'Passo 1',
+    title: 'Cosa immagini per il tuo progetto?',
+    subtitle: 'Seleziona una o più opzioni: costruiremo le domande successive intorno alla tua scelta.',
+    options: [
+      { value: 'foto', label: 'Servizio fotografico', desc: 'Immagini di brand, ritratti, eventi o editoriali.' },
+      { value: 'video', label: 'Produzione Video', desc: 'Corporate, spot, podcast, interviste, contenuti brevi e dinamici.' },
+      { value: 'social', label: 'Contenuti Social', desc: 'Instagram, TikTok: presenza continuativa e contenuti dedicati.' }
+    ]
+  },
+  {
+    key: 'location', type: 'single', cols: 1, dependsOn: ['foto', 'video', 'social'],
+    eyebrow: 'Passo 2',
+    title: 'Dove preferisci realizzare i contenuti?',
+    subtitle: '',
+    options: [
+      { value: 'Presso lo studio Amira', label: 'Presso lo studio Amira', desc: 'Comodo, attrezzato, pronto all\'uso.' },
+      { value: 'Presso la vostra sede', label: 'Presso la vostra sede', desc: 'Veniamo noi da voi, con la nostra attrezzatura.' },
+      { value: 'Entrambi, a seconda del contenuto', label: 'Entrambi, a seconda del contenuto', desc: 'Decidiamo insieme caso per caso.' }
+    ]
+  },
+  {
+    key: 'fotoType', type: 'multi', cols: 2, dependsOn: 'foto',
+    eyebrow: 'Fotografia',
+    title: 'Che tipo di fotografia ti serve?',
+    subtitle: 'Puoi selezionare più di un\'opzione.',
+    options: [
+      { value: 'Brand e prodotto', label: 'Brand e prodotto', desc: 'Scatti per catalogo, e-commerce, packaging.' },
+      { value: 'Ritratti professionali', label: 'Ritratti professionali', desc: 'Immagini per te o per il tuo team.' },
+      { value: 'Reportage eventi', label: 'Reportage eventi', desc: 'Racconto fotografico di un evento.' },
+      { value: 'Editoriale / moda', label: 'Editoriale / moda', desc: 'Shooting con direzione creativa e stile.' }
+    ]
+  },
+  {
+    key: 'videoType', type: 'multi', cols: 2, dependsOn: 'video',
+    eyebrow: 'Video',
+    title: 'Che tipo di video hai in mente?',
+    subtitle: 'Puoi selezionare più di un\'opzione.',
+    options: [
+      { value: 'Corporate / istituzionale', label: 'Corporate / istituzionale', desc: 'Racconta chi sei e cosa fai.' },
+      { value: 'Spot pubblicitario', label: 'Spot pubblicitario', desc: 'Un commercial per lanciare o promuovere.' },
+      { value: 'Podcast', label: 'Podcast', desc: 'Format audio/video con ospiti o interviste.' },
+      { value: 'Intervista / documentario', label: 'Intervista / documentario', desc: 'Un racconto più lungo e approfondito.' }
+    ]
+  },
+  {
+    key: 'socialPlatforms', type: 'multi', cols: 2, dependsOn: 'social',
+    eyebrow: 'Social · Piattaforme',
+    title: 'Su quali piattaforme vuoi essere presente?',
+    subtitle: 'Puoi selezionare entrambe.',
+    options: [
+      { value: 'Instagram', label: 'Instagram', desc: 'Feed, Stories e Reels.' },
+      { value: 'TikTok', label: 'TikTok', desc: 'Contenuti brevi e dinamici.' }
+    ]
+  },
+  {
+    key: 'socialComplexity', type: 'single', cols: 1, dependsOn: 'social',
+    eyebrow: 'Social · Produzione',
+    title: 'Cosa immagini per la produzione dei contenuti?',
+    subtitle: '',
+    options: [
+      { value: 'Solo creazione reel in sede', label: 'Solo creazione reel in sede', desc: 'Video brevi girati in studio Amira.' },
+      { value: 'Reel in sede + scatti fotografici', label: 'Reel in sede + scatti fotografici', desc: 'Video e foto nella stessa sessione.' },
+      { value: 'Reel + scatti fotografici + grafiche', label: 'Reel + scatti + grafiche', desc: 'Il mix più completo: video, foto e grafiche personalizzate.' },
+      { value: 'Solo foto', label: 'Solo foto', desc: 'Un set fotografico dedicato.' },
+      { value: 'Foto + grafiche', label: 'Foto + grafiche', desc: 'Scatti abbinati a grafiche personalizzate.' },
+      { value: 'Foto e video', label: 'Foto e video', desc: 'Un mix di scatti e riprese, senza grafiche.' },
+      { value: 'Video e grafiche', label: 'Video e grafiche', desc: 'Riprese video abbinate a grafiche personalizzate.' },
+      { value: 'Solo video presso vostra sede', label: 'Solo video presso vostra sede', desc: 'Riprese video realizzate direttamente da voi.' }
+    ]
+  },
+  {
+    key: 'socialFrequenza', type: 'single', cols: 1, dependsOn: 'social',
+    eyebrow: 'Social · Frequenza',
+    title: 'Quanti contenuti immagini a settimana?',
+    subtitle: '',
+    options: [
+      { value: '2 volte a settimana', label: '2 volte a settimana', desc: 'Un ritmo leggero, per iniziare.' },
+      { value: '3-4 volte a settimana', label: '3-4 volte a settimana', desc: 'Una presenza costante e ben distribuita.' },
+      { value: 'Tutti i giorni', label: 'Tutti i giorni', desc: 'Massima presenza, per chi vuole spingere al massimo.' }
+    ]
+  },
+  {
+    key: 'socialAIUse', type: 'single', cols: 2, dependsOn: 'social',
+    eyebrow: 'Social · AI',
+    title: 'Ti piacerebbe integrare anche contenuti creati con l\'intelligenza artificiale?',
+    subtitle: '',
+    options: [
+      { value: 'Sì, mi interessa', label: 'Sì, mi interessa', desc: 'Visual generativi o editing potenziato dall\'AI.' },
+      { value: 'No, solo contenuti reali', label: 'No, solo contenuti reali', desc: 'Preferisco restare su foto e video girati dal vivo.' }
+    ]
+  },
+  {
+    key: 'socialManagement', type: 'single', cols: 2, dependsOn: 'social',
+    eyebrow: 'Social · Gestione',
+    title: 'Oltre alla produzione, vuoi che ci occupiamo anche della gestione del profilo?',
+    subtitle: '',
+    options: [
+      { value: 'Sì, anche la gestione del profilo', label: 'Sì, anche la gestione', desc: 'Pubblicazione, calendario e cura del profilo.' },
+      { value: 'No, solo produzione contenuti', label: 'No, solo produzione contenuti', desc: 'Pubblico io in autonomia.' }
+    ]
+  },
+  {
+    key: 'socialAds', type: 'single', cols: 2, dependsOn: 'social',
+    eyebrow: 'Social · Sponsorizzate',
+    title: 'Vuoi includere anche la gestione delle sponsorizzate?',
+    subtitle: '',
+    options: [
+      { value: 'Sì, includile', label: 'Sì, includile', desc: 'Campagne a pagamento per aumentare la copertura.' },
+      { value: 'No, solo contenuti organici', label: 'No, solo contenuti organici', desc: 'Nessuna sponsorizzazione per ora.' }
+    ]
+  },
+  {
+    key: 'socialInfluencer', type: 'single', cols: 2, dependsOn: 'social',
+    eyebrow: 'Social · Influencer',
+    title: 'Ti interesserebbe un servizio di connessione con influencer per aumentare la visibilità del brand?',
+    subtitle: '',
+    options: [
+      { value: 'Sì, mi interessa', label: 'Sì, mi interessa', desc: 'Collaborazioni pensate per ampliare il pubblico.' },
+      { value: 'No, non ora', label: 'No, non ora', desc: '' }
+    ]
+  },
+  {
+    key: 'website', type: 'single', cols: 2, dependsOn: 'social',
+    eyebrow: 'Oltre il social',
+    title: 'Oltre ai contenuti social, ti interesserebbe anche la creazione di un sito web?',
+    subtitle: '',
+    options: [
+      { value: 'Sì, mi interessa', label: 'Sì, mi interessa', desc: 'Un punto di riferimento digitale coerente con l\'immagine del brand.' },
+      { value: 'No, per ora no', label: 'No, per ora no', desc: '' }
+    ]
+  },
+  {
+    key: 'settore', type: 'single', cols: 2,
+    eyebrow: 'Il tuo mondo',
+    title: 'In che ambito operi?',
+    subtitle: '',
+    options: [
+      { value: 'Moda & Lifestyle', label: 'Moda & Lifestyle', desc: '' },
+      { value: 'Food & Ristorazione', label: 'Food & Ristorazione', desc: '' },
+      { value: 'Beauty & Medical', label: 'Beauty & Medical', desc: '' },
+      { value: 'Real Estate', label: 'Real Estate', desc: '' },
+      { value: 'Hospitality & Turismo', label: 'Hospitality & Turismo', desc: '' },
+      { value: 'Altro settore', label: 'Altro settore', desc: '' }
+    ]
+  },
+  {
+    key: 'businessInfo', type: 'textgroup', cols: 1,
+    eyebrow: 'Il tuo brand',
+    title: 'Raccontaci qualcosa in più sulla tua attività',
+    subtitle: 'Ci aiuta a capire meglio con chi stiamo parlando.',
+    fields: [
+      { key: 'businessName', label: 'Nome dell\'attività', placeholder: 'Es. Rescigno Cucina Partenopea', type: 'input' },
+      { key: 'businessStory', label: 'Raccontaci della tua attività', placeholder: 'Cosa fate, da quanto tempo, cosa vorreste fare in futuro... tutto quello che ci vuoi raccontare.', type: 'textarea' },
+      { key: 'businessLinks', label: 'Link utili (profilo social o sito, se già esistono)', placeholder: 'Es. instagram.com/tuobrand', type: 'input' },
+      { key: 'idealCustomer', label: 'Chi è il tuo cliente ideale?', placeholder: 'Descrivi il tuo pubblico target...', type: 'textarea' },
+      { key: 'positioning', label: 'Come vorresti posizionare il tuo brand?', placeholder: 'Es. elegante e accessibile, giovane e dinamico...', type: 'textarea' }
+    ]
+  },
+  {
+    key: 'obiettivo', type: 'multi', cols: 1,
+    eyebrow: 'Obiettivo',
+    title: 'Quali sono i tuoi obiettivi principali?',
+    subtitle: 'Puoi selezionare più di un\'opzione.',
+    options: [
+      { value: 'Aumentare la visibilità del brand', label: 'Aumentare la visibilità del brand', desc: '' },
+      { value: 'Lanciare un nuovo prodotto o collezione', label: 'Lanciare un nuovo prodotto o collezione', desc: '' },
+      { value: 'Raccontare la mia storia e i miei valori', label: 'Raccontare la mia storia e i miei valori', desc: '' },
+      { value: 'Altro obiettivo', label: 'Altro obiettivo', desc: '' }
+    ]
+  },
+  {
+    key: 'tempistiche', type: 'single', cols: 1,
+    eyebrow: 'Tempistiche',
+    title: 'Quando vorresti realizzare il progetto?',
+    subtitle: '',
+    options: [
+      { value: 'Il prima possibile (entro 2 settimane)', label: 'Il prima possibile', desc: 'Entro 2 settimane.' },
+      { value: 'Entro un mese', label: 'Entro un mese', desc: '' },
+      { value: 'Sono flessibile', label: 'Sono flessibile', desc: 'Nessuna scadenza precisa.' }
+    ]
+  }
+];
+
+const SERVICE_LABELS = { foto: 'Servizio fotografico', video: 'Produzione Video', social: 'Contenuti Social' };
+
+let currentIndex = -1; // -1 = intro
+const stageEl = document.getElementById('stage');
+const progressFill = document.getElementById('progressFill');
+
+function activeQuestions() {
+  return QUESTIONS.filter(q => {
+    if (!q.dependsOn) return true;
+    if (Array.isArray(q.dependsOn)) return q.dependsOn.some(s => STATE.services.includes(s));
+    return STATE.services.includes(q.dependsOn);
+  });
+}
+
+function updateProgress(customPct) {
+  const total = activeQuestions().length + 2; // +contact +summary
+  let pct;
+  if (customPct !== undefined) pct = customPct;
+  else pct = ((currentIndex + 1) / total) * 100;
+  progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+}
+
+function renderIntro() {
+  updateProgress(0);
+  stageEl.className = 'stage fade-in intro-stage';
+  stageEl.innerHTML = `
+    <div class="intro-badge"><div class="ib-main">COMPONI LA TUA STORIA</div></div>
+    <h1>Qual è il tuo progetto?<span>Rispondi a poche domande, il resto lo pensiamo noi.</span></h1>
+    <p>Scegli i servizi che ti interessano e raccontaci qualcosa in più: costruiremo un pacchetto su misura per la tua visione, che ti invieremo per definire insieme il preventivo finale.</p>
+    <div class="intro-meta">
+      <div class="intro-meta-item"><div class="im-num">2</div><div class="im-label">minuti</div></div>
+      <div class="intro-meta-item"><div class="im-num">~8</div><div class="im-label">domande</div></div>
+      <div class="intro-meta-item"><div class="im-num">1</div><div class="im-label">pacchetto su misura</div></div>
+    </div>
+    <button class="btn-start" onclick="goNext()">Inizia</button>
+  `;
+}
+
+function renderQuestion(q) {
+  if (q.type === 'textgroup') { renderTextGroup(q); return; }
+  const selected = STATE[q.key];
+  const cols = q.cols === 2 ? 'cols-2' : 'cols-1';
+  stageEl.className = 'stage fade-in';
+  stageEl.innerHTML = `
+    <div class="q-eyebrow">${q.eyebrow}</div>
+    <div class="q-title">${q.title}</div>
+    ${q.subtitle ? `<div class="q-subtitle">${q.subtitle}</div>` : '<div style="margin-bottom:16px"></div>'}
+    <div class="options-grid ${cols}" id="optionsGrid"></div>
+    ${q.type === 'multi' ? '<div class="q-hint">Seleziona una o più opzioni</div>' : ''}
+    <div class="stage-actions">
+      <button class="btn-back" onclick="goBack()" ${currentIndex === 0 ? 'disabled' : ''}>← Indietro</button>
+      <button class="btn-next" id="nextBtn" onclick="goNext()" ${selected.length === 0 ? 'disabled' : ''}>Avanti →</button>
+    </div>
+  `;
+  const grid = document.getElementById('optionsGrid');
+  q.options.forEach(opt => {
+    const isSel = selected.includes(opt.value);
+    const card = document.createElement('div');
+    card.className = 'option-card type-' + q.type + (isSel ? ' selected' : '');
+    card.innerHTML = `
+      <div class="option-mark">${CHECK_SVG}</div>
+      <div class="option-text"><div class="ol">${opt.label}</div>${opt.desc ? `<div class="od">${opt.desc}</div>` : ''}</div>
+    `;
+    card.addEventListener('click', () => toggleOption(q, opt.value));
+    grid.appendChild(card);
+  });
+}
+
+function renderTextGroup(q) {
+  stageEl.className = 'stage fade-in';
+  stageEl.innerHTML = `
+    <div class="q-eyebrow">${q.eyebrow}</div>
+    <div class="q-title">${q.title}</div>
+    ${q.subtitle ? `<div class="q-subtitle">${q.subtitle}</div>` : '<div style="margin-bottom:16px"></div>'}
+    <div class="textgroup-form" id="textGroupForm"></div>
+    <div class="stage-actions">
+      <button class="btn-back" onclick="goBack()" ${currentIndex === 0 ? 'disabled' : ''}>← Indietro</button>
+      <button class="btn-next" onclick="submitTextGroup()">Avanti →</button>
+    </div>
+  `;
+  const form = document.getElementById('textGroupForm');
+  q.fields.forEach(f => {
+    const wrap = document.createElement('div');
+    wrap.className = 'tg-field';
+    const el = f.type === 'textarea' ? 'textarea' : 'input';
+    const attrs = f.type === 'textarea' ? 'rows="3"' : 'type="text"';
+    wrap.innerHTML = `
+      <label class="tg-label">${f.label}</label>
+      <${el} class="cf-input tg-input" id="tg_${f.key}" ${attrs} placeholder="${f.placeholder || ''}">${f.type === 'textarea' ? (STATE[f.key] || '') : ''}</${el}>
+    `;
+    form.appendChild(wrap);
+    if (f.type !== 'textarea') {
+      form.querySelector('#tg_' + f.key).value = STATE[f.key] || '';
+    }
+  });
+}
+
+function submitTextGroup() {
+  const q = activeQuestions()[currentIndex];
+  q.fields.forEach(f => {
+    STATE[f.key] = document.getElementById('tg_' + f.key).value.trim();
+  });
+  goNext();
+}
+
+function toggleOption(q, value) {
+  const arr = STATE[q.key];
+  if (q.type === 'single') {
+    STATE[q.key] = [value];
+  } else {
+    const i = arr.indexOf(value);
+    if (i >= 0) arr.splice(i, 1); else arr.push(value);
+  }
+  renderQuestion(q);
+}
+
+function renderContact() {
+  stageEl.className = 'stage fade-in';
+  stageEl.innerHTML = `
+    <div class="q-eyebrow">Ultimo passo</div>
+    <div class="q-title">Come possiamo raggiungerti?</div>
+    <div class="q-subtitle">Ci serve solo per inviarti il riepilogo del tuo pacchetto.</div>
+    <div class="contact-form-grid">
+      <div class="cf-row">
+        <input class="cf-input" id="inNome" type="text" placeholder="Nome" value="${STATE.nome}" />
+        <input class="cf-input" id="inCognome" type="text" placeholder="Cognome" value="${STATE.cognome}" />
+      </div>
+      <input class="cf-input" id="inEmail" type="email" placeholder="Email" value="${STATE.email}" />
+    </div>
+    <div class="stage-actions">
+      <button class="btn-back" onclick="goBack()">← Indietro</button>
+      <button class="btn-next" onclick="submitContact()">Vedi il tuo pacchetto →</button>
+    </div>
+  `;
+}
+
+function submitContact() {
+  STATE.nome = document.getElementById('inNome').value.trim();
+  STATE.cognome = document.getElementById('inCognome').value.trim();
+  STATE.email = document.getElementById('inEmail').value.trim();
+  currentIndex++;
+  updateProgress(100);
+  renderSummary();
+}
+
+function buildNarrative() {
+  const svcLabels = STATE.services.map(s => SERVICE_LABELS[s]);
+  const svcText = svcLabels.length > 1
+    ? svcLabels.slice(0, -1).join(', ') + ' e ' + svcLabels.slice(-1)
+    : (svcLabels[0] || '');
+
+  let detail = [];
+  if (STATE.fotoType.length) detail.push('fotografia orientata a ' + STATE.fotoType.join(', ').toLowerCase());
+  if (STATE.videoType.length) detail.push('video in stile ' + STATE.videoType.join(', ').toLowerCase());
+  if (STATE.socialComplexity.length) detail.push('produzione social su ' + STATE.socialComplexity.join(', ').toLowerCase());
+  const detailText = detail.length ? detail.join('; ') + '.' : '';
+
+  const obiettivo = STATE.obiettivo.length ? STATE.obiettivo.join(', ').toLowerCase() : '';
+  const tempi = STATE.tempistiche[0] ? STATE.tempistiche[0].toLowerCase() : '';
+
+  return `Un pacchetto pensato per <strong>${svcText}</strong>${STATE.settore[0] ? `, nel mondo <strong>${STATE.settore[0]}</strong>` : ''}. `
+    + (detailText ? detailText + ' ' : '')
+    + (obiettivo ? `L'obiettivo: <strong>${obiettivo}</strong>. ` : '')
+    + (tempi ? `Tempistiche: <strong>${tempi}</strong>.` : '');
+}
+
+const SOCIAL_BASE_SPECS = {
+  'Solo creazione reel in sede': ['Reel professionali girati in studio Amira'],
+  'Reel in sede + scatti fotografici': ['Reel professionali girati in studio Amira', 'Scatti fotografici dedicati'],
+  'Reel + scatti fotografici + grafiche': ['Reel professionali girati in studio Amira', 'Scatti fotografici dedicati', 'Grafiche personalizzate'],
+  'Solo foto': ['Shooting fotografico dedicato'],
+  'Foto + grafiche': ['Shooting fotografico dedicato', 'Grafiche personalizzate'],
+  'Foto e video': ['Shooting fotografico dedicato', 'Riprese video dedicate'],
+  'Video e grafiche': ['Riprese video dedicate', 'Grafiche personalizzate'],
+  'Solo video presso vostra sede': ['Riprese video presso la vostra sede']
+};
+
+function buildSocialPackage() {
+  const specs = [];
+  const base = STATE.socialComplexity[0];
+  if (base && SOCIAL_BASE_SPECS[base]) specs.push(...SOCIAL_BASE_SPECS[base]);
+  if (STATE.socialFrequenza[0]) specs.push('Pubblicazione: ' + STATE.socialFrequenza[0].toLowerCase());
+
+  const addons = [];
+  if (STATE.socialAIUse[0] === 'Sì, mi interessa') addons.push('Contenuti integrati con l\'intelligenza artificiale');
+  if (STATE.socialManagement[0] === 'Sì, anche la gestione del profilo') addons.push('Gestione del profilo e pubblicazione');
+  if (STATE.socialAds[0] === 'Sì, includile') addons.push('Gestione delle sponsorizzate');
+  if (STATE.socialInfluencer[0] === 'Sì, mi interessa') addons.push('Attivazione di collaborazioni con influencer');
+  if (STATE.website[0] === 'Sì, mi interessa') addons.push('Creazione di un sito web dedicato');
+
+  const totalModules = specs.length + addons.length;
+  let level = 'Essenziale';
+  if (totalModules >= 5) level = 'Completo';
+  else if (totalModules >= 3) level = 'Standard';
+
+  const taglines = {
+    'Essenziale': 'Un pacchetto snello, pensato per iniziare a strutturare la tua presenza.',
+    'Standard': 'Un pacchetto completo, con produzione e gestione integrate.',
+    'Completo': 'Il mix più ricco: produzione, gestione e sponsorizzate, tutto incluso.'
+  };
+
+  return {
+    title: 'Il tuo pacchetto Social — ' + level,
+    tagline: taglines[level],
+    specs: [...specs, ...addons]
+  };
+}
+
+const WHY_REASONS = {
+  foto: (s) => `<strong>Scatti fotografici</strong> — fissano da subito la qualità e l'identità visiva del tuo brand${s.settore[0] ? ` nel mondo ${s.settore[0].toLowerCase()}` : ''}${s.fotoType.length ? `, con un taglio su ${s.fotoType.join(', ').toLowerCase()}` : ''}.`,
+  video: (s) => `<strong>Video e Reel</strong> — danno movimento e voce alla tua storia${s.videoType.length ? `, in stile ${s.videoType.join(', ').toLowerCase()}` : ''}: utili soprattutto se vuoi ${s.obiettivo.length ? s.obiettivo.join(', ').toLowerCase() : 'coinvolgere di più il tuo pubblico'}.`
+};
+
+function buildWhyItems() {
+  return STATE.services
+    .filter(s => WHY_REASONS[s])
+    .map(s => WHY_REASONS[s](STATE));
+}
+
+// Incolla qui l'URL del tuo Google Apps Script Web App (vedi istruzioni in fondo al file)
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzGGNgdAO5eu_Ahw4fNQTilofhUtVt9vSyvkbZnzaKUQc6pzhByOypJXC0xX73nQqVq/exec';
+
+function buildPayload() {
+  // Nota: Location, FrequenzaSocial e RaccontoAttivita non sono ancora
+  // colonne riconosciute dallo script Google collegato. Per farli arrivare
+  // comunque, li aggiungiamo come righe etichettate dentro campi già
+  // accettati (Tempistiche e Posizionamento), invece di inviarli come
+  // campi a parte che verrebbero scartati.
+
+  let tempisticheConLocation = STATE.tempistiche.join(', ');
+  if (STATE.location.length) {
+    tempisticheConLocation += (tempisticheConLocation ? '\n' : '') + 'Dove girare i contenuti: ' + STATE.location.join(', ');
+  }
+  if (STATE.socialFrequenza.length) {
+    tempisticheConLocation += (tempisticheConLocation ? '\n' : '') + 'Frequenza contenuti: ' + STATE.socialFrequenza.join(', ');
+  }
+
+  let posizionamentoConRacconto = STATE.positioning || '';
+  if (STATE.businessStory) {
+    posizionamentoConRacconto += (posizionamentoConRacconto ? '\n\n' : '') + 'Racconto attività: ' + STATE.businessStory;
+  }
+
+  return {
+    Nome: STATE.nome,
+    Cognome: STATE.cognome,
+    Email: STATE.email,
+    Servizi: STATE.services.map(s => SERVICE_LABELS[s]).join(', '),
+    Fotografia: STATE.fotoType.join(', '),
+    Video: STATE.videoType.join(', '),
+    PiattaformeSocial: STATE.socialPlatforms.join(', '),
+    ProduzioneSocial: STATE.socialComplexity.join(', '),
+    AISocial: STATE.socialAIUse.join(', '),
+    GestioneProfilo: STATE.socialManagement.join(', '),
+    Sponsorizzate: STATE.socialAds.join(', '),
+    Influencer: STATE.socialInfluencer.join(', '),
+    SitoWeb: STATE.website.join(', '),
+    Settore: STATE.settore.join(', '),
+    NomeAttivita: STATE.businessName,
+    LinkUtili: STATE.businessLinks,
+    ClienteIdeale: STATE.idealCustomer,
+    Posizionamento: posizionamentoConRacconto,
+    Obiettivi: STATE.obiettivo.join(', '),
+    Tempistiche: tempisticheConLocation
+  };
+}
+
+function renderSummary() {
+  stageEl.className = 'stage fade-in';
+  const tags = [
+    ...STATE.services.map(s => SERVICE_LABELS[s]),
+    ...STATE.location, ...STATE.settore, ...STATE.tempistiche
+  ];
+  const hasSocial = STATE.services.includes('social');
+  const pkg = hasSocial ? buildSocialPackage() : null;
+  const whyItems = buildWhyItems();
+  stageEl.innerHTML = `
+    <div class="summary-card">
+      <div class="summary-eyebrow">Il tuo pacchetto</div>
+      <div class="summary-headline">Ecco cosa abbiamo composto insieme${STATE.nome ? ', ' + STATE.nome : ''}.</div>
+      <div class="summary-narrative">${buildNarrative()}</div>
+      <div class="summary-tags">${tags.map(t => `<span class="summary-tag">${t}</span>`).join('')}</div>
+      ${pkg ? `
+      <div class="summary-divider"></div>
+      <div class="pkg-card">
+        <div class="pkg-label">Pacchetto Social suggerito</div>
+        <div class="pkg-title">${pkg.title}</div>
+        <div class="pkg-tagline">${pkg.tagline}</div>
+        <div class="pkg-specs">${pkg.specs.map(sp => `<div class="pkg-spec">${sp}</div>`).join('')}</div>
+      </div>` : ''}
+      ${whyItems.length ? `
+      <div class="summary-divider"></div>
+      <div class="why-label">Perché questa combinazione</div>
+      <div class="why-list">${whyItems.map(w => `<div class="why-item">${w}</div>`).join('')}</div>` : ''}
+      <div class="summary-divider"></div>
+      <div class="summary-note" id="summaryNote">Questa è una proposta pensata a partire dalle tue risposte, non una scelta definitiva: richiedila e continueremo via email per definire insieme il preventivo personalizzato.</div>
+      <div class="summary-ctas" id="summaryCtas">
+        <button class="submit-btn" id="submitBtn" onclick="submitRequest()">Richiedi un preventivo personalizzato →</button>
+      </div>
+      <div class="restart-link" onclick="restart()">Ricomincia da capo</div>
+    </div>
+  `;
+}
+
+function submitRequest() {
+  const btn = document.getElementById('submitBtn');
+  const note = document.getElementById('summaryNote');
+  btn.disabled = true;
+  btn.textContent = 'Invio in corso...';
+
+  const params = buildPayload();
+  const formData = new FormData();
+  Object.keys(params).forEach(k => formData.append(k, params[k]));
+
+  const finish = () => {
+    note.textContent = 'Richiesta ricevuta! Continuiamo via email: ti risponderemo entro 24 ore con il tuo preventivo personalizzato.';
+    document.getElementById('summaryCtas').innerHTML = `
+      <div class="submit-success">✓ Richiesta inviata</div>
+      <a class="approach-btn" href="il-nostro-approccio.html">Prima di risentirci, inizia a leggere il nostro approccio! →</a>
+    `;
+  };
+
+  if (!WEBHOOK_URL || WEBHOOK_URL.indexOf('INCOLLA_QUI') >= 0) {
+    // Webhook non ancora configurato: mostriamo comunque la conferma per l'anteprima.
+    console.warn('WEBHOOK_URL non configurato: nessuna richiesta è stata realmente inviata.');
+    setTimeout(finish, 500);
+    return;
+  }
+
+  fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', body: formData })
+    .then(finish)
+    .catch(finish);
+}
+
+
+function goNext() {
+  const qs = activeQuestions();
+  if (currentIndex === -1) { currentIndex = 0; updateProgress(); renderQuestion(qs[0]); return; }
+  if (currentIndex < qs.length - 1) {
+    currentIndex++; updateProgress(); renderQuestion(qs[currentIndex]);
+  } else if (currentIndex === qs.length - 1) {
+    currentIndex++; updateProgress(); renderContact();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack() {
+  const qs = activeQuestions();
+  if (currentIndex <= 0) { currentIndex = -1; renderIntro(); return; }
+  if (currentIndex === qs.length) { currentIndex--; renderQuestion(qs[currentIndex]); updateProgress(); return; }
+  currentIndex--;
+  renderQuestion(qs[currentIndex]);
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  STATE.services = []; STATE.location = []; STATE.fotoType = []; STATE.videoType = [];
+  STATE.socialPlatforms = []; STATE.socialComplexity = []; STATE.socialFrequenza = []; STATE.socialAIUse = []; STATE.socialManagement = [];
+  STATE.socialAds = []; STATE.socialInfluencer = []; STATE.website = [];
+  STATE.settore = [];
+  STATE.businessName = ''; STATE.businessStory = ''; STATE.businessLinks = ''; STATE.idealCustomer = ''; STATE.positioning = '';
+  STATE.obiettivo = []; STATE.tempistiche = [];
+  STATE.nome = ''; STATE.cognome = ''; STATE.email = '';
+  currentIndex = -1;
+  renderIntro();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderIntro();
+</script>
+</body>
+</html>

@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Generatore Preventivi — Amira Vision (uso interno)</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0b1f3a; --navy-dark: #061525; --navy-mid: #0d2540;
+    --blue: #4da8f0; --blue-dark: #185fa5; --blue-light: #7ec8f7;
+    --text-muted: #7a9fc0; --text-light: #a8c8e8; --border: rgba(77,168,240,0.2);
+    --panel: #0e1d30; --panel-border: #1c3350;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: #0a1729; color: #e6eef7; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar { background: var(--navy-dark); border-bottom: 0.5px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: 10px; }
+  .topbar-title { display: flex; flex-direction: column; }
+  .topbar-title .tt-main { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 15px; color: var(--blue); letter-spacing: 0.15em; }
+  .topbar-title .tt-sub { font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; }
+  .topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tb-btn { background: rgba(77,168,240,0.1); border: 0.5px solid rgba(77,168,240,0.3); color: var(--blue-light); font-size: 12.5px; padding: 9px 16px; border-radius: 20px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .tb-btn:hover { background: rgba(77,168,240,0.2); }
+  .tb-btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .tb-btn.primary:hover { background: var(--blue-dark); }
+  #importFile { display: none; }
+
+  /* LAYOUT */
+  .layout { display: grid; grid-template-columns: 440px 1fr; gap: 0; min-height: calc(100vh - 60px); }
+  .editor-pane { background: var(--navy-dark); border-right: 0.5px solid var(--border); padding: 24px; overflow-y: auto; max-height: calc(100vh - 60px); }
+  .preview-pane-wrap { display: flex; flex-direction: column; max-height: calc(100vh - 60px); }
+  .doc-tabs { display: flex; gap: 8px; padding: 14px 24px 0; background: #08141f; flex-shrink: 0; }
+  .doc-tab { background: transparent; border: 0.5px solid rgba(77,168,240,0.25); color: var(--text-muted); font-size: 12.5px; padding: 8px 18px; border-radius: 16px 16px 0 0; cursor: pointer; font-family: 'DM Sans', sans-serif; border-bottom: none; }
+  .doc-tab.active { background: #08141f; color: var(--blue-light); border-color: rgba(77,168,240,0.4); }
+  .preview-pane { background: #08141f; padding: 32px; overflow-y: auto; flex: 1; display: flex; justify-content: center; align-items: flex-start; }
+  .view-toggle { display: none; }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    .editor-pane, .preview-pane-wrap { max-height: none; }
+    .editor-pane.hide, .preview-pane-wrap.hide { display: none; }
+    .view-toggle { display: flex; gap: 8px; }
+  }
+
+  /* EDITOR FORM */
+  .ed-block { margin-bottom: 30px; }
+  .ed-block-title { font-family: 'Raleway', sans-serif; font-size: 13px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+  .ed-field { margin-bottom: 12px; }
+  .ed-label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+  .ed-input, .ed-textarea, .ed-select { width: 100%; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(77,168,240,0.25); color: #fff; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .ed-input:focus, .ed-textarea:focus, .ed-select:focus { border-color: var(--blue); }
+  .ed-textarea { resize: vertical; min-height: 60px; }
+  .ed-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ed-row-price { display: grid; grid-template-columns: 1fr 90px; gap: 10px; }
+
+  .repeat-item { background: var(--panel); border: 0.5px solid var(--panel-border); border-radius: 10px; padding: 14px; margin-bottom: 10px; position: relative; }
+  .repeat-item-remove { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #5a80a0; cursor: pointer; font-size: 16px; line-height: 1; padding: 2px 6px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+  .repeat-item-remove:hover { color: #ff8a8a; background: rgba(255,80,80,0.1); }
+  .add-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed rgba(77,168,240,0.4); background: transparent; color: var(--blue-light); font-size: 12.5px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .add-btn:hover { background: rgba(77,168,240,0.08); }
+
+  .ed-checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .ed-checkbox-row label { font-size: 12px; color: var(--text-light); }
+
+  /* PREVIEW DOCUMENT */
+  .doc { width: 100%; max-width: 760px; background: var(--navy); border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; }
+  .doc-header { padding: 56px 56px 40px; text-align: center; background: linear-gradient(180deg, var(--navy-dark), var(--navy)); }
+  .doc-logo { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 15px; color: var(--blue); letter-spacing: 0.3em; margin-bottom: 4px; }
+  .doc-logo-sub { font-size: 9px; color: var(--blue-light); letter-spacing: 0.5em; margin-bottom: 28px; }
+  .doc-eyebrow { font-size: 11px; color: var(--blue); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; }
+  .doc-client { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 34px; color: #fff; line-height: 1.15; margin-bottom: 6px; }
+  .doc-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 4px; }
+  .doc-periodo { font-size: 12px; color: var(--blue-light); margin-bottom: 22px; }
+  .doc-intro { font-size: 14.5px; color: var(--text-light); line-height: 1.85; max-width: 560px; margin: 0 auto; font-weight: 300; white-space: pre-wrap; }
+
+  .doc-stats { display: grid; gap: 12px; padding: 0 40px 40px; }
+  .doc-stats-inner { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .doc-stat { flex: 1; min-width: 120px; background: rgba(77,168,240,0.06); border: 0.5px solid rgba(77,168,240,0.2); border-radius: 12px; padding: 18px 14px; text-align: center; }
+  .doc-stat-value { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 26px; color: var(--blue-light); }
+  .doc-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+  .doc-section { padding: 32px 56px; border-top: 0.5px solid var(--border); }
+  .doc-section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; }
+  .doc-section-num { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 22px; color: rgba(77,168,240,0.35); }
+  .doc-section-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 18px; color: #fff; }
+  .doc-section-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; margin-left: 36px; }
+  .doc-section-list { margin-left: 36px; display: flex; flex-direction: column; gap: 8px; }
+  .doc-section-item { font-size: 13.5px; color: var(--text-light); padding-left: 18px; position: relative; }
+  .doc-section-item::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+
+  .doc-pricing { padding: 32px 56px; border-top: 0.5px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+  .doc-price-card { border-radius: 12px; padding: 18px 20px; border: 0.5px solid rgba(77,168,240,0.2); background: rgba(255,255,255,0.02); }
+  .doc-price-card.highlight { background: linear-gradient(135deg, rgba(77,168,240,0.12), rgba(77,168,240,0.03)); border-color: rgba(77,168,240,0.4); }
+  .doc-price-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .doc-price-name { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 15px; color: #fff; }
+  .doc-price-value { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 17px; color: var(--blue-light); white-space: nowrap; }
+  .doc-price-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.6; }
+
+  .doc-narrative { padding: 32px 56px; border-top: 0.5px solid var(--border); }
+  .doc-narrative-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 17px; color: #fff; margin-bottom: 6px; }
+  .doc-narrative-intro { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.7; }
+  .doc-narrative-item { margin-bottom: 16px; }
+  .doc-narrative-label { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--blue-light); margin-bottom: 4px; }
+  .doc-narrative-text { font-size: 13px; color: var(--text-light); line-height: 1.75; font-weight: 300; }
+
+  .doc-note { padding: 28px 56px; border-top: 0.5px solid var(--border); font-size: 12.5px; color: var(--text-muted); line-height: 1.8; white-space: pre-wrap; }
+
+  .doc-clauses { padding: 32px 56px 40px; border-top: 0.5px solid var(--border); }
+  .doc-clauses-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 15px; color: #fff; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .doc-clause-item { display: flex; gap: 10px; margin-bottom: 14px; }
+  .doc-clause-num { font-size: 12.5px; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+  .doc-clause-title { font-size: 12.5px; font-weight: 700; color: var(--text-light); margin-bottom: 3px; }
+  .doc-clause-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+  .doc-contract-note { font-size: 11.5px; color: #5a80a0; font-style: italic; margin-top: 16px; padding-top: 16px; border-top: 0.5px dashed rgba(77,168,240,0.2); line-height: 1.7; }
+
+  .doc-footer { padding: 28px 56px 40px; text-align: center; border-top: 0.5px solid var(--border); }
+  .doc-footer-text { font-size: 11px; color: #3a5a7a; letter-spacing: 0.08em; }
+
+  .empty-hint { text-align: center; color: #3a5a7a; font-size: 13px; padding: 60px 20px; }
+
+  /* CONTRACT DOCUMENT (bianco/nero, stile formale) */
+  .contract-doc { width: 100%; max-width: 760px; background: #ffffff; color: #1a1a1a; padding: 56px 60px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); font-size: 13px; line-height: 1.65; }
+  .ctr-logo { text-align: center; margin-bottom: 24px; }
+  .ctr-logo .cl-main { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 16px; color: var(--blue-dark); letter-spacing: 0.3em; }
+  .ctr-logo .cl-sub { font-size: 9px; color: #6a8aa8; letter-spacing: 0.4em; }
+  .ctr-title { text-align: center; font-weight: 700; font-size: 14px; margin-bottom: 22px; text-transform: uppercase; }
+  .ctr-parties p { margin-bottom: 10px; }
+  .ctr-art-title { font-weight: 700; font-size: 13.5px; margin: 22px 0 10px; }
+  .ctr-p { margin-bottom: 10px; }
+  .ctr-list { margin: 8px 0 14px 22px; }
+  .ctr-list li { margin-bottom: 8px; }
+  .ctr-sign { display: flex; justify-content: space-between; margin-top: 50px; gap: 40px; }
+  .ctr-sign-line { flex: 1; }
+  .ctr-sign-line .sl-label { font-size: 12px; margin-bottom: 30px; }
+  .ctr-sign-line .sl-rule { border-top: 1px solid #999; padding-top: 4px; font-size: 11px; color: #666; }
+  .ctr-date { margin-top: 30px; font-size: 12.5px; }
+  .ctr-page { text-align: center; font-size: 10px; color: #999; margin-top: 30px; }
+
+  @media print {
+    body { background: #fff; }
+    .topbar, .editor-pane, .view-toggle, .doc-tabs, .history-overlay { display: none !important; }
+    .layout { grid-template-columns: 1fr; }
+    .preview-pane-wrap { max-height: none; }
+    .preview-pane { padding: 0; max-height: none; background: #fff; }
+    .doc { box-shadow: none; max-width: 100%; border-radius: 0; }
+    .contract-doc { box-shadow: none; max-width: 100%; padding: 20px 10px; }
+  }
+
+  @media (max-width: 640px) {
+    .doc-header, .doc-section, .doc-pricing, .doc-narrative, .doc-note, .doc-footer { padding-left: 24px; padding-right: 24px; }
+    .doc-section-sub, .doc-section-list { margin-left: 0; }
+    .contract-doc { padding: 32px 22px; }
+    .ctr-sign { flex-direction: column; gap: 24px; }
+  }
+
+  /* PASSWORD GATE */
+  .pw-overlay { position: fixed; inset: 0; background: var(--navy-dark); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .pw-card { max-width: 340px; width: 100%; text-align: center; }
+  .pw-logo { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 18px; color: var(--blue); letter-spacing: 0.3em; margin-bottom: 4px; }
+  .pw-logo-sub { font-size: 9px; color: var(--blue-light); letter-spacing: 0.5em; margin-bottom: 28px; }
+  .pw-label { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+  .pw-input { width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(77,168,240,0.3); color: #fff; border-radius: 10px; padding: 13px 16px; font-size: 15px; text-align: center; font-family: 'DM Sans', sans-serif; outline: none; margin-bottom: 14px; letter-spacing: 0.1em; }
+  .pw-input:focus { border-color: var(--blue); }
+  .pw-btn { width: 100%; background: var(--blue); color: #fff; border: none; padding: 13px; border-radius: 10px; font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .pw-btn:hover { background: var(--blue-dark); }
+  .pw-error { color: #ff8a8a; font-size: 12.5px; margin-top: 12px; min-height: 16px; }
+  @media print { .pw-overlay { display: none !important; } }
+
+  /* HISTORY MODAL */
+  .history-overlay { position: fixed; inset: 0; background: rgba(6,15,28,0.85); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .history-card { background: var(--navy-dark); border: 0.5px solid rgba(77,168,240,0.3); border-radius: 16px; max-width: 560px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; }
+  .history-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 0.5px solid var(--border); }
+  .history-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 15px; color: #fff; }
+  .history-close { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+  .history-list { overflow-y: auto; padding: 12px; }
+  .history-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; cursor: pointer; transition: background 0.2s; margin-bottom: 4px; }
+  .history-item:hover { background: rgba(77,168,240,0.1); }
+  .history-item-info .hi-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .history-item-info .hi-meta { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+  .history-item-tag { font-size: 10.5px; color: var(--blue-light); background: rgba(77,168,240,0.12); padding: 4px 10px; border-radius: 10px; white-space: nowrap; }
+  .history-empty { text-align: center; color: #3a5a7a; font-size: 13px; padding: 40px 20px; }
+</style>
+</head>
+<body>
+
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-card">
+    <div class="pw-logo">AMIRA</div>
+    <div class="pw-logo-sub">vision</div>
+    <div class="pw-label">Area riservata — inserisci la password per continuare</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Password" autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">Accedi</button>
+    <div class="pw-error" id="pwError"></div>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-title">
+    <div class="tt-main">GENERATORE PREVENTIVI</div>
+    <div class="tt-sub">Amira Vision · strumento interno, non per i clienti</div>
+  </div>
+  <div class="topbar-actions">
+    <div class="view-toggle">
+      <button class="tb-btn" onclick="setMobileView('edit')">✏️ Modifica</button>
+      <button class="tb-btn" onclick="setMobileView('preview')">👁 Anteprima</button>
+    </div>
+    <select class="ed-select" style="width:auto;" id="templateSelect" onchange="loadTemplate(this.value)">
+      <option value="">Parti da un modello…</option>
+      <optgroup label="Fotografia">
+        <option value="foto-brand">Foto — Brand & Prodotto</option>
+        <option value="foto-ritratti">Foto — Ritratti Professionali</option>
+        <option value="foto-eventi">Foto — Reportage Eventi</option>
+        <option value="foto-editoriale">Foto — Editoriale / Moda</option>
+      </optgroup>
+      <optgroup label="Video">
+        <option value="video-corporate">Video — Corporate / Istituzionale</option>
+        <option value="video-spot">Video — Spot Pubblicitario</option>
+        <option value="video-podcast">Video — Podcast</option>
+        <option value="video-intervista">Video — Intervista / Documentario</option>
+      </optgroup>
+      <optgroup label="Contenuti Social">
+        <option value="social-essenziale">Social — Essenziale</option>
+        <option value="social-standard">Social — Standard</option>
+        <option value="social-completo">Social — Completo</option>
+        <option value="social-full">Social — Full Service</option>
+      </optgroup>
+      <optgroup label="Altri modelli">
+        <option value="editoriale">Piano editoriale (interviste + reel + AI)</option>
+        <option value="sessione">Sessione professionisti (unica sessione)</option>
+      </optgroup>
+      <option value="vuoto">Vuoto</option>
+    </select>
+    <button class="tb-btn" onclick="document.getElementById('importFile').click()">Importa</button>
+    <input type="file" id="importFile" accept="application/json" onchange="importData(event)" />
+    <button class="tb-btn" onclick="exportData()">Esporta dati</button>
+    <button class="tb-btn" onclick="saveToArchive()" id="saveArchiveBtn">💾 Salva nello storico</button>
+    <button class="tb-btn" onclick="openHistory()">🕘 Cronologia</button>
+    <button class="tb-btn primary" onclick="window.print()">Stampa / Salva PDF</button>
+  </div>
+</div>
+
+<div class="history-overlay" id="historyOverlay" style="display:none;">
+  <div class="history-card">
+    <div class="history-head">
+      <div class="history-title">Cronologia preventivi</div>
+      <button class="history-close" onclick="closeHistory()">✕</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="editor-pane" id="editorPane"></div>
+  <div class="preview-pane-wrap">
+    <div class="doc-tabs">
+      <button class="doc-tab active" id="tabProposta" onclick="setDocView('proposta')">📄 Proposta</button>
+      <button class="doc-tab" id="tabContratto" onclick="setDocView('contratto')">📝 Contratto</button>
+    </div>
+    <div class="preview-pane" id="previewPane"></div>
+  </div>
+</div>
+
+<script>
+/* ===========================================================
+   GENERATORE PREVENTIVI — Amira Vision
+   Strumento interno: nessun dato viene inviato altrove.
+   Tutto resta nel browser finché non esporti/stampi.
+=========================================================== */
+
+let STATE = emptyState();
+let currentView = 'proposta'; // 'proposta' | 'contratto'
+
+function emptyState() {
+  return {
+    client: { eyebrow: 'Pacchetto contenuti mensile', nome: '', sottotitolo: '', periodo: '', intro: '' },
+    stats: [],
+    sections: [],
+    pricing: [],
+    narrativeBlocks: [],
+    clauses: [],
+    contractNote: '',
+    note: '',
+    footer: 'Foto · Video · Reel — Amira Vision',
+    contract: defaultContract()
+  };
+}
+
+function defaultContract() {
+  return {
+    tipoContratto: 'gestione', // 'gestione' (social continuativo) | 'produzione' (foto/video una tantum)
+    clienteNome: '', clienteSede: '', clientePIVA: '', clientePEC: '', clienteTelefono: '',
+    fornitoreNome: 'Amirante Francesco',
+    fornitoreSede: 'Via Michelangelo da Caravaggio, 76 - 80126 Napoli',
+    fornitorePIVA: '10582821210',
+    fornitorePEC: 'francescoamirante@pec.it',
+    fornitoreTelefono: '+39 3202412048',
+    contenutiSettimana: '4',
+    giorniPubblicazione: 'lunedì, mercoledì, venerdì e domenica',
+    contenutiMeseMax: '16',
+    tipiContenuto: 'video in formato Reel (della durata massima di 1:30 minuti), fotografie, caroselli fotografici o post con grafiche in sovrimpressione',
+    canali: 'Instagram e TikTok',
+    shootingFrequenza: 'una giornata di shooting all\'inizio di ciascun ciclo mensile',
+    oggettoExtra: [],
+    durataMinima: '3 (tre) mesi',
+    oggettoProduzioneTesto: 'Il Fornitore si impegna a realizzare per il Cliente il servizio concordato, comprensivo di ripresa/scatto e post-produzione, secondo lo stile e le indicazioni condivise tra le parti, con consegna del materiale finale in formato digitale ad alta risoluzione.',
+    durataProduzioneTesto: 'Il presente contratto decorre dalla data di sottoscrizione e si intende concluso con la consegna del materiale finale, prevista entro [X] giorni lavorativi dalla data dello shooting/delle riprese, salvo revisioni concordate tra le parti.',
+    compensoTotale: '',
+    milestones: [
+      { id: uid(), importo: '', quando: 'al termine della giornata di shooting' },
+      { id: uid(), importo: '', quando: 'alla consegna del materiale realizzato, dopo l\'eventuale revisione richiesta dal Cliente' },
+      { id: uid(), importo: '', quando: 'alla pubblicazione dell\'ultimo contenuto previsto dal ciclo mensile' }
+    ],
+    riprogrammazioneTesto: 'A prescindere dall\'eventuale riprogrammazione della giornata di shooting e dal momento in cui questa viene richiesta, il saldo relativo alla giornata di shooting e le successive scadenze di pagamento del ciclo mensile dovranno in ogni caso essere corrisposti secondo quanto concordato tra le Parti.\n\nIl Cliente potrà richiedere la riprogrammazione della data dello shooting fino a 7 (sette) giorni di calendario prima della data concordata, senza costi aggiuntivi. La nuova data sarà definita di comune accordo tra le Parti, compatibilmente con le rispettive disponibilità.\n\nIn caso di annullamento o richiesta di riprogrammazione comunicata dal Cliente con un preavviso inferiore a 7 (sette) giorni, le scadenze di pagamento originariamente concordate resteranno invariate e gli eventuali saldi dovranno essere corrisposti secondo le tempistiche previste dal contratto, indipendentemente dallo svolgimento dello shooting nella data inizialmente stabilita.\n\nIl Cliente conserverà la possibilità di concordare una nuova data per lo shooting, compatibilmente con la disponibilità del Fornitore; tale riprogrammazione non comporterà tuttavia alcun differimento, sospensione o modifica delle scadenze di pagamento già pattuite.',
+    sponsorizzazioniTesto: 'Sono incluse nel presente contratto attività di sponsorizzazione base, intese come la promozione minima dei contenuti pubblicati, utilizzando budget ridotti e impostazioni standard (ad esempio promozione diretta del post tramite app, senza targeting avanzato). Qualsiasi campagna pubblicitaria più articolata, che preveda targeting personalizzato, gestione di budget elevati, obiettivi specifici (lead generation, conversioni, retargeting, ecc.) o creatività dedicate, sarà gestita con preventivo separato, da concordare tra le parti prima dell\'attivazione della campagna.',
+    obblighiFornitoreTesto: 'Il Fornitore si impegna a erogare i servizi descritti all\'art. 1 con la massima diligenza e professionalità e garantisce che i contenuti rispettino le normative vigenti in materia di diritti d\'autore, privacy e altre disposizioni legali pertinenti.\n\nEsclusione di responsabilità: il Fornitore non sarà ritenuto responsabile per eventuali dichiarazioni fallaci, inesatte o dannose contenute nei contenuti pubblicati per conto del Cliente.',
+    obblighiClienteTesto: 'Il Cliente si impegna a:\n• Fornire tempestivamente al Fornitore tutte le informazioni e il materiale necessari per la creazione dei contenuti.\n• Indicare chiaramente lo stile di comunicazione desiderato e approvare eventuali revisioni.',
+    riservatezzaTesto: 'Entrambe le parti si impegnano a mantenere riservate tutte le informazioni scambiate durante l\'esecuzione del presente contratto e a non divulgarle a terzi senza il consenso esplicito dell\'altra parte.\n\nTrattamento dei Dati Personali: i dati del Cliente e del Fornitore saranno trattati esclusivamente per finalità connesse alla gestione e all\'esecuzione del presente contratto, nel rispetto delle normative vigenti in materia di protezione dei dati personali (GDPR).',
+    comunicazioniTesto: 'Le comunicazioni ufficiali tra le parti avverranno tramite l\'indirizzo PEC fornito dal Fornitore. Inoltre, per la gestione dei contenuti, il Fornitore metterà a disposizione un drive online. Le parti utilizzeranno anche app di messaggistica come WhatsApp per scambiarsi indicazioni relative a revisioni dei contenuti e altre comunicazioni pertinenti. Qualsiasi comunicazione inviata all\'indirizzo PEC sarà considerata formalmente ricevuta e valida a tutti gli effetti.',
+    risoluzioneTesto: 'In caso di inadempimento del Cliente, inclusi ma non limitati a ritardi nei pagamenti superiori a 15 giorni lavorativi rispetto alla scadenza stabilita, il Fornitore avrà il diritto di risolvere il contratto con effetto immediato e interrompere l\'erogazione dei servizi. In caso di risoluzione anticipata per causa imputabile al Cliente, il Cliente sarà comunque tenuto a corrispondere l\'intero importo pattuito, senza diritto a riduzioni, rimborsi o sconti.',
+    controversieTesto: 'Eventuali controversie derivanti dall\'interpretazione o dall\'esecuzione del presente contratto saranno risolte in via amichevole tra le parti. In caso di mancato accordo, sarà competente il Foro di Napoli.',
+    variePersonalizzate: [
+      { id: uid(), testo: 'Il presente contratto costituisce l\'intero accordo tra le parti e sostituisce ogni precedente intesa, accordo o negoziazione, sia orale che scritta.' },
+      { id: uid(), testo: 'Eventuali modifiche o integrazioni al presente contratto dovranno essere concordate per iscritto tra le parti.' },
+      { id: uid(), testo: 'Il Fornitore si riserva il diritto di utilizzare i contenuti realizzati per fini promozionali e di portfolio, salvo diversa richiesta scritta da parte del Cliente.' },
+      { id: uid(), testo: 'I file originali (scatti non editati, girato grezzo e materiali di lavorazione) non sono inclusi nella consegna e restano di proprietà del Fornitore, salvo diverso accordo scritto tra le parti.' }
+    ],
+    dataFirma: ''
+  };
+}
+
+function uid() { return Math.random().toString(36).slice(2, 9); }
+
+/* ---------------- LIBRERIA CLAUSOLE STANDARD ---------------- */
+/* Testo di partenza generico, da adattare — non è consulenza legale. */
+const CLAUSE_LIBRARY = [
+  { titolo: 'Termini di pagamento', testo: 'Il pagamento è richiesto per il 50% alla conferma del preventivo e il restante 50% alla consegna dei contenuti finali, salvo diverso accordo scritto.' },
+  { titolo: 'Diritti di utilizzo del materiale', testo: 'I contenuti realizzati restano di proprietà di Amira Vision fino al saldo completo. Il cliente acquisisce i diritti di utilizzo per i canali concordati (social, sito web, materiali promozionali).' },
+  { titolo: 'Tempistiche di consegna', testo: 'I contenuti verranno consegnati entro [X] giorni lavorativi dalla data dello shooting/riprese, salvo revisioni concordate.' },
+  { titolo: 'Revisioni incluse', testo: 'Il preventivo include fino a [X] revisioni sui contenuti consegnati. Ulteriori modifiche verranno quotate separatamente.' },
+  { titolo: 'Cancellazione e rinvii', testo: 'In caso di cancellazione con meno di 48 ore di preavviso rispetto alla data concordata, verrà applicata una penale pari al 30% del valore del pacchetto.' },
+  { titolo: 'Costi non inclusi', testo: 'Eventuali costi di location, noleggio attrezzature speciali, permessi o budget pubblicitario non sono inclusi nel preventivo, salvo diversamente specificato.' },
+  { titolo: 'Validità del preventivo', testo: 'Il presente preventivo ha validità di 30 giorni dalla data di invio, salvo diverso accordo.' }
+];
+
+/* ---------------- TEMPLATES: catalogo reale Amira Vision ---------------- */
+
+function baseTemplate(overrides) {
+  const state = Object.assign(emptyState(), overrides);
+  if (overrides && overrides.contract) {
+    state.contract = Object.assign(defaultContract(), overrides.contract);
+  }
+  return state;
+}
+
+function fotoTemplate(sottotitolo, intro, voci, oggettoContratto, scatti) {
+  return baseTemplate({
+    client: { eyebrow: 'Servizio fotografico', nome: 'Nome Cliente', sottotitolo: sottotitolo, periodo: '', intro: intro },
+    stats: [{ id: uid(), value: scatti, label: 'Scatti editati indicativi' }],
+    sections: [{ id: uid(), numero: '01', titolo: 'Cosa include', sottotitolo: '', voci: voci }],
+    pricing: [{ id: uid(), nome: 'Sessione fotografica', prezzo: '', descrizione: 'Da definire in base al numero di scatti e alla complessità del set.', evidenziato: false }],
+    contract: { tipoContratto: 'produzione', oggettoProduzioneTesto: oggettoContratto }
+  });
+}
+
+function videoTemplate(sottotitolo, intro, durata, voci, oggettoContratto) {
+  return baseTemplate({
+    client: { eyebrow: 'Produzione Video', nome: 'Nome Cliente', sottotitolo: sottotitolo, periodo: '', intro: intro },
+    stats: [{ id: uid(), value: durata, label: 'Durata indicativa' }],
+    sections: [{ id: uid(), numero: '01', titolo: 'Cosa include', sottotitolo: '', voci: voci }],
+    pricing: [{ id: uid(), nome: 'Produzione video', prezzo: '', descrizione: 'Da definire in base a durata, riprese e complessità del montaggio.', evidenziato: false }],
+    contract: { tipoContratto: 'produzione', oggettoProduzioneTesto: oggettoContratto }
+  });
+}
+
+const TEMPLATES = {
+  vuoto: () => emptyState(),
+
+  // --- FOTO ---
+  'foto-brand': () => fotoTemplate(
+    'Fotografia Brand & Prodotto',
+    'Scatti pensati per valorizzare i tuoi prodotti e la tua identità di brand, pronti per e-commerce, catalogo, packaging e comunicazione visiva.',
+    ['Shooting in studio o presso la tua sede', 'Setup luci e composizione prodotto', 'Ritocco e color correction', 'Consegna in alta risoluzione, pronta per stampa e digitale'],
+    'Il Fornitore si impegna a realizzare per il Cliente uno shooting fotografico dedicato a prodotto e brand, comprensivo di setup luci, composizione e ritocco professionale, con consegna degli scatti in alta risoluzione, pronti per uso stampa e digitale.',
+    '20-30'
+  ),
+  'foto-ritratti': () => fotoTemplate(
+    'Ritratti Professionali',
+    'Ritratti pensati per te o per il tuo team: immagini professionali per sito, LinkedIn, comunicazione aziendale e materiali di presentazione.',
+    ['Sessione in studio o in location concordata', 'Diverse pose e outfit, se previsti', 'Ritocco professionale', 'Consegna file ottimizzati per web e stampa'],
+    'Il Fornitore si impegna a realizzare per il Cliente una sessione di ritratti professionali, comprensiva di sessione in studio o in location concordata e ritocco professionale, con consegna dei file ottimizzati per web e stampa.',
+    '15-20'
+  ),
+  'foto-eventi': () => fotoTemplate(
+    'Reportage Eventi',
+    'Copertura fotografica completa del tuo evento, dal backstage ai momenti salienti, per raccontare l\'atmosfera e i dettagli che contano.',
+    ['Copertura per l\'intera durata dell\'evento (o fascia oraria concordata)', 'Scatti spontanei e momenti chiave', 'Selezione ed editing delle foto migliori', 'Consegna in galleria digitale'],
+    'Il Fornitore si impegna a realizzare per il Cliente la copertura fotografica di un evento, per la durata concordata tra le parti, comprensiva di selezione ed editing degli scatti migliori, con consegna in galleria digitale.',
+    '50+'
+  ),
+  'foto-editoriale': () => fotoTemplate(
+    'Editoriale / Moda',
+    'Uno shooting con direzione creativa e stile, pensato per raccontare una collezione, un concept o un\'estetica precisa attraverso un linguaggio fotografico distintivo.',
+    ['Concept e moodboard condivisi in anteprima', 'Direzione creativa sul set', 'Styling e composizione scenica, se richiesti', 'Post-produzione editoriale'],
+    'Il Fornitore si impegna a realizzare per il Cliente uno shooting editoriale/moda con direzione creativa dedicata, comprensivo di concept, styling e post-produzione, con consegna del materiale in alta risoluzione.',
+    '15-25'
+  ),
+
+  // --- VIDEO ---
+  'video-corporate': () => videoTemplate(
+    'Video Corporate / Istituzionale',
+    'Un video che racconta chi sei e cosa fai, pensato per il sito, le presentazioni aziendali e i canali social istituzionali.',
+    '2-4 min',
+    ['Riprese in sede o location concordata', 'Intervista o voce narrante, se prevista', 'Montaggio e color grading', 'Musica e sound design'],
+    'Il Fornitore si impegna a realizzare per il Cliente un video corporate/istituzionale della durata indicativa di 2-4 minuti, comprensivo di riprese, montaggio, color grading e sound design, con consegna del file finale in formato digitale.'
+  ),
+  'video-spot': () => videoTemplate(
+    'Spot Pubblicitario',
+    'Un commercial pensato per lanciare o promuovere un prodotto, servizio o iniziativa, con un ritmo pensato per catturare l\'attenzione.',
+    '15-30 sec',
+    ['Concept e storyboard', 'Riprese con regia dedicata', 'Montaggio dinamico', 'Versioni multiple per piattaforma (16:9, 9:16, 1:1)'],
+    'Il Fornitore si impegna a realizzare per il Cliente uno spot pubblicitario della durata indicativa di 15-30 secondi, comprensivo di concept, storyboard, riprese e montaggio, con consegna in versioni multiple per piattaforma (16:9, 9:16, 1:1).'
+  ),
+  'video-podcast': () => videoTemplate(
+    'Podcast',
+    'Format audio/video con ospiti o interviste, pensato per costruire una comunicazione continuativa e autorevole nel tempo.',
+    '20-40 min',
+    ['Set dedicato con più camere', 'Audio professionale', 'Montaggio episodio completo', 'Estratti social (clip brevi) su richiesta'],
+    'Il Fornitore si impegna a realizzare per il Cliente un episodio podcast della durata indicativa di 20-40 minuti, comprensivo di riprese multi-camera, audio professionale e montaggio completo, con consegna del file finale ed eventuali estratti social su richiesta.'
+  ),
+  'video-intervista': () => videoTemplate(
+    'Intervista / Documentario',
+    'Un racconto più lungo e approfondito, pensato per esplorare una storia, un progetto o una persona con maggiore respiro narrativo.',
+    '5-10 min',
+    ['Pre-intervista e scaletta domande', 'Riprese multi-camera', 'Montaggio narrativo', 'Color grading e sound design'],
+    'Il Fornitore si impegna a realizzare per il Cliente un\'intervista/documentario della durata indicativa di 5-10 minuti, comprensivo di pre-intervista, riprese multi-camera, montaggio narrativo e color grading, con consegna del file finale.'
+  ),
+
+  // --- SOCIAL: 4 livelli di complessità, come in "Componi la tua storia" ---
+  // Gestione profilo e sponsorizzate sono incluse fin dall'Essenziale.
+  // Il coordinamento influencer è l'unica caratteristica esclusiva del Full Service.
+  // Il Full Service ricalca il contratto reale (Capri Harbour): 4/settimana, 16/mese, mix completo.
+  'social-essenziale': () => baseTemplate({
+    client: { eyebrow: 'Contenuti Social · Essenziale', nome: 'Nome Cliente', sottotitolo: 'Settore / tipo di attività', periodo: '', intro: 'Un punto di partenza snello per iniziare a strutturare la presenza social, con reel professionali girati in studio, gestione del profilo e sponsorizzate incluse.' },
+    stats: [
+      { id: uid(), value: '8', label: 'Reel al mese' },
+      { id: uid(), value: '2x', label: 'a settimana' }
+    ],
+    sections: [
+      { id: uid(), numero: '01', titolo: 'Produzione', sottotitolo: '', voci: ['Reel professionali girati in studio Amira', 'Montaggio e consegna inclusi'] },
+      { id: uid(), numero: '02', titolo: 'Gestione', sottotitolo: '', voci: ['Gestione del profilo e pubblicazione', 'Sponsorizzate incluse (budget pubblicitario escluso)'] }
+    ],
+    pricing: [{ id: uid(), nome: 'Pacchetto Essenziale', prezzo: '', descrizione: 'Produzione mensile di reel, gestione del profilo e sponsorizzate base incluse.', evidenziato: false }],
+    contract: {
+      contenutiSettimana: '2',
+      giorniPubblicazione: 'lunedì e giovedì',
+      contenutiMeseMax: '8',
+      tipiContenuto: 'video in formato Reel (della durata massima di 1:30 minuti)',
+      canali: 'Instagram e TikTok',
+      oggettoExtra: ['Gestire il profilo social del Cliente, curando calendario e pubblicazione dei contenuti concordati.']
+    }
+  }),
+  'social-standard': () => baseTemplate({
+    client: { eyebrow: 'Contenuti Social · Standard', nome: 'Nome Cliente', sottotitolo: 'Settore / tipo di attività', periodo: '', intro: 'Un pacchetto più completo, con reel e scatti fotografici dedicati, gestione del profilo e sponsorizzate incluse.' },
+    stats: [
+      { id: uid(), value: '8', label: 'Reel al mese' },
+      { id: uid(), value: '4', label: 'Scatti fotografici al mese' }
+    ],
+    sections: [
+      { id: uid(), numero: '01', titolo: 'Produzione', sottotitolo: '', voci: ['Reel professionali girati in studio Amira', 'Scatti fotografici dedicati', 'Montaggio e consegna inclusi'] },
+      { id: uid(), numero: '02', titolo: 'Gestione', sottotitolo: '', voci: ['Gestione del profilo e pubblicazione', 'Sponsorizzate incluse (budget pubblicitario escluso)'] }
+    ],
+    pricing: [{ id: uid(), nome: 'Pacchetto Standard', prezzo: '', descrizione: 'Produzione mensile di reel e scatti, gestione del profilo e sponsorizzate base incluse.', evidenziato: false }],
+    contract: {
+      contenutiSettimana: '3',
+      giorniPubblicazione: 'lunedì, mercoledì e venerdì',
+      contenutiMeseMax: '12',
+      tipiContenuto: 'video in formato Reel (della durata massima di 1:30 minuti) e fotografie',
+      canali: 'Instagram e TikTok',
+      oggettoExtra: ['Gestire il profilo social del Cliente, curando calendario e pubblicazione dei contenuti concordati.']
+    }
+  }),
+  'social-completo': () => baseTemplate({
+    client: { eyebrow: 'Contenuti Social · Completo', nome: 'Nome Cliente', sottotitolo: 'Settore / tipo di attività', periodo: '', intro: 'Un mix completo di reel, scatti e grafiche, con l\'integrazione di contenuti realizzati con l\'intelligenza artificiale, gestione del profilo e sponsorizzate incluse.' },
+    stats: [
+      { id: uid(), value: '8', label: 'Reel al mese' },
+      { id: uid(), value: '4', label: 'Scatti fotografici al mese' },
+      { id: uid(), value: '4', label: 'Grafiche e contenuti AI al mese' }
+    ],
+    sections: [
+      { id: uid(), numero: '01', titolo: 'Produzione', sottotitolo: '', voci: ['Reel professionali girati in studio Amira', 'Scatti fotografici dedicati', 'Grafiche personalizzate', 'Contenuti integrati con l\'intelligenza artificiale'] },
+      { id: uid(), numero: '02', titolo: 'Gestione', sottotitolo: '', voci: ['Gestione del profilo e pubblicazione', 'Sponsorizzate incluse (budget pubblicitario escluso)'] }
+    ],
+    pricing: [{ id: uid(), nome: 'Pacchetto Completo', prezzo: '', descrizione: 'Produzione mensile completa (reel, scatti, grafiche, AI), gestione del profilo e sponsorizzate base incluse.', evidenziato: false }],
+    contract: {
+      contenutiSettimana: '4',
+      giorniPubblicazione: 'lunedì, mercoledì, venerdì e domenica',
+      contenutiMeseMax: '16',
+      tipiContenuto: 'video in formato Reel (della durata massima di 1:30 minuti), fotografie, caroselli fotografici o post con grafiche in sovrimpressione, e contenuti realizzati con l\'intelligenza artificiale',
+      canali: 'Instagram e TikTok',
+      oggettoExtra: ['Gestire il profilo social del Cliente, curando calendario e pubblicazione dei contenuti concordati.']
+    }
+  }),
+  'social-full': () => baseTemplate({
+    client: { eyebrow: 'Contenuti Social · Full Service', nome: 'Nome Cliente', sottotitolo: 'Settore / tipo di attività', periodo: '', intro: 'Il pacchetto più completo: produzione, gestione del profilo, sponsorizzate incluse, e coordinamento di collaborazioni con influencer per la crescita del brand.' },
+    stats: [
+      { id: uid(), value: '8', label: 'Reel al mese' },
+      { id: uid(), value: '4', label: 'Scatti fotografici al mese' },
+      { id: uid(), value: '4', label: 'Grafiche e contenuti AI al mese' },
+      { id: uid(), value: '✓', label: 'Coordinamento Influencer' }
+    ],
+    sections: [
+      { id: uid(), numero: '01', titolo: 'Produzione', sottotitolo: '', voci: ['Reel professionali girati in studio Amira', 'Scatti fotografici dedicati', 'Grafiche personalizzate', 'Contenuti integrati con l\'intelligenza artificiale'] },
+      { id: uid(), numero: '02', titolo: 'Gestione', sottotitolo: '', voci: ['Gestione del profilo e pubblicazione', 'Sponsorizzate incluse (budget pubblicitario escluso)'] },
+      { id: uid(), numero: '03', titolo: 'Influencer', sottotitolo: '', voci: ['Attivazione e coordinamento di collaborazioni con influencer selezionati'] }
+    ],
+    pricing: [
+      { id: uid(), nome: 'Produzione e gestione', prezzo: '', descrizione: 'Reel, scatti, grafiche e AI su base mensile, con gestione del profilo e sponsorizzate base incluse.', evidenziato: false },
+      { id: uid(), nome: 'Coordinamento Influencer', prezzo: '', descrizione: 'Attivazione e coordinamento di collaborazioni con influencer selezionati — la vera caratteristica esclusiva del Full Service.', evidenziato: true }
+    ],
+    contract: {
+      contenutiSettimana: '4',
+      giorniPubblicazione: 'lunedì, mercoledì, venerdì e domenica',
+      contenutiMeseMax: '16',
+      tipiContenuto: 'video in formato Reel (della durata massima di 1:30 minuti), fotografie, caroselli fotografici o post con grafiche in sovrimpressione, e contenuti realizzati con l\'intelligenza artificiale',
+      canali: 'Instagram e TikTok',
+      oggettoExtra: [
+        'Gestire il profilo social del Cliente, curando calendario e pubblicazione dei contenuti concordati.',
+        'Coordinare eventuali collaborazioni con influencer selezionati, secondo quanto concordato con il Cliente.'
+      ]
+    }
+  }),
+
+  editoriale: () => ({
+    client: {
+      eyebrow: 'Piano editoriale · 2 mesi',
+      nome: 'Nome Cliente',
+      sottotitolo: 'Settore / professione',
+      periodo: 'Periodo di copertura: da definire',
+      intro: "L'obiettivo è dare continuità alla comunicazione autentica e diretta che contraddistingue il brand, affiancando uno stile più elegante e premium sia nelle immagini che nel linguaggio."
+    },
+    stats: [
+      { id: uid(), value: '8', label: 'Video intervista stile podcast' },
+      { id: uid(), value: '8', label: 'Reel stile social' },
+      { id: uid(), value: '4', label: 'Contenuti AI' },
+      { id: uid(), value: '4', label: 'Scatti portrait' }
+    ],
+    sections: [],
+    pricing: [],
+    narrativeBlocks: [
+      { id: uid(), titolo: 'Pubblicazione contenuti', intro: '4 volte a settimana: si alternano i contenuti previsti con la ripubblicazione nelle Stories di contenuti passati, per mantenere il profilo attivo e continuativo.', items: [] }
+    ],
+    clauses: [],
+    contractNote: '',
+    note: '',
+    footer: 'Amira Vision · Strategia · Contenuti · Immagine'
+  }),
+  sessione: () => ({
+    client: {
+      eyebrow: 'Social Media Kit for Professionals',
+      nome: 'Nome Cliente',
+      sottotitolo: 'Per avvocati, notai, medici, imprenditori e professionisti',
+      periodo: '',
+      intro: 'Un mese di contenuti in sole 3 ore. Arrivi, registri e crei un mese di comunicazione senza sottrarre intere giornate al tuo lavoro.'
+    },
+    stats: [
+      { id: uid(), value: '3h', label: 'Sessione completa' },
+      { id: uid(), value: '16', label: 'Contenuti mensili' },
+      { id: uid(), value: '1', label: 'Mese di comunicazione' }
+    ],
+    sections: [
+      { id: uid(), numero: '01', titolo: 'Cosa include la sessione', sottotitolo: '', voci: ['Shooting foto: ritratti, dettagli e copertine', 'Podcast set: video parlati personalizzati', 'Sfondo nero: contenuti eleganti e autorevoli', 'AI content: visual freschi e di tendenza'] }
+    ],
+    pricing: [],
+    narrativeBlocks: [],
+    clauses: [],
+    contractNote: '',
+    note: '',
+    footer: 'AMIRA STUDIOS · Napoli'
+  })
+};
+
+function loadTemplate(key) {
+  if (!key) return;
+  STATE = TEMPLATES[key] ? TEMPLATES[key]() : emptyState();
+  document.getElementById('templateSelect').value = '';
+  renderForm();
+  renderPreview();
+}
+
+/* ---------------- IMPORT / EXPORT ---------------- */
+function exportData() {
+  const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const safeName = (STATE.client.nome || 'preventivo').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  a.href = url;
+  a.download = 'preventivo-' + safeName + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      STATE = Object.assign(emptyState(), data);
+      renderForm();
+      renderPreview();
+    } catch (err) {
+      alert('File non valido: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+/* ---------------- ARCHIVIO (Google Sheet) ---------------- */
+// Incolla qui l'URL del tuo Google Apps Script "Archivio" (vedi google-apps-script-ARCHIVIO.gs)
+const ARCHIVE_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwbST2ed5BmxzXo_NEOY0Qbx5tPa2oKEnDSBVuTs5Gx4t7C-NA61hSELtF153QCw8GqzA/exec';
+
+function archiveConfigured() {
+  return ARCHIVE_WEBHOOK_URL && ARCHIVE_WEBHOOK_URL.indexOf('INCOLLA_QUI') === -1;
+}
+
+function saveToArchive() {
+  const btn = document.getElementById('saveArchiveBtn');
+  if (!archiveConfigured()) {
+    alert('Archivio non ancora collegato.\n\nConfigura prima ARCHIVE_WEBHOOK_URL nel file (vedi istruzioni in google-apps-script-ARCHIVIO.gs), poi riprova.');
+    return;
+  }
+  const clienteNome = STATE.client.nome || STATE.contract.clienteNome || '(senza nome)';
+  const tipoDocumento = currentView === 'contratto' ? 'Contratto' : 'Proposta';
+
+  const formData = new FormData();
+  formData.append('ClienteNome', clienteNome);
+  formData.append('TipoDocumento', tipoDocumento);
+  formData.append('Dati', JSON.stringify(STATE));
+
+  const originalText = btn.textContent;
+  btn.textContent = 'Salvataggio…';
+  btn.disabled = true;
+
+  const finish = () => {
+    btn.textContent = '✓ Salvato';
+    setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 1800);
+  };
+
+  fetch(ARCHIVE_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', body: formData })
+    .then(finish)
+    .catch(finish);
+}
+
+function openHistory() {
+  const overlay = document.getElementById('historyOverlay');
+  const list = document.getElementById('historyList');
+  overlay.style.display = 'flex';
+
+  if (!archiveConfigured()) {
+    list.innerHTML = `<div class="history-empty">Archivio non ancora collegato.<br>Configura ARCHIVE_WEBHOOK_URL nel file per iniziare a salvare e recuperare i preventivi.</div>`;
+    return;
+  }
+
+  list.innerHTML = `<div class="history-empty">Caricamento…</div>`;
+
+  fetch(ARCHIVE_WEBHOOK_URL)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.items || !data.items.length) {
+        list.innerHTML = `<div class="history-empty">Nessun preventivo salvato ancora. Usa "💾 Salva nello storico" per iniziare ad archiviarli.</div>`;
+        return;
+      }
+      window._historyItems = data.items;
+      list.innerHTML = data.items.map((item, i) => `
+        <div class="history-item" onclick="loadHistoryItem(${i})">
+          <div class="history-item-info">
+            <div class="hi-name">${esc(item.clienteNome || '(senza nome)')}</div>
+            <div class="hi-meta">${esc(item.timestamp)}</div>
+          </div>
+          <div class="history-item-tag">${esc(item.tipoDocumento)}</div>
+        </div>`).join('');
+    })
+    .catch(err => {
+      list.innerHTML = `<div class="history-empty">Errore nel caricamento: ${esc(err.message)}</div>`;
+    });
+}
+
+function closeHistory() {
+  document.getElementById('historyOverlay').style.display = 'none';
+}
+
+function loadHistoryItem(index) {
+  const item = window._historyItems[index];
+  if (!item) return;
+  try {
+    const data = JSON.parse(item.dati);
+    STATE = Object.assign(emptyState(), data);
+    closeHistory();
+    renderForm();
+    renderPreview();
+  } catch (err) {
+    alert('Impossibile aprire questo preventivo: ' + err.message);
+  }
+}
+
+/* ---------------- MOBILE VIEW TOGGLE ---------------- */
+function setMobileView(mode) {
+  const ed = document.getElementById('editorPane');
+  const pv = document.querySelector('.preview-pane-wrap');
+  if (mode === 'edit') { ed.classList.remove('hide'); pv.classList.add('hide'); }
+  else { pv.classList.remove('hide'); ed.classList.add('hide'); }
+}
+
+/* ---------------- FORM RENDER ---------------- */
+function renderForm() {
+  const el = document.getElementById('editorPane');
+  el.innerHTML = '';
+
+  // --- Cliente ---
+  el.appendChild(block('Cliente & Intestazione', `
+    <div class="ed-field">
+      <label class="ed-label">Eyebrow (etichetta piccola in alto)</label>
+      <input class="ed-input" data-bind="client.eyebrow" value="${esc(STATE.client.eyebrow)}" />
+    </div>
+    <div class="ed-field">
+      <label class="ed-label">Nome cliente / brand</label>
+      <input class="ed-input" data-bind="client.nome" value="${esc(STATE.client.nome)}" />
+    </div>
+    <div class="ed-field">
+      <label class="ed-label">Sottotitolo (settore, professione...)</label>
+      <input class="ed-input" data-bind="client.sottotitolo" value="${esc(STATE.client.sottotitolo)}" />
+    </div>
+    <div class="ed-field">
+      <label class="ed-label">Periodo (facoltativo)</label>
+      <input class="ed-input" data-bind="client.periodo" value="${esc(STATE.client.periodo)}" />
+    </div>
+    <div class="ed-field">
+      <label class="ed-label">Paragrafo introduttivo / obiettivo</label>
+      <textarea class="ed-textarea" data-bind="client.intro" rows="4">${esc(STATE.client.intro)}</textarea>
+    </div>
+  `));
+
+  // --- Stats ---
+  let statsHtml = STATE.stats.map((s, i) => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeItem('stats', '${s.id}')">✕</button>
+      <div class="ed-row2">
+        <div class="ed-field"><label class="ed-label">Valore</label><input class="ed-input" data-bind="stats.${s.id}.value" value="${esc(s.value)}" /></div>
+        <div class="ed-field"><label class="ed-label">Etichetta</label><input class="ed-input" data-bind="stats.${s.id}.label" value="${esc(s.label)}" /></div>
+      </div>
+    </div>`).join('');
+  el.appendChild(block('Numeri chiave (es. "8 Reel")', statsHtml + `<button class="add-btn" onclick="addStat()">+ Aggiungi numero</button>`));
+
+  // --- Sections ---
+  let sectionsHtml = STATE.sections.map((s, i) => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeItem('sections', '${s.id}')">✕</button>
+      <div class="ed-row2">
+        <div class="ed-field"><label class="ed-label">Numero</label><input class="ed-input" data-bind="sections.${s.id}.numero" value="${esc(s.numero)}" /></div>
+        <div class="ed-field"><label class="ed-label">Titolo sezione</label><input class="ed-input" data-bind="sections.${s.id}.titolo" value="${esc(s.titolo)}" /></div>
+      </div>
+      <div class="ed-field"><label class="ed-label">Sottotitolo (facoltativo)</label><input class="ed-input" data-bind="sections.${s.id}.sottotitolo" value="${esc(s.sottotitolo)}" /></div>
+      <div class="ed-field"><label class="ed-label">Voci incluse (una per riga)</label><textarea class="ed-textarea" data-bind="sections.${s.id}.voci" data-list="true" rows="4">${esc((s.voci || []).join('\\n'))}</textarea></div>
+    </div>`).join('');
+  el.appendChild(block('Sezioni di produzione', sectionsHtml + `<button class="add-btn" onclick="addSection()">+ Aggiungi sezione</button>`));
+
+  // --- Pricing ---
+  let pricingHtml = STATE.pricing.map((p, i) => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeItem('pricing', '${p.id}')">✕</button>
+      <div class="ed-row-price">
+        <div class="ed-field"><label class="ed-label">Nome voce</label><input class="ed-input" data-bind="pricing.${p.id}.nome" value="${esc(p.nome)}" /></div>
+        <div class="ed-field"><label class="ed-label">Prezzo</label><input class="ed-input" data-bind="pricing.${p.id}.prezzo" value="${esc(p.prezzo)}" placeholder="es. 600€" /></div>
+      </div>
+      <div class="ed-field"><label class="ed-label">Descrizione</label><textarea class="ed-textarea" data-bind="pricing.${p.id}.descrizione" rows="2">${esc(p.descrizione)}</textarea></div>
+      <div class="ed-checkbox-row">
+        <input type="checkbox" id="hl_${p.id}" data-bind="pricing.${p.id}.evidenziato" data-checkbox="true" ${p.evidenziato ? 'checked' : ''} />
+        <label for="hl_${p.id}">Evidenzia (es. omaggio / incluso)</label>
+      </div>
+    </div>`).join('');
+  el.appendChild(block('Voci di prezzo', pricingHtml + `<button class="add-btn" onclick="addPricing()">+ Aggiungi voce di prezzo</button>`));
+
+  // --- Narrative blocks ---
+  let narrativeHtml = STATE.narrativeBlocks.map((n, i) => {
+    let itemsHtml = (n.items || []).map((it, j) => `
+      <div class="repeat-item" style="background:rgba(255,255,255,0.02)">
+        <button class="repeat-item-remove" onclick="removeSubItem('${n.id}', '${it.id}')">✕</button>
+        <div class="ed-field"><label class="ed-label">Titolo voce (es. "Video 1 — La storia...")</label><input class="ed-input" data-bind="narrativeBlocks.${n.id}.items.${it.id}.label" value="${esc(it.label)}" /></div>
+        <div class="ed-field"><label class="ed-label">Descrizione</label><textarea class="ed-textarea" data-bind="narrativeBlocks.${n.id}.items.${it.id}.testo" rows="3">${esc(it.testo)}</textarea></div>
+      </div>`).join('');
+    return `
+    <div class="repeat-item" style="border-color: rgba(77,168,240,0.35)">
+      <button class="repeat-item-remove" onclick="removeItem('narrativeBlocks', '${n.id}')">✕</button>
+      <div class="ed-field"><label class="ed-label">Titolo blocco (es. "Piano Video · Primo Mese")</label><input class="ed-input" data-bind="narrativeBlocks.${n.id}.titolo" value="${esc(n.titolo)}" /></div>
+      <div class="ed-field"><label class="ed-label">Intro breve</label><textarea class="ed-textarea" data-bind="narrativeBlocks.${n.id}.intro" rows="2">${esc(n.intro)}</textarea></div>
+      <div style="margin-top:8px;">${itemsHtml}</div>
+      <button class="add-btn" onclick="addNarrativeSubItem('${n.id}')">+ Aggiungi voce (es. Video N)</button>
+    </div>`;
+  }).join('');
+  el.appendChild(block('Blocchi narrativi (piani video, dettagli extra)', narrativeHtml + `<button class="add-btn" onclick="addNarrativeBlock()">+ Aggiungi blocco narrativo</button>`));
+
+  // --- Clauses & contract ---
+  let clausesHtml = STATE.clauses.map((cl) => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeItem('clauses', '${cl.id}')">✕</button>
+      <div class="ed-field"><label class="ed-label">Titolo clausola</label><input class="ed-input" data-bind="clauses.${cl.id}.titolo" value="${esc(cl.titolo)}" /></div>
+      <div class="ed-field"><label class="ed-label">Testo</label><textarea class="ed-textarea" data-bind="clauses.${cl.id}.testo" rows="3">${esc(cl.testo)}</textarea></div>
+    </div>`).join('');
+  const librarySelect = `
+    <div class="ed-field">
+      <label class="ed-label">Inserisci una clausola standard (poi modificabile)</label>
+      <select class="ed-select" id="clauseLibrarySelect">
+        <option value="">Scegli dalla libreria…</option>
+        ${CLAUSE_LIBRARY.map((c, i) => `<option value="${i}">${esc(c.titolo)}</option>`).join('')}
+      </select>
+    </div>
+    <button class="add-btn" onclick="addClauseFromLibrary()">+ Aggiungi clausola dalla libreria</button>
+  `;
+  el.appendChild(block('Clausole rapide (in fondo alla Proposta)', `
+    ${librarySelect}
+    <div style="margin-top:14px;">${clausesHtml}</div>
+    <button class="add-btn" onclick="addClause()">+ Aggiungi clausola personalizzata</button>
+    <div class="ed-field" style="margin-top:16px;">
+      <label class="ed-label">Riferimento a contratto generico (facoltativo)</label>
+      <textarea class="ed-textarea" data-bind="contractNote" rows="2" placeholder="Es. Il presente preventivo è regolato dai Termini e Condizioni Generali di Amira Vision, disponibili su richiesta.">${esc(STATE.contractNote)}</textarea>
+    </div>
+  `));
+
+  // --- CONTRATTO (documento separato e stampabile) ---
+  const ct = STATE.contract;
+  let milestonesHtml = ct.milestones.map(m => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeContractSub('milestones', '${m.id}')">✕</button>
+      <div class="ed-row-price">
+        <div class="ed-field"><label class="ed-label">Quando</label><input class="ed-input" data-bind="contract.milestones.${m.id}.quando" value="${esc(m.quando)}" /></div>
+        <div class="ed-field"><label class="ed-label">Importo</label><input class="ed-input" data-bind="contract.milestones.${m.id}.importo" value="${esc(m.importo)}" placeholder="es. 200€" /></div>
+      </div>
+    </div>`).join('');
+  let varieHtml = ct.variePersonalizzate.map(v => `
+    <div class="repeat-item">
+      <button class="repeat-item-remove" onclick="removeContractSub('variePersonalizzate', '${v.id}')">✕</button>
+      <textarea class="ed-textarea" data-bind="contract.variePersonalizzate.${v.id}.testo" rows="2">${esc(v.testo)}</textarea>
+    </div>`).join('');
+
+  el.appendChild(block('📝 Contratto di Collaborazione (documento a parte)', `
+    <div style="font-size:11.5px;color:#5a80a0;margin-bottom:16px;line-height:1.6;">Genera un contratto formale separato (scheda "Contratto" nell'anteprima), con la stessa struttura del tuo modello standard. Il testo qui sotto è un punto di partenza generico, non consulenza legale: falla rivedere da un legale prima dell'uso.</div>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin-bottom:8px;">Dati Cliente</div>
+    <div class="ed-field"><label class="ed-label">Ragione sociale / Nome</label><input class="ed-input" data-bind="contract.clienteNome" value="${esc(ct.clienteNome)}" /></div>
+    <div class="ed-field"><label class="ed-label">Sede legale</label><input class="ed-input" data-bind="contract.clienteSede" value="${esc(ct.clienteSede)}" /></div>
+    <div class="ed-row2">
+      <div class="ed-field"><label class="ed-label">P.IVA</label><input class="ed-input" data-bind="contract.clientePIVA" value="${esc(ct.clientePIVA)}" /></div>
+      <div class="ed-field"><label class="ed-label">Telefono</label><input class="ed-input" data-bind="contract.clienteTelefono" value="${esc(ct.clienteTelefono)}" /></div>
+    </div>
+    <div class="ed-field"><label class="ed-label">PEC</label><input class="ed-input" data-bind="contract.clientePEC" value="${esc(ct.clientePEC)}" /></div>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Dati Fornitore</div>
+    <div class="ed-field"><label class="ed-label">Nome</label><input class="ed-input" data-bind="contract.fornitoreNome" value="${esc(ct.fornitoreNome)}" /></div>
+    <div class="ed-field"><label class="ed-label">Sede legale</label><input class="ed-input" data-bind="contract.fornitoreSede" value="${esc(ct.fornitoreSede)}" /></div>
+    <div class="ed-row2">
+      <div class="ed-field"><label class="ed-label">P.IVA</label><input class="ed-input" data-bind="contract.fornitorePIVA" value="${esc(ct.fornitorePIVA)}" /></div>
+      <div class="ed-field"><label class="ed-label">Telefono</label><input class="ed-input" data-bind="contract.fornitoreTelefono" value="${esc(ct.fornitoreTelefono)}" /></div>
+    </div>
+    <div class="ed-field"><label class="ed-label">PEC</label><input class="ed-input" data-bind="contract.fornitorePEC" value="${esc(ct.fornitorePEC)}" /></div>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Tipo di contratto</div>
+    <select class="ed-select" onchange="setContractType(this.value)">
+      <option value="gestione" ${ct.tipoContratto === 'gestione' ? 'selected' : ''}>Gestione social continuativa (calendario settimanale, sponsorizzate incluse)</option>
+      <option value="produzione" ${ct.tipoContratto === 'produzione' ? 'selected' : ''}>Produzione singola (foto/video, nessuna gestione)</option>
+    </select>
+
+    ${ct.tipoContratto === 'produzione' ? `
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 1 — Oggetto del Contratto</div>
+    <div class="ed-field"><label class="ed-label">Descrizione del servizio</label><textarea class="ed-textarea" data-bind="contract.oggettoProduzioneTesto" rows="4">${esc(ct.oggettoProduzioneTesto)}</textarea></div>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 2 — Durata / Consegna</div>
+    <div class="ed-field"><label class="ed-label">Tempistiche di consegna</label><textarea class="ed-textarea" data-bind="contract.durataProduzioneTesto" rows="3">${esc(ct.durataProduzioneTesto)}</textarea></div>
+    ` : `
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 1 — Oggetto del Contratto</div>
+    <div class="ed-row2">
+      <div class="ed-field"><label class="ed-label">Contenuti a settimana</label><input class="ed-input" data-bind="contract.contenutiSettimana" value="${esc(ct.contenutiSettimana)}" /></div>
+      <div class="ed-field"><label class="ed-label">Max contenuti al mese</label><input class="ed-input" data-bind="contract.contenutiMeseMax" value="${esc(ct.contenutiMeseMax)}" /></div>
+    </div>
+    <div class="ed-field"><label class="ed-label">Giorni di pubblicazione</label><input class="ed-input" data-bind="contract.giorniPubblicazione" value="${esc(ct.giorniPubblicazione)}" /></div>
+    <div class="ed-field"><label class="ed-label">Tipi di contenuto</label><textarea class="ed-textarea" data-bind="contract.tipiContenuto" rows="2">${esc(ct.tipiContenuto)}</textarea></div>
+    <div class="ed-field"><label class="ed-label">Canali</label><input class="ed-input" data-bind="contract.canali" value="${esc(ct.canali)}" /></div>
+    <div class="ed-field"><label class="ed-label">Frequenza shooting</label><input class="ed-input" data-bind="contract.shootingFrequenza" value="${esc(ct.shootingFrequenza)}" /></div>
+    <div class="ed-field"><label class="ed-label">Voci aggiuntive nell'Oggetto (una per riga, facoltative — es. gestione profilo, influencer)</label><textarea class="ed-textarea" data-bind="contract.oggettoExtra" data-list="true" rows="3">${esc((ct.oggettoExtra || []).join('\n'))}</textarea></div>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 2 — Durata</div>
+    <div class="ed-field"><label class="ed-label">Durata minima della collaborazione</label><input class="ed-input" data-bind="contract.durataMinima" value="${esc(ct.durataMinima)}" /></div>
+    `}
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 3 — Compenso e Pagamento</div>
+    <div class="ed-field"><label class="ed-label">Compenso totale</label><input class="ed-input" data-bind="contract.compensoTotale" value="${esc(ct.compensoTotale)}" placeholder="es. €900,00 (novecento/00)" /></div>
+    <label class="ed-label" style="margin-top:8px;">Milestone di pagamento</label>
+    ${milestonesHtml}
+    <button class="add-btn" onclick="addMilestone()">+ Aggiungi milestone</button>
+
+    <label class="ed-label" style="margin-top:16px;">Riprogrammazione e annullamento dello shooting</label>
+    <textarea class="ed-textarea" data-bind="contract.riprogrammazioneTesto" rows="6">${esc(ct.riprogrammazioneTesto)}</textarea>
+
+    ${ct.tipoContratto === 'gestione' ? `
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 6 — Sponsorizzazioni</div>
+    <textarea class="ed-textarea" data-bind="contract.sponsorizzazioniTesto" rows="4">${esc(ct.sponsorizzazioniTesto)}</textarea>
+    ` : `
+    <div style="font-size:11px;color:#5a80a0;margin:12px 0;">Art. 6 (Sponsorizzazioni) non compare nei contratti di produzione singola.</div>
+    `}
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 4 — Obblighi del Fornitore</div>
+    <textarea class="ed-textarea" data-bind="contract.obblighiFornitoreTesto" rows="4">${esc(ct.obblighiFornitoreTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 5 — Obblighi del Cliente</div>
+    <textarea class="ed-textarea" data-bind="contract.obblighiClienteTesto" rows="3">${esc(ct.obblighiClienteTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 7 — Riservatezza e Dati</div>
+    <textarea class="ed-textarea" data-bind="contract.riservatezzaTesto" rows="4">${esc(ct.riservatezzaTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 8 — Comunicazioni</div>
+    <textarea class="ed-textarea" data-bind="contract.comunicazioniTesto" rows="4">${esc(ct.comunicazioniTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 9 — Risoluzione</div>
+    <textarea class="ed-textarea" data-bind="contract.risoluzioneTesto" rows="3">${esc(ct.risoluzioneTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 10 — Controversie</div>
+    <textarea class="ed-textarea" data-bind="contract.controversieTesto" rows="2">${esc(ct.controversieTesto)}</textarea>
+
+    <div class="ed-block-title" style="font-size:11px;border:none;margin:18px 0 8px;">Art. 11 — Varie</div>
+    ${varieHtml}
+    <button class="add-btn" onclick="addVarieClause()">+ Aggiungi voce a "Varie"</button>
+
+    <div class="ed-field" style="margin-top:16px;"><label class="ed-label">Data</label><input class="ed-input" data-bind="contract.dataFirma" value="${esc(ct.dataFirma)}" placeholder="gg/mm/aaaa" /></div>
+  `));
+
+  // --- Note & footer ---
+  el.appendChild(block('Note finali', `
+    <div class="ed-field">
+      <label class="ed-label">Note / budget consigliato / disclaimer</label>
+      <textarea class="ed-textarea" data-bind="note" rows="3">${esc(STATE.note)}</textarea>
+    </div>
+    <div class="ed-field">
+      <label class="ed-label">Tagline footer</label>
+      <input class="ed-input" data-bind="footer" value="${esc(STATE.footer)}" />
+    </div>
+  `));
+
+  attachBindings();
+}
+
+function block(title, innerHtml) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ed-block';
+  wrap.innerHTML = `<div class="ed-block-title">${title}</div>${innerHtml}`;
+  return wrap;
+}
+
+function esc(str) {
+  return (str || '').toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ---------------- BINDINGS ---------------- */
+function attachBindings() {
+  document.querySelectorAll('[data-bind]').forEach(input => {
+    const evt = input.tagName === 'SELECT' || input.type === 'checkbox' ? 'change' : 'input';
+    input.addEventListener(evt, () => {
+      const path = input.getAttribute('data-bind');
+      const isList = input.getAttribute('data-list') === 'true';
+      const isCheckbox = input.getAttribute('data-checkbox') === 'true';
+      const value = isCheckbox ? input.checked : (isList ? input.value.split('\\n').filter(Boolean) : input.value);
+      setByPath(path, value);
+      renderPreview();
+    });
+  });
+}
+
+function setByPath(path, value) {
+  const parts = path.split('.');
+  if (parts[0] === 'client') { STATE.client[parts[1]] = value; return; }
+  if (parts[0] === 'note' || parts[0] === 'footer' || parts[0] === 'contractNote') { STATE[parts[0]] = value; return; }
+  if (parts[0] === 'stats' || parts[0] === 'sections' || parts[0] === 'pricing' || parts[0] === 'clauses') {
+    const arr = STATE[parts[0]];
+    const item = arr.find(x => x.id === parts[1]);
+    if (item) item[parts[2]] = value;
+    return;
+  }
+  if (parts[0] === 'narrativeBlocks') {
+    const block = STATE.narrativeBlocks.find(x => x.id === parts[1]);
+    if (!block) return;
+    if (parts[2] === 'items') {
+      const it = block.items.find(x => x.id === parts[3]);
+      if (it) it[parts[4]] = value;
+    } else {
+      block[parts[2]] = value;
+    }
+  }
+  if (parts[0] === 'contract') {
+    const ct = STATE.contract;
+    if (parts[1] === 'milestones' || parts[1] === 'variePersonalizzate') {
+      const arr = ct[parts[1]];
+      const item = arr.find(x => x.id === parts[2]);
+      if (item) item[parts[3]] = value;
+    } else {
+      ct[parts[1]] = value;
+    }
+  }
+}
+
+/* ---------------- ADD / REMOVE ---------------- */
+function addStat() { STATE.stats.push({ id: uid(), value: '', label: '' }); renderForm(); renderPreview(); }
+function addSection() { STATE.sections.push({ id: uid(), numero: String(STATE.sections.length + 1).padStart(2, '0'), titolo: '', sottotitolo: '', voci: [] }); renderForm(); renderPreview(); }
+function addPricing() { STATE.pricing.push({ id: uid(), nome: '', prezzo: '', descrizione: '', evidenziato: false }); renderForm(); renderPreview(); }
+function addNarrativeBlock() { STATE.narrativeBlocks.push({ id: uid(), titolo: '', intro: '', items: [] }); renderForm(); renderPreview(); }
+function addNarrativeSubItem(blockId) {
+  const b = STATE.narrativeBlocks.find(x => x.id === blockId);
+  if (b) b.items.push({ id: uid(), label: '', testo: '' });
+  renderForm(); renderPreview();
+}
+function addClause() { STATE.clauses.push({ id: uid(), titolo: '', testo: '' }); renderForm(); renderPreview(); }
+function addClauseFromLibrary() {
+  const sel = document.getElementById('clauseLibrarySelect');
+  const idx = sel.value;
+  if (idx === '') return;
+  const c = CLAUSE_LIBRARY[Number(idx)];
+  STATE.clauses.push({ id: uid(), titolo: c.titolo, testo: c.testo });
+  renderForm(); renderPreview();
+}
+function addMilestone() { STATE.contract.milestones.push({ id: uid(), importo: '', quando: '' }); renderForm(); renderPreview(); }
+function setContractType(v) { STATE.contract.tipoContratto = v; renderForm(); renderPreview(); }
+function addVarieClause() { STATE.contract.variePersonalizzate.push({ id: uid(), testo: '' }); renderForm(); renderPreview(); }
+function removeContractSub(key, id) {
+  STATE.contract[key] = STATE.contract[key].filter(x => x.id !== id);
+  renderForm(); renderPreview();
+}
+function removeItem(key, id) {
+  STATE[key] = STATE[key].filter(x => x.id !== id);
+  renderForm(); renderPreview();
+}
+function removeSubItem(blockId, itemId) {
+  const b = STATE.narrativeBlocks.find(x => x.id === blockId);
+  if (b) b.items = b.items.filter(x => x.id !== itemId);
+  renderForm(); renderPreview();
+}
+
+/* ---------------- PREVIEW RENDER ---------------- */
+function setDocView(view) {
+  currentView = view;
+  document.getElementById('tabProposta').classList.toggle('active', view === 'proposta');
+  document.getElementById('tabContratto').classList.toggle('active', view === 'contratto');
+  renderPreview();
+}
+
+function renderPreview() {
+  if (currentView === 'contratto') { renderContractPreview(); return; }
+  renderProposalPreview();
+}
+
+function renderProposalPreview() {
+  const el = document.getElementById('previewPane');
+  const c = STATE.client;
+
+  const isEmpty = !c.nome && !STATE.sections.length && !STATE.pricing.length && !STATE.narrativeBlocks.length && !STATE.stats.length;
+
+  if (isEmpty) {
+    el.innerHTML = `<div class="doc"><div class="empty-hint">Inizia a compilare a sinistra, oppure scegli un modello dal menù in alto — l'anteprima si aggiorna in automatico.</div></div>`;
+    return;
+  }
+
+  const statsHtml = STATE.stats.length ? `
+    <div class="doc-stats"><div class="doc-stats-inner">
+      ${STATE.stats.map(s => `<div class="doc-stat"><div class="doc-stat-value">${esc(s.value)}</div><div class="doc-stat-label">${esc(s.label)}</div></div>`).join('')}
+    </div></div>` : '';
+
+  const sectionsHtml = STATE.sections.map(s => `
+    <div class="doc-section">
+      <div class="doc-section-head"><div class="doc-section-num">${esc(s.numero)}</div><div class="doc-section-title">${esc(s.titolo)}</div></div>
+      ${s.sottotitolo ? `<div class="doc-section-sub">${esc(s.sottotitolo)}</div>` : ''}
+      <div class="doc-section-list">${(s.voci || []).map(v => `<div class="doc-section-item">${esc(v)}</div>`).join('')}</div>
+    </div>`).join('');
+
+  const pricingHtml = STATE.pricing.length ? `
+    <div class="doc-pricing">
+      ${STATE.pricing.map(p => `
+        <div class="doc-price-card ${p.evidenziato ? 'highlight' : ''}">
+          <div class="doc-price-top"><div class="doc-price-name">${esc(p.nome)}</div><div class="doc-price-value">${esc(p.prezzo)}</div></div>
+          ${p.descrizione ? `<div class="doc-price-desc">${esc(p.descrizione)}</div>` : ''}
+        </div>`).join('')}
+    </div>` : '';
+
+  const narrativeHtml = STATE.narrativeBlocks.map(n => `
+    <div class="doc-narrative">
+      <div class="doc-narrative-title">${esc(n.titolo)}</div>
+      ${n.intro ? `<div class="doc-narrative-intro">${esc(n.intro)}</div>` : ''}
+      ${(n.items || []).map(it => `
+        <div class="doc-narrative-item">
+          ${it.label ? `<div class="doc-narrative-label">${esc(it.label)}</div>` : ''}
+          <div class="doc-narrative-text">${esc(it.testo)}</div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  const noteHtml = STATE.note ? `<div class="doc-note">${esc(STATE.note)}</div>` : '';
+
+  const clausesHtml = STATE.clauses.length ? `
+    <div class="doc-clauses">
+      <div class="doc-clauses-title">Termini e Condizioni</div>
+      ${STATE.clauses.map((cl, i) => `
+        <div class="doc-clause-item">
+          <div class="doc-clause-num">${i + 1}.</div>
+          <div>
+            ${cl.titolo ? `<div class="doc-clause-title">${esc(cl.titolo)}</div>` : ''}
+            <div class="doc-clause-text">${esc(cl.testo)}</div>
+          </div>
+        </div>`).join('')}
+      ${STATE.contractNote ? `<div class="doc-contract-note">${esc(STATE.contractNote)}</div>` : ''}
+    </div>` : (STATE.contractNote ? `<div class="doc-clauses"><div class="doc-contract-note">${esc(STATE.contractNote)}</div></div>` : '');
+
+  el.innerHTML = `
+    <div class="doc">
+      <div class="doc-header">
+        <div class="doc-logo">AMIRA</div>
+        <div class="doc-logo-sub">vision</div>
+        ${c.eyebrow ? `<div class="doc-eyebrow">${esc(c.eyebrow)}</div>` : ''}
+        <div class="doc-client">${esc(c.nome) || 'Nome Cliente'}</div>
+        ${c.sottotitolo ? `<div class="doc-sub">${esc(c.sottotitolo)}</div>` : ''}
+        ${c.periodo ? `<div class="doc-periodo">${esc(c.periodo)}</div>` : ''}
+        ${c.intro ? `<div class="doc-intro">${esc(c.intro)}</div>` : ''}
+      </div>
+      ${statsHtml}
+      ${sectionsHtml}
+      ${pricingHtml}
+      ${narrativeHtml}
+      ${noteHtml}
+      ${clausesHtml}
+      <div class="doc-footer"><div class="doc-footer-text">${esc(STATE.footer)}</div></div>
+    </div>
+  `;
+}
+
+function renderContractPreview() {
+  const el = document.getElementById('previewPane');
+  const ct = STATE.contract;
+  const c = STATE.client;
+  const isProduzione = ct.tipoContratto === 'produzione';
+
+  const milestonesTxt = ct.milestones.filter(m => m.importo || m.quando)
+    .map(m => `<li>${esc(m.importo)} ${m.quando ? esc(m.quando) : ''}</li>`).join('');
+
+  const varieTxt = ct.variePersonalizzate.filter(v => v.testo).map(v => `<li>${esc(v.testo)}</li>`).join('');
+
+  // --- Costruisco gli articoli come lista, così la numerazione si adatta da sola ---
+  const articles = [];
+
+  if (isProduzione) {
+    articles.push({
+      title: 'Oggetto del Contratto',
+      body: `<p class="ctr-p">${esc(ct.oggettoProduzioneTesto)}</p>`
+    });
+    articles.push({
+      title: 'Durata e Consegna',
+      body: `<p class="ctr-p">${esc(ct.durataProduzioneTesto)}</p>`
+    });
+  } else {
+    const oggettoVoci = [
+      `Realizzare <strong>${esc(ct.contenutiSettimana)} contenuti a settimana</strong>, da pubblicare nei giorni <strong>${esc(ct.giorniPubblicazione)}</strong>, per un massimo di <strong>${esc(ct.contenutiMeseMax)} contenuti al mese</strong>, in base alle esigenze del Cliente.`,
+      `I contenuti potranno consistere in ${esc(ct.tipiContenuto)}.`,
+      `Effettuare ${esc(ct.shootingFrequenza)}, finalizzata alla produzione dei materiali sopra indicati.`,
+      `Fornire il servizio di montaggio video e creazione dei contenuti, seguendo lo stile di comunicazione concordato tra le parti.`,
+      `Curare la pubblicazione dei contenuti nei giorni stabiliti, sui canali <strong>${esc(ct.canali)}</strong> del Cliente.`,
+      ...(ct.oggettoExtra || []).map(v => esc(v))
+    ];
+    articles.push({
+      title: 'Oggetto del Contratto',
+      body: `<p class="ctr-p"><strong>Il Fornitore si impegna a:</strong></p><ul class="ctr-list">${oggettoVoci.map(v => `<li>${v}</li>`).join('')}</ul>`
+    });
+    articles.push({
+      title: 'Durata del Contratto',
+      body: `
+        <p class="ctr-p">Il presente contratto decorre dalla data di sottoscrizione e ha una <strong>durata minima di ${esc(ct.durataMinima)}</strong>, suddivisa in cicli mensili. Durante ciascun ciclo mensile verranno prodotti e pubblicati un massimo di ${esc(ct.contenutiMeseMax)} contenuti, secondo quanto previsto all'articolo precedente.</p>
+        <p class="ctr-p">All'inizio di ciascun ciclo sarà effettuata ${esc(ct.shootingFrequenza)}.</p>
+        <p class="ctr-p">Al termine del periodo minimo, il contratto si intenderà tacitamente rinnovato di mese in mese, salvo disdetta comunicata da una delle parti con almeno 30 giorni di preavviso rispetto alla scadenza.</p>`
+    });
+  }
+
+  articles.push({
+    title: 'Compenso e Modalità di Pagamento',
+    body: `
+      <p class="ctr-p">Il compenso totale per il servizio oggetto del presente contratto è pari a <strong>${esc(ct.compensoTotale) || '[importo da definire]'}</strong>, da corrispondersi secondo le seguenti milestone:</p>
+      <ul class="ctr-list">${milestonesTxt}</ul>
+      <p class="ctr-p"><strong>Obbligo di pagamento:</strong> il Cliente è tenuto a corrispondere l'intero importo pattuito, senza possibilità di riduzione, sospensione o rimborso, anche in caso di interruzione anticipata della collaborazione o mancato utilizzo dei contenuti da parte del Cliente.</p>
+      <p class="ctr-p"><strong>Fatturazione:</strong> il Fornitore emetterà fattura contestualmente a ciascun pagamento ricevuto, secondo le milestone sopra indicate.</p>
+      <p class="ctr-p" style="margin-top:14px;"><strong>Riprogrammazione e annullamento dello shooting</strong></p>
+      <p class="ctr-p" style="white-space:pre-wrap;">${esc(ct.riprogrammazioneTesto)}</p>`
+  });
+
+  articles.push({ title: 'Obblighi e Responsabilità del Fornitore', body: `<p class="ctr-p" style="white-space:pre-wrap;">${esc(ct.obblighiFornitoreTesto)}</p>` });
+  articles.push({ title: 'Obblighi del Cliente', body: `<p class="ctr-p" style="white-space:pre-wrap;">${esc(ct.obblighiClienteTesto)}</p>` });
+
+  if (!isProduzione) {
+    articles.push({ title: 'Sponsorizzazioni', body: `<p class="ctr-p">${esc(ct.sponsorizzazioniTesto)}</p>` });
+  }
+
+  articles.push({ title: 'Riservatezza e Trattamento dei Dati', body: `<p class="ctr-p" style="white-space:pre-wrap;">${esc(ct.riservatezzaTesto)}</p>` });
+  articles.push({ title: 'Comunicazioni Ufficiali', body: `<p class="ctr-p">${esc(ct.comunicazioniTesto)}</p>` });
+  articles.push({ title: 'Risoluzione del Contratto', body: `<p class="ctr-p">${esc(ct.risoluzioneTesto)}</p>` });
+  articles.push({ title: 'Controversie', body: `<p class="ctr-p">${esc(ct.controversieTesto)}</p>` });
+  articles.push({ title: 'Varie', body: `<ul class="ctr-list">${varieTxt}</ul>` });
+
+  const articlesHtml = articles.map((a, i) => `
+    <div class="ctr-art-title">${i + 1}. ${a.title}</div>
+    ${a.body}`).join('');
+
+  el.innerHTML = `
+    <div class="contract-doc">
+      <div class="ctr-logo"><div class="cl-main">AMIRA</div><div class="cl-sub">vision</div></div>
+      <div class="ctr-title">Contratto di Collaborazione per Servizi ${esc(c.sottotitolo || (isProduzione ? 'di Produzione Fotografica/Video' : 'di Social Media Management'))}</div>
+
+      <div class="ctr-parties">
+        <p><strong>Tra:</strong></p>
+        <p><strong>${esc(ct.fornitoreNome) || '[Nome Fornitore]'}</strong>, con sede legale in ${esc(ct.fornitoreSede)}, P.IVA ${esc(ct.fornitorePIVA)}, PEC: ${esc(ct.fornitorePEC)}, telefono: ${esc(ct.fornitoreTelefono)} (di seguito "Fornitore")</p>
+        <p>E</p>
+        <p><strong>${esc(ct.clienteNome) || '[Nome Cliente]'}</strong>, con sede in ${esc(ct.clienteSede)}, P.IVA ${esc(ct.clientePIVA)}, PEC: ${esc(ct.clientePEC)}, telefono: ${esc(ct.clienteTelefono)} (di seguito "Cliente")</p>
+      </div>
+
+      ${articlesHtml}
+
+      <div class="ctr-date">Data: ${esc(ct.dataFirma) || '____/____/______'}</div>
+
+      <div class="ctr-sign">
+        <div class="ctr-sign-line"><div class="sl-label">&nbsp;</div><div class="sl-rule">Firma del Fornitore</div></div>
+        <div class="ctr-sign-line"><div class="sl-label">&nbsp;</div><div class="sl-rule">Firma del Cliente</div></div>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------------- PASSWORD GATE ---------------- */
+// ⚠️ Cambia questa password prima di caricare il file online.
+const PAGE_PASSWORD = 'amiravision2026';
+
+function checkPassword() {
+  const input = document.getElementById('pwInput');
+  const error = document.getElementById('pwError');
+  if (input.value === PAGE_PASSWORD) {
+    document.getElementById('pwOverlay').style.display = 'none';
+    renderForm();
+    renderPreview();
+  } else {
+    error.textContent = 'Password errata, riprova.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+document.getElementById('pwInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') checkPassword();
+});
+document.getElementById('pwInput').focus();
+</script>
+</body>
+</html>

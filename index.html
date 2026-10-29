@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AMIRA vision — Magazine</title>
   <meta name="description" content="The magazine about humans, visions and stories." />
-  <link rel="canonical" href="https://www.amiravisionmagazine.com/" />
+  <link rel="canonical" href="https://amiravision.it/" />
   <meta property="og:type" content="website" id="og-type" />
   <meta property="og:site_name" content="AMIRA vision" />
   <meta property="og:title" content="AMIRA vision — Magazine" id="og-title" />
   <meta property="og:description" content="The magazine about humans, visions and stories." id="og-desc" />
-  <meta property="og:url" content="https://www.amiravisionmagazine.com/" id="og-url" />
-  <meta property="og:image" content="https://www.amiravisionmagazine.com/immagini/amira-cover.jpg" id="og-image" />
-  <meta property="og:image:secure_url" content="https://www.amiravisionmagazine.com/immagini/amira-cover.jpg" />
+  <meta property="og:url" content="https://amiravision.it/" id="og-url" />
+  <meta property="og:image" content="https://amiravision.it/immagini/amira-cover.jpg" id="og-image" />
+  <meta property="og:image:secure_url" content="https://amiravision.it/immagini/amira-cover.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="600" />
   <meta property="og:image:height" content="750" />
@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AMIRA vision — Magazine" id="tw-title" />
   <meta name="twitter:description" content="The magazine about humans, visions and stories." id="tw-desc" />
-  <meta name="twitter:image" content="https://www.amiravisionmagazine.com/immagini/amira-cover.jpg" id="tw-image" />
+  <meta name="twitter:image" content="https://amiravision.it/immagini/amira-cover.jpg" id="tw-image" />
   <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
@@ -148,6 +148,28 @@
     .story-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
     .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
+
+    /* ONE STORY, MANY MEDIA */
+    .mezzi-badges{position:absolute;z-index:2;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;gap:6px}
+    .featured-card-media .mezzi-badges{top:10px;left:10px;right:10px;gap:5px}
+    .mezzi-badges .story-badge,.mezzi-badges .featured-card-badge{position:static;background:rgba(3,5,8,.45)}
+    .story-con{font-size:12px;color:rgba(255,255,255,.6);margin:-4px 0 12px}
+    .featured-card-con{font-size:12px;color:rgba(255,255,255,.5);margin:6px 0 0}
+    .mezzi-filter{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:28px 44px}
+    .mezzi-filter-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-right:6px}
+    .mezzi-chip{min-height:40px;padding:0 18px;border-radius:999px;border:.5px solid rgba(255,255,255,.3);background:transparent;color:#fff;font:inherit;font-size:12px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:background .2s,color .2s}
+    .mezzi-chip:hover{border-color:#c9a96e;color:#c9a96e}
+    .mezzi-chip.active{background:#fff;color:#080808;border-color:#fff}
+    .behind{margin:56px 0 8px;padding:32px;border:.5px solid rgba(100,140,210,.25);background:rgba(10,22,40,.5)}
+    .behind-label{font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:18px}
+    .behind-list{display:grid;grid-template-columns:max-content 1fr;gap:10px 24px;margin:0 0 22px;font-size:15px}
+    .behind-list dt{font-weight:600;color:#fff}
+    .behind-list dd{margin:0;color:rgba(255,255,255,.7)}
+    .behind-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+    .behind-link{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border-radius:999px;border:.5px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-size:13px;font-weight:600}
+    .behind-link:hover{border-color:#c9a96e;color:#c9a96e}
+    .behind-cta{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c9a96e;text-decoration:none}
+    @media(max-width:768px){.mezzi-filter{padding:20px}.behind{padding:22px}}
 
     /* LETTER */
     .letter{display:grid;grid-template-columns:1fr 1.1fr 1fr}
@@ -575,6 +597,7 @@
     <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
     <a href="#/magazine" onclick="event.preventDefault();showPage('magazine')" class="nav-t">The magazine</a>
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
+    <a href="/componi-la-tua-storia" class="nav-t">Tell your story</a>
     <!-- FILOS temporarily hidden from nav: <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a> -->
   </div>
   <div class="nav-actions">
@@ -593,6 +616,7 @@
   <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
   <a onclick="closeMobileMenu();showPage('magazine')">The Magazine</a>
   <a onclick="closeMobileMenu();showPage('gallery')">The Gallery</a>
+  <a href="/componi-la-tua-storia">Tell your story</a>
   <!-- FILOS temporarily hidden from mobile menu: <a onclick="closeMobileMenu();showPage('filos')">FILOS</a> -->
 </div>
 <div class="translation-status" id="translation-status" role="status" aria-live="polite"></div>
@@ -635,16 +659,6 @@
     </div>
   </section>
 
-  <!-- STUDIO + MAGAZINE, ONE IDENTITY -->
-  <section class="studio-statement" onclick="showPage('magazine')">
-    <div class="studio-statement-media"><img src="/immagini/amira-cover.jpg" alt="AMIRA vision studio"></div>
-    <div class="studio-statement-body">
-      <div class="studio-statement-tag">Who we are</div>
-      <h2 class="studio-statement-title">A visual storytelling studio<br><em>with its own magazine.</em></h2>
-      <p class="studio-statement-text">We create images, films and content for those who want to tell their story with authenticity — and every month, we tell our own in AMIRA vision, the magazine born from the same work.</p>
-      <span class="studio-statement-cta">Learn more →</span>
-    </div>
-  </section>
 
 
   <!-- FILOS STRIP temporarily hidden from homepage
@@ -684,7 +698,7 @@
     </div>
   </section>
 
-  <section class="quote-band">
+  <section class="quote-band" id="contatti">
     <div>
       <div class="q-txt">Your story<br><em>matters.</em></div>
       <div class="q-src">— Amira Vision Magazine</div>
@@ -693,7 +707,7 @@
       <p>Do you have a story to tell, a project you believe in, a brand that wants to be seen? Share your story with us — we will tell it together.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
       <a href="https://wa.me/393202412048" target="_blank" class="btn-pill">Share your story →</a>
-      <a href="https://amiravision.it" target="_blank" class="btn-pill" style="background:rgba(255,255,255,.04)">The studio →</a>
+      <a href="/componi-la-tua-storia" class="btn-pill" style="background:rgba(255,255,255,.04)">Compose your story →</a>
     </div>
     </div>
   </section>
@@ -716,7 +730,7 @@
         <li><a href="#" class="f-link-1">About us</a></li>
         <li><a href="#" class="f-link-2">Contact</a></li>
         <li><a href="https://instagram.com/amira.vision" target="_blank">Instagram</a></li>
-        <li><a href="https://amiravision.it" target="_blank">amiravision.it</a></li>
+        <li><a href="/componi-la-tua-storia">Tell your story</a></li>
       </ul>
     </div>
     <div class="f-bottom">
@@ -762,9 +776,10 @@
         <span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>All stories<span style="display:block;width:20px;height:.5px;background:#c9a96e"></span>
       </div>
       <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.04em;line-height:.95;color:#fff;margin-bottom:16px">Stories</h1>
-      <p style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:520px;margin:0 auto">Every story published on AMIRA, from the most recent.</p>
+      <p style="font-size:15px;color:rgba(255,255,255,.4);line-height:1.7;max-width:520px;margin:0 auto">Every story published on AMIRA, from the most recent — for the magazine, or together with whoever entrusted it to us.</p>
     </div>
-    <div class="stories-grid" id="stories-grid-full" style="padding:44px"></div>
+    <div class="mezzi-filter" id="mezzi-filter" role="group" aria-label="Filter stories by medium"></div>
+    <div class="stories-grid" id="stories-grid-full" style="padding:0 44px 44px"></div>
   </div>
 </div>
 
@@ -945,21 +960,47 @@ async function fetchArticoli() {
 }
 
 // ── CARD TEMPLATES ──
-function storyCardHtml(art, idx) {
-  const tipo = art.tipo || 'articolo';
-  const isVideo = tipo === 'video' && art.video_url;
-  const badgeLabel = isVideo ? 'Video' : (tipo === 'foto' ? 'Photo story' : 'Article');
-  const ctaLabel = isVideo ? 'Watch the video →' : (tipo === 'foto' ? 'View the photos →' : 'Read the story →');
-  const clickAttr = isVideo
+// ── MEZZI: how a story is told (words, photo, video, audio, social) ──
+// A story is one thing; the media it uses are shown as badges and drive the filter.
+// Uses the CMS field "mezzi" when set, otherwise derives it from tipo and blocks.
+const MEZZI_ORDER = ['parole', 'foto', 'video', 'audio', 'social'];
+const MEZZI_LABEL = { parole: 'Words', foto: 'Photo', video: 'Video', audio: 'Audio', social: 'Social' };
+function storyMezzi(art) {
+  if (art._mezzi) return art._mezzi;
+  let set = new Set((Array.isArray(art.mezzi) ? art.mezzi : []).map(m => String(m).toLowerCase()));
+  if (!set.size) {
+    const blocks = art.contenuto || [];
+    const has = t => blocks.some(b => b && b.tipo === t);
+    if (art.kind === 'gallery') set.add('foto');
+    if (has('paragrafo') || (art.tipo || 'articolo') === 'articolo' && art.intro) set.add('parole');
+    if (has('foto') || has('gallery') || art.tipo === 'foto' || art.extra_foto_1) set.add('foto');
+    if (has('video') || art.tipo === 'video') set.add('video');
+    if (has('audio')) set.add('audio');
+  }
+  art._mezzi = MEZZI_ORDER.filter(m => set.has(m));
+  return art._mezzi;
+}
+function mezziBadgesHtml(art, cls) {
+  return '<span class="mezzi-badges">' + storyMezzi(art).map(m =>
+    `<span class="${cls}${m === 'video' ? ' type-video' : ''}">${MEZZI_LABEL[m]}</span>`).join('') + '</span>';
+}
+function storyClickAttr(art, idx) {
+  const isExternalVideo = (art.tipo || 'articolo') === 'video' && art.video_url;
+  return isExternalVideo
     ? `onclick="window.open('${art.video_url}','_blank')"`
     : `onclick="openArticle(${idx})"`;
-  return `<article class="story" ${clickAttr}>
+}
+
+function storyCardHtml(art, idx) {
+  const mezzi = storyMezzi(art);
+  const ctaLabel = mezzi.includes('parole') ? 'Read the story →' : (mezzi.includes('video') ? 'Watch the story →' : 'See the story →');
+  return `<article class="story" ${storyClickAttr(art, idx)}>
     <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
-    <span class="story-badge ${isVideo ? 'type-video' : ''}">${badgeLabel}</span>
-    ${isVideo ? '<span class="story-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+    ${mezziBadgesHtml(art, 'story-badge')}
     <div class="story-body">
-      <div class="story-tag">${art.luogo || ''}</div>
+      <div class="story-tag">${art.categoria || art.luogo || ''}</div>
       <h3>${art.titolo || ''} <em>${art.titolo_em || ''}</em></h3>
+      ${art.con ? `<div class="story-con">With ${art.con}</div>` : ''}
       <p>${art.estratto || art.intro || ''}</p>
       <span class="story-link">${ctaLabel}</span>
     </div>
@@ -967,20 +1008,14 @@ function storyCardHtml(art, idx) {
 }
 
 function featuredCardHtml(art, idx) {
-  const tipo = art.tipo || 'articolo';
-  const isVideo = tipo === 'video' && art.video_url;
-  const badgeLabel = isVideo ? 'Video' : (tipo === 'foto' ? 'Photo story' : 'Article');
-  const clickAttr = isVideo
-    ? `onclick="window.open('${art.video_url}','_blank')"`
-    : `onclick="openArticle(${idx})"`;
-  return `<div class="featured-card" ${clickAttr}>
+  return `<div class="featured-card" ${storyClickAttr(art, idx)}>
     <div class="featured-card-media">
       <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
-      <span class="featured-card-badge ${isVideo ? 'type-video' : ''}">${badgeLabel}</span>
-      ${isVideo ? '<span class="featured-card-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+      ${mezziBadgesHtml(art, 'featured-card-badge')}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
     <p class="featured-card-title">${art.titolo || ''}${art.titolo_em ? '. <em>' + art.titolo_em + '</em>' : ''}</p>
+    ${art.con ? `<p class="featured-card-con">With ${art.con}</p>` : ''}
   </div>`;
 }
 
@@ -988,7 +1023,7 @@ function featuredGalleryCardHtml(g, idx) {
   return `<div class="featured-card" onclick="showPage('gallery');openGallerySingle(${idx})">
     <div class="featured-card-media">
       <img src="${g.copertina || ''}" alt="${g.titolo || ''}" loading="lazy">
-      <span class="featured-card-badge">Gallery</span>
+      <span class="mezzi-badges"><span class="featured-card-badge">Photo</span><span class="featured-card-badge">Gallery</span></span>
     </div>
     <p class="featured-card-cat">${g.luogo || g.mese || ''}</p>
     <p class="featured-card-title">${g.titolo || ''}</p>
@@ -1022,6 +1057,18 @@ function renderFeatured() {
   }).join('');
 }
 
+// ── FILTER: "Told with" ──
+let MEZZO_FILTER = 'all';
+function setMezzoFilter(m) { MEZZO_FILTER = m; renderGrid(); }
+function renderMezziFilter() {
+  const bar = document.getElementById('mezzi-filter');
+  if (!bar) return;
+  const main = ARTICOLI.filter(a => a.rubrica !== 'filos');
+  const used = MEZZI_ORDER.filter(m => main.some(a => storyMezzi(a).includes(m)));
+  bar.innerHTML = '<span class="mezzi-filter-label">Told with</span>' +
+    ['all', ...used].map(m => `<button type="button" class="mezzi-chip${MEZZO_FILTER === m ? ' active' : ''}" aria-pressed="${MEZZO_FILTER === m}" onclick="setMezzoFilter('${m}')">${m === 'all' ? 'Everything' : MEZZI_LABEL[m]}</button>`).join('');
+}
+
 // ── RENDER HOME GRID ──
 function renderGrid() {
   const fullGrid = document.getElementById('stories-grid-full');
@@ -1029,11 +1076,15 @@ function renderGrid() {
   const main = ARTICOLI.filter((a, i) => a.rubrica !== 'filos');
   const filos = ARTICOLI.filter((a, i) => a.rubrica === 'filos');
 
+  renderMezziFilter();
+  const shown = MEZZO_FILTER === 'all' ? main : main.filter(a => storyMezzi(a).includes(MEZZO_FILTER));
   if (!main.length) {
     if (fullGrid) fullGrid.innerHTML = '<div class="loading">Nessuna storia ancora.</div>';
+  } else if (!shown.length) {
+    if (fullGrid) fullGrid.innerHTML = '<div class="loading">No stories told this way yet.</div>';
   } else {
     if (fullGrid) {
-      fullGrid.innerHTML = main.map(art => storyCardHtml(art, ARTICOLI.indexOf(art))).join('');
+      fullGrid.innerHTML = shown.map(art => storyCardHtml(art, ARTICOLI.indexOf(art))).join('');
     }
   }
   renderFeatured();
@@ -1065,8 +1116,8 @@ function openArticle(index, updateHistory = true) {
     // Update all OG/Twitter meta for article sharing
     var artTitle = (art.titolo || '') + (art.titolo_em ? ' ' + art.titolo_em : '') + ' — AMIRA vision';
     var artDesc = art.estratto || art.intro || 'A story on AMIRA vision Magazine.';
-    var artImg = art.copertina || 'https://amiravisionmagazine.com/immagini/amira-cover.jpg';
-    var artUrl = 'https://amiravisionmagazine.com/articolo/' + art.id;
+    var artImg = art.copertina || 'https://amiravision.it/immagini/amira-cover.jpg';
+    var artUrl = 'https://amiravision.it/articolo/' + art.id;
     document.title = artTitle;
     var setMeta = function(id, val) { var el = document.getElementById(id); if(el) el.setAttribute('content', val); };
     setMeta('og-title', artTitle);
@@ -1242,7 +1293,23 @@ function openArticle(index, updateHistory = true) {
     <button class="share-btn" onclick="shareArticle('copy')">Copy link</button>
   </div>`;
   
-  document.getElementById('art-content').innerHTML = html + shareHtml;
+  // "Behind the story": who it was told with, how, and where to see more
+  const mezziTxt = storyMezzi(art).map(m => MEZZI_LABEL[m]).join(' · ');
+  const links = [[art.link_esterno, art.link_label || 'Watch on Instagram'], [art.link_2, art.link_2_label || 'See more']]
+    .filter(l => l[0])
+    .map(l => `<a class="behind-link" href="${l[0]}" target="_blank" rel="noopener">${l[1]} →</a>`).join('');
+  const behindHtml = (art.con || links) ? `<div class="behind">
+    <div class="behind-label">Behind the story</div>
+    <dl class="behind-list">
+      ${art.con ? `<dt>With</dt><dd>${art.con}</dd>` : ''}
+      ${mezziTxt ? `<dt>Told with</dt><dd>${mezziTxt}</dd>` : ''}
+      ${art.date ? `<dt>Year</dt><dd>${String(art.date).slice(0, 4)}</dd>` : ''}
+    </dl>
+    ${links ? `<div class="behind-links">${links}</div>` : ''}
+    <a class="behind-cta" href="/componi-la-tua-storia">Tell us your story →</a>
+  </div>` : '';
+
+  document.getElementById('art-content').innerHTML = html + behindHtml + shareHtml;
 
   const prev = ARTICOLI[(index - 1 + ARTICOLI.length) % ARTICOLI.length];
   const next = ARTICOLI[(index + 1) % ARTICOLI.length];
@@ -1281,12 +1348,12 @@ function showPage(id, updateHistory = true) {
     var setMeta = function(mid, val) { var el = document.getElementById(mid); if(el) el.setAttribute('content', val); };
     setMeta('og-title', 'AMIRA vision — Magazine');
     setMeta('og-desc', 'The magazine about humans, visions and stories.');
-    setMeta('og-image', 'https://www.amiravisionmagazine.com/immagini/amira-cover.jpg');
-    setMeta('og-url', 'https://www.amiravisionmagazine.com/');
+    setMeta('og-image', 'https://amiravision.it/immagini/amira-cover.jpg');
+    setMeta('og-url', 'https://amiravision.it/');
     setMeta('og-type', 'website');
     setMeta('tw-title', 'AMIRA vision — Magazine');
     setMeta('tw-desc', 'The magazine about humans, visions and stories.');
-    setMeta('tw-image', 'https://www.amiravisionmagazine.com/immagini/amira-cover.jpg');
+    setMeta('tw-image', 'https://amiravision.it/immagini/amira-cover.jpg');
   }
   document.querySelectorAll('.page').forEach(p => {
     p.classList.remove('active');

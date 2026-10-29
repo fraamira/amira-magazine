@@ -23,7 +23,7 @@ export const config = {
 const BOT_UA = /facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|redditbot|Googlebot|Applebot|SkypeUriPreview|vkShare|W3C_Validator/i;
 
 const REPO_RAW_BASE = 'https://raw.githubusercontent.com/fraamira/amira-magazine/main/_articoli/';
-const SITE_ORIGIN = 'https://www.amiravisionmagazine.com';
+const SITE_ORIGIN = 'https://amiravision.it';
 const DEFAULT_IMAGE = SITE_ORIGIN + '/immagini/amira-cover.jpg';
 
 function escapeHtml(str) {
