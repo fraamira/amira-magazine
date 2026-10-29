@@ -1087,6 +1087,7 @@ function mezziBadgesHtml(art, cls) {
   return '<span class="mezzi-badges">' + storyMezzi(art).map(m =>
     `<span class="${cls}${m === 'video' ? ' type-video' : ''}">${MEZZI_LABEL[m]}</span>`).join('') + '</span>';
 }
+function isExternalVideo(art) { return (art.tipo || 'articolo') === 'video' && !!art.video_url; }
 function storyClickAttr(art, idx) {
   const isExternalVideo = (art.tipo || 'articolo') === 'video' && art.video_url;
   return isExternalVideo
@@ -1096,10 +1097,11 @@ function storyClickAttr(art, idx) {
 
 function storyCardHtml(art, idx) {
   const mezzi = storyMezzi(art);
-  const ctaLabel = mezzi.includes('parole') ? 'Read the story →' : (mezzi.includes('video') ? 'Watch the story →' : 'See the story →');
+  const ctaLabel = isExternalVideo(art) ? 'Watch on Instagram ↗' : (mezzi.includes('parole') ? 'Read the story →' : (mezzi.includes('video') ? 'Watch the story →' : 'See the story →'));
   return `<article class="story" ${storyClickAttr(art, idx)}>
     <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
     ${mezziBadgesHtml(art, 'story-badge')}
+    ${isExternalVideo(art) ? '<span class="story-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
     <div class="story-body">
       <div class="story-tag">${art.categoria || art.luogo || ''}</div>
       <h3>${titleHtml(art, ' ')}<em>${art.titolo_em || ''}</em></h3>
@@ -1115,6 +1117,7 @@ function featuredCardHtml(art, idx) {
     <div class="featured-card-media">
       <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
       ${mezziBadgesHtml(art, 'featured-card-badge')}
+      ${isExternalVideo(art) ? '<span class="featured-card-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
     <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + art.titolo_em + '</em>' : ''}</p>
