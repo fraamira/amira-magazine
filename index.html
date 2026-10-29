@@ -149,25 +149,53 @@
     .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
 
-    /* HOME COVER: the lead story as the magazine cover */
-    .cover{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden;background:#0a1010;cursor:pointer}
-    .cover-media{position:absolute;inset:0}
-    .cover-media img{width:100%;height:100%;object-fit:cover;filter:brightness(.82);transition:transform 1.2s ease}
-    .cover:hover .cover-media img{transform:scale(1.02)}
-    .cover-media img[src=""]{display:none}
-    .cover-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,16,16,.96) 0%,rgba(10,16,16,.55) 38%,rgba(10,16,16,.05) 70%),linear-gradient(to bottom,rgba(10,16,16,.55) 0%,rgba(10,16,16,0) 22%)}
-    .cover-top{position:absolute;z-index:2;top:76px;left:44px;right:44px;display:flex;justify-content:space-between;gap:16px;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.75)}
-    .cover-body{position:relative;z-index:2;padding:0 44px 64px;max-width:980px}
-    .cover-kicker{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#c9a96e;margin-bottom:16px}
-    .cover-title{font-size:clamp(40px,6.4vw,92px);font-weight:700;letter-spacing:-.045em;line-height:.95;color:#fff;margin:0 0 20px}
-    .cover-title em{display:block;font-style:italic;font-weight:300;letter-spacing:-.03em;font-size:.48em;line-height:1.15;color:rgba(255,255,255,.8);margin-top:12px}
-    .cover-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-    .cover-badges span{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);border:.5px solid rgba(255,255,255,.35);padding:4px 8px;background:rgba(3,5,8,.35)}
-    .cover-dek{font-size:17px;font-weight:300;line-height:1.6;color:rgba(255,255,255,.75);max-width:600px;margin:0 0 28px}
-    .cover-actions{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
-    .cover-more{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
-    .cover-more:hover{color:#c9a96e}
-    @media(max-width:768px){.cover{min-height:88vh}.cover-top{left:20px;right:20px;top:70px}.cover-top span:last-child{display:none}.cover-body{padding:0 20px 44px}.cover-dek{font-size:15px}}
+    /* HOME HERO: three words + photos */
+    .home-hero{min-height:100vh;background:#0a1010;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:center;padding:120px 44px 72px}
+    .home-hero-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:28px}
+    .home-hero-title{font-size:clamp(64px,9vw,150px);font-weight:700;letter-spacing:-.055em;line-height:.9;color:#fff;margin:0 0 32px}
+    .home-hero-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.78)}
+    .home-hero-sub{font-size:clamp(16px,1.5vw,19px);font-weight:300;line-height:1.6;color:rgba(255,255,255,.7);max-width:520px;margin:0 0 36px}
+    .home-hero-sub em{font-style:italic;color:#fff}
+    .home-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
+    .home-hero-link{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);text-decoration:none}
+    .home-hero-link:hover{color:#c9a96e}
+    .home-hero-photos{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:min(76vh,720px)}
+    .hp{position:relative;overflow:hidden;background:#141c1c;cursor:pointer}
+    .hp-1{grid-row:1 / span 2}
+    .hp img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .hp:hover img{transform:scale(1.04)}
+    .hp-cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(to top,rgba(10,16,16,.85),rgba(10,16,16,0));font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+    @media(max-width:900px){.home-hero{grid-template-columns:1fr;gap:40px;padding:104px 20px 48px;min-height:auto}.home-hero-photos{height:72vw}}
+
+    /* OUR VISION PAGE */
+    .vis{background:#0a1010;color:#fff;padding-top:56px}
+    .vis section{padding:96px 44px;max-width:1280px;margin:0 auto}
+    .vis-kicker{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c9a96e;margin-bottom:24px}
+    .vis-title{font-size:clamp(44px,6.5vw,104px);font-weight:700;letter-spacing:-.05em;line-height:.95;margin:0 0 36px;max-width:1100px}
+    .vis-title em,.vis h2 em,.vis-media-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.78)}
+    .vis-lead{font-size:clamp(17px,1.6vw,21px);font-weight:300;line-height:1.65;color:rgba(255,255,255,.72);max-width:760px;margin:0}
+    .vis-two{display:grid;grid-template-columns:1fr 1fr;border-top:.5px solid rgba(255,255,255,.15);padding-top:0 !important}
+    .vis-col{padding:48px 48px 0 0;display:flex;flex-direction:column;gap:16px}
+    .vis-col + .vis-col{padding:48px 0 0 48px;border-left:.5px solid rgba(255,255,255,.15)}
+    .vis-num{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .vis h2{font-size:clamp(30px,3.4vw,48px);font-weight:700;letter-spacing:-.04em;line-height:1.02;margin:0}
+    .vis-col p{font-size:16px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.68);margin:0;max-width:480px}
+    .vis-link{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c9a96e;text-decoration:none;cursor:pointer;margin-top:6px}
+    .vis-media{background:#fafaf8;color:#080808;max-width:none !important;margin:0 !important}
+    .vis-media > *{max-width:1192px;margin-left:auto;margin-right:auto}
+    .vis-media-title{font-size:clamp(32px,4.4vw,64px);font-weight:700;letter-spacing:-.045em;line-height:1.02;margin:0 auto 56px;text-align:center}
+    .vis-media-title em{color:rgba(8,8,8,.7)}
+    .vis-media-grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:.5px solid #080808}
+    .vis-media-grid div{padding:26px 20px 0 0}
+    .vis-media-grid span{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+    .vis-media-grid p{font-size:14px;font-weight:300;line-height:1.6;color:#3f3f3b;margin:0}
+    .vis-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-bottom:56px}
+    .vis-steps strong{display:block;font-size:clamp(36px,4vw,60px);font-weight:700;letter-spacing:-.045em;line-height:1;margin-bottom:14px}
+    .vis-steps div:nth-child(2) strong{font-style:italic;font-weight:300;color:#c9a96e}
+    .vis-steps p{font-size:15px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.66);margin:0;max-width:320px}
+    .vis-close{font-size:17px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.72);max-width:640px;margin:0 0 32px;padding-top:32px;border-top:.5px solid rgba(255,255,255,.15)}
+    .vis-actions{display:flex;flex-wrap:wrap;gap:12px}
+    @media(max-width:900px){.vis section{padding:64px 20px}.vis-two{grid-template-columns:1fr}.vis-col,.vis-col + .vis-col{padding:36px 0 0;border-left:0}.vis-col + .vis-col{margin-top:24px;border-top:.5px solid rgba(255,255,255,.15)}.vis-media-grid{grid-template-columns:1fr 1fr;gap:0 20px}.vis-steps{grid-template-columns:1fr;gap:28px}}
 
     /* ONE STORY, MANY MEDIA */
     .mezzi-badges{position:absolute;z-index:2;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;gap:6px}
@@ -610,7 +638,7 @@
   </div>
   <div class="nav-links">
     <a href="#" onclick="event.preventDefault();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)" class="nav-t">Stories</a>
-    <a href="#/magazine" onclick="event.preventDefault();showPage('magazine')" class="nav-t">The magazine</a>
+    <a href="#/vision" onclick="event.preventDefault();showPage('magazine')" class="nav-t">Our vision</a>
     <a href="#/gallery" onclick="event.preventDefault();showPage('gallery')" class="nav-t">The Gallery</a>
     <a href="/componi-la-tua-storia" class="nav-t">Tell your story</a>
     <!-- FILOS temporarily hidden from nav: <a href="#/filos" onclick="event.preventDefault();showPage('filos')" class="nav-t">FILOS</a> -->
@@ -629,7 +657,7 @@
 <div class="mobile-menu" id="mobile-menu">
   <button class="mobile-close" onclick="closeMobileMenu()">×</button>
   <a onclick="closeMobileMenu();showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),200)">Stories</a>
-  <a onclick="closeMobileMenu();showPage('magazine')">The Magazine</a>
+  <a onclick="closeMobileMenu();showPage('magazine')">Our vision</a>
   <a onclick="closeMobileMenu();showPage('gallery')">The Gallery</a>
   <a href="/componi-la-tua-storia">Tell your story</a>
   <!-- FILOS temporarily hidden from mobile menu: <a onclick="closeMobileMenu();showPage('filos')">FILOS</a> -->
@@ -645,22 +673,18 @@
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-  <header class="cover" id="home-cover">
-    <div class="cover-media"><img id="cover-img" src="" alt=""></div>
-    <div class="cover-shade"></div>
-    <div class="cover-top">
-      <span>Humans. Visions. Stories.</span>
-      <span>A visual storytelling studio with its own magazine</span>
-    </div>
-    <div class="cover-body">
-      <div class="cover-kicker" id="cover-kicker">Cover story</div>
-      <h1 class="cover-title" id="cover-title">&nbsp;</h1>
-      <div class="cover-badges" id="cover-badges"></div>
-      <p class="cover-dek" id="cover-dek"></p>
-      <div class="cover-actions">
-        <span class="btn-pill" id="cover-cta">Read the story &nbsp;→</span>
-        <span class="cover-more" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">More stories ↓</span>
+  <header class="home-hero">
+    <div class="home-hero-text">
+      <div class="home-hero-kicker">AMIRA vision · Studio &amp; Magazine</div>
+      <h1 class="home-hero-title">Humans.<br><em>Visions.</em><br>Stories.</h1>
+      <p class="home-hero-sub">A visual storytelling studio <em>with its own magazine.</em> We tell stories through words, photography, video and sound — choosing the medium for the person in front of us.</p>
+      <div class="home-hero-actions">
+        <span class="btn-pill" onclick="document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'})">Discover the stories &nbsp;→</span>
+        <a class="home-hero-link" href="/componi-la-tua-storia">Tell your story →</a>
       </div>
+    </div>
+    <div class="home-hero-photos" id="hero-photos" aria-label="Recent stories">
+      <div class="hp hp-1"></div><div class="hp hp-2"></div><div class="hp hp-3"></div>
     </div>
   </header>
 
@@ -1049,25 +1073,21 @@ function featuredGalleryCardHtml(g, idx) {
   </div>`;
 }
 
-// ── HOME COVER ──
-function renderCover(item) {
-  const cover = document.getElementById('home-cover');
-  if (!cover || !item) return;
-  const d = item.data, isGallery = item.kind === 'gallery';
-  document.getElementById('cover-img').src = d.copertina || '';
-  document.getElementById('cover-img').alt = d.titolo || '';
-  document.getElementById('cover-kicker').textContent = 'Cover story · ' + (isGallery ? (d.luogo || 'The Gallery') : (d.categoria || d.luogo || ''));
-  document.getElementById('cover-title').innerHTML = (d.titolo || '') + (d.titolo_em ? '<em>' + d.titolo_em + '</em>' : '');
-  const badges = isGallery ? ['Photo', 'Gallery'] : storyMezzi(d).map(m => MEZZI_LABEL[m]);
-  document.getElementById('cover-badges').innerHTML = badges.map(b => '<span>' + b + '</span>').join('') + (d.con ? '<span>With ' + d.con + '</span>' : '');
-  document.getElementById('cover-dek').textContent = (isGallery ? d.descrizione : (d.estratto || d.intro)) || '';
-  const mezzi = isGallery ? ['foto'] : storyMezzi(d);
-  document.getElementById('cover-cta').innerHTML = (mezzi.includes('parole') ? 'Read the story' : (mezzi.includes('video') ? 'Watch the story' : 'See the story')) + ' &nbsp;→';
-  cover.onclick = (e) => {
-    if (e.target.closest('.cover-more')) return;
-    if (isGallery) { showPage('gallery'); openGallerySingle(ALL_GALLERIES.indexOf(d)); }
-    else openArticle(ARTICOLI.indexOf(d));
-  };
+// ── HOME HERO PHOTOS ──
+// Three recent stories fill the photo mosaic beside the headline (stories marked
+// "in evidenza" in the CMS come first).
+function renderHeroPhotos(combined) {
+  const tiles = document.querySelectorAll('#hero-photos .hp');
+  if (!tiles.length) return;
+  const picks = [...combined.filter(i => i.data.in_evidenza), ...combined.filter(i => !i.data.in_evidenza)]
+    .filter(i => i.data.copertina).slice(0, tiles.length);
+  picks.forEach((item, n) => {
+    const d = item.data, t = tiles[n];
+    t.innerHTML = `<img src="${d.copertina}" alt="${d.titolo || ''}" loading="${n ? 'lazy' : 'eager'}"><span class="hp-cap">${d.titolo || ''}</span>`;
+    t.onclick = item.kind === 'gallery'
+      ? () => { showPage('gallery'); openGallerySingle(ALL_GALLERIES.indexOf(d)); }
+      : () => openArticle(ARTICOLI.indexOf(d));
+  });
 }
 
 // ── FEATURED STORIES (mix of articles + galleries) ──
@@ -1089,11 +1109,9 @@ function renderFeatured() {
     return;
   }
 
-  const lead = combined.find(i => i.kind === 'article' && i.data.in_evidenza) || combined[0];
-  renderCover(lead);
-  const rest = combined.filter(i => i !== lead);
+  renderHeroPhotos(combined);
 
-  featuredGrid.innerHTML = rest.slice(0, 8).map(item => {
+  featuredGrid.innerHTML = combined.map(item => {
     if (item.kind === 'gallery') {
       return featuredGalleryCardHtml(item.data, ALL_GALLERIES.indexOf(item.data));
     }
@@ -1461,7 +1479,7 @@ function handleRoute() {
     }
     return;
   }
-  if (hash === '#/magazine') { showPage('magazine', false); return; }
+  if (hash === '#/magazine' || hash === '#/vision') { showPage('magazine', false); return; }
   // FILOS temporarily hidden: direct links now fall back to home
   if (hash === '#/filos') { showPage('home', false); return; }
   if (hash === '#/gallery') { showPage('gallery', false); return; }
@@ -1828,51 +1846,52 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <!-- ══ MAGAZINE PAGE ══ -->
 <div class="page" id="page-magazine">
-  <div class="mag-page">
-  
-    <div class="mag-back" onclick="showPage('home')">← Back to stories</div>
-    <div class="mag-timeline">
+  <div class="vis">
+    <section class="vis-head">
+      <div class="vis-kicker">Our vision</div>
+      <h1 class="vis-title">A visual storytelling studio, <em>with its own magazine.</em></h1>
+      <p class="vis-lead">Every story begins with an encounter. A craftsman, a talent, an entrepreneur, an ordinary person with something rare inside. We tell those stories — for the people and brands who entrust them to us, and every month for AMIRA vision, the magazine born from the same work.</p>
+    </section>
 
-      <div class="mag-tl-logo">
-        <div class="mag-core-amira">AMIRA</div>
-        <div class="mag-core-vision">vision</div>
+    <section class="vis-two">
+      <div class="vis-col">
+        <div class="vis-num">01 — The studio</div>
+        <h2>We tell <em>your</em> story.</h2>
+        <p>Images, films and content for people, brands and institutions who want to be told with authenticity. From the first conversation to the finished work.</p>
+        <a class="vis-link" href="/componi-la-tua-storia">Tell us your story →</a>
       </div>
-
-      <div class="mag-tl-line"></div>
-
-      <div class="mag-tl-node">
-        <div class="mag-tl-dot"></div>
-        <p class="mag-tl-text">Every story begins with an encounter. A craftsman, a talent, an entrepreneur, an ordinary person with something rare inside.</p>
+      <div class="vis-col">
+        <div class="vis-num">02 — The magazine</div>
+        <h2>We tell <em>ours.</em></h2>
+        <p>People, places and talents we meet along the way. Every story you read here is written, photographed and recorded by Amira — with dedicated columns and collaborations with artists, creatives and people who love to share.</p>
+        <span class="vis-link" onclick="showPage('home');setTimeout(()=>document.getElementById('stories-anchor').scrollIntoView({behavior:'smooth'}),100)">Read the stories →</span>
       </div>
+    </section>
 
-      <div class="mag-tl-line"></div>
-
-      <div class="mag-tl-node">
-        <div class="mag-tl-dot"></div>
-        <p class="mag-tl-text">Words, photography, video, audio. The tool changes but the principle remains one: observe, tell, inspire.</p>
+    <section class="vis-media">
+      <h2 class="vis-media-title">Words, photography, video, audio.<br><em>The tool changes. The principle remains.</em></h2>
+      <div class="vis-media-grid">
+        <div><span>Words</span><p>Articles, interviews, written portraits.</p></div>
+        <div><span>Photo</span><p>Portraits, reportage, editorial and brand shoots.</p></div>
+        <div><span>Video</span><p>Films, interviews, documentaries, web series.</p></div>
+        <div><span>Audio</span><p>Voices recorded as they are, podcasts.</p></div>
+        <div><span>Social</span><p>Reels and content made for each platform.</p></div>
       </div>
+    </section>
 
-      <div class="mag-tl-line"></div>
-
-      <div class="mag-tl-node">
-        <div class="mag-tl-dot"></div>
-        <p class="mag-tl-text">Dedicated columns, collaborating with artists, creatives, intellectuals, people who love to share and inspire.</p>
+    <section class="vis-principle">
+      <div class="vis-kicker">The principle</div>
+      <div class="vis-steps">
+        <div><strong>Observe.</strong><p>We listen and look before we shoot or write.</p></div>
+        <div><strong>Tell.</strong><p>We choose the medium for the person in front of us — often more than one.</p></div>
+        <div><strong>Inspire.</strong><p>Sharing a story is a way to help someone else see theirs.</p></div>
       </div>
-
-      <div class="mag-tl-line"></div>
-
-      <div class="mag-tl-node">
-        <div class="mag-tl-dot mag-tl-dot--gold"></div>
-        <p class="mag-tl-text"><strong style="color:#fff">AMIRA vision</strong> is an editorial project founded on two principles: the power of sharing and the power of storytelling as forms of inspiration.</p>
+      <p class="vis-close"><strong>AMIRA vision</strong> is founded on two principles: the power of sharing and the power of storytelling as forms of inspiration.</p>
+      <div class="vis-actions">
+        <a class="btn-pill" href="/componi-la-tua-storia">Tell your story &nbsp;→</a>
+        <a class="btn-pill" href="https://wa.me/393202412048" target="_blank" rel="noopener" style="background:rgba(255,255,255,.04)">WhatsApp</a>
       </div>
-
-      <div class="mag-tl-line"></div>
-
-      <div style="margin-top:8px">
-        
-      </div>
-
-    </div>
+    </section>
   </div>
 </div>
 
