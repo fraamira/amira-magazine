@@ -669,6 +669,7 @@
     <div class="lang-switcher notranslate" translate="no" aria-label="Language selector">
       <button class="lang-btn active" type="button" data-lang="EN" aria-pressed="true" onclick="setLang('EN')">EN</button>
       <button class="lang-btn" type="button" data-lang="IT" aria-pressed="false" onclick="setLang('IT')">IT</button>
+      <button class="lang-btn" type="button" data-lang="ES" aria-pressed="false" onclick="setLang('ES')">ES</button>
     </div>
     <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -2068,7 +2069,10 @@ function shareArticle(type) {
 // ── EN / IT — GOOGLE TRANSLATE ──
 // English remains the original language. Google Translate handles Italian
 // across the home, internal pages and dynamically loaded articles.
-let currentLang = localStorage.getItem('amira-language') === 'IT' ? 'IT' : 'EN';
+// Languages: the site is written in English and translated to Italian and Spanish.
+const SITE_LANGS = ['EN', 'IT', 'ES'];
+const storedLang = (localStorage.getItem('amira-language') || 'EN').toUpperCase();
+let currentLang = SITE_LANGS.includes(storedLang) ? storedLang : 'EN';
 
 function updateLanguageButtons(lang) {
   document.querySelectorAll('.lang-btn, .filos-lang-btn').forEach(btn => {
@@ -2086,14 +2090,15 @@ function setGoogleTranslateCookie(value) {
 }
 
 function setLang(lang) {
-  lang = String(lang).toUpperCase() === 'IT' ? 'IT' : 'EN';
+  lang = String(lang).toUpperCase();
+  if (!SITE_LANGS.includes(lang)) lang = 'EN';
   localStorage.setItem('amira-language', lang);
   updateLanguageButtons(lang);
 
-  if (lang === 'IT') {
-    setGoogleTranslateCookie('/en/it');
-  } else {
+  if (lang === 'EN') {
     setGoogleTranslateCookie('');
+  } else {
+    setGoogleTranslateCookie('/en/' + lang.toLowerCase());
   }
   location.reload();
 }
@@ -2101,18 +2106,19 @@ function setLang(lang) {
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
-    includedLanguages: 'it',
+    includedLanguages: 'it,es',
     autoDisplay: false
   }, 'google_translate_element');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   updateLanguageButtons(currentLang);
-  document.documentElement.lang = currentLang === 'IT' ? 'it' : 'en';
+  document.documentElement.lang = currentLang.toLowerCase();
 
   // Keep the selected language active after returning to the site.
-  if (currentLang === 'IT' && !document.cookie.includes('googtrans=/en/it')) {
-    setGoogleTranslateCookie('/en/it');
+  const wanted = '/en/' + currentLang.toLowerCase();
+  if (currentLang !== 'EN' && !document.cookie.includes('googtrans=' + wanted)) {
+    setGoogleTranslateCookie(wanted);
   }
 });
 </script>
