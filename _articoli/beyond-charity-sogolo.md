@@ -1,5 +1,6 @@
 ---
 titolo: "Beyond Charity with SOGOLO ONG"
+titolo_em: "Un piccolo docu per un grande progetto"
 tipo: video
 video_url: "https://www.instagram.com/reel/Detp3YltOyV/"
 mezzi: [video, social]
@@ -9,7 +10,7 @@ luogo: "Pozuelo de Alarcón, Madrid"
 categoria: Society
 autore: "Francesco Amirante"
 minuti: 4
-copertina: /immagini/instagram/beyond-charity-sogolo.jpg
+copertina: /immagini/instagram/beyond-charity-sogolo-2.jpg
 estratto: "Some people stand out for their kindness — not just through their words, but through their actions."
 intro: >-
   Some people stand out for their kindness — not just through their words, but through their actions.
