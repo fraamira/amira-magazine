@@ -1,6 +1,8 @@
 ---
 titolo: "Beyond Charity with SOGOLO ONG"
-titolo_em: "Un piccolo docu per un grande progetto"
+titolo_em: "A small docu for a big project"
+titolo_em_it: "Un piccolo docu per un grande progetto"
+titolo_em_es: "Un pequeño docu para un gran proyecto"
 tipo: video
 video_url: "https://www.instagram.com/reel/Detp3YltOyV/"
 mezzi: [video, social]

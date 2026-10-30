@@ -1057,6 +1057,14 @@ async function fetchArticoli() {
 
 // ── CARD TEMPLATES ──
 // Titles of stories made with a client are proper names (brands, places): keep them out of Google Translate.
+// Subtitle written per language in the CMS (titolo_em_it, titolo_em_es) is shown as-is
+// in that language and kept out of Google Translate; otherwise the English one is translated.
+function emHtml(art) {
+  const lang = (typeof currentLang === 'string' ? currentLang : 'EN').toLowerCase();
+  const own = lang !== 'en' && art['titolo_em_' + lang];
+  if (own) return '<span class="notranslate" translate="no">' + own + '</span>';
+  return art.titolo_em || '';
+}
 function titleHtml(art, sep) {
   const t = (art.titolo || '') + (sep || '');
   return art.con ? '<span class="notranslate" translate="no">' + t + '</span>' : t;
@@ -1105,7 +1113,7 @@ function storyCardHtml(art, idx) {
     ${mezziBadgesHtml(art, 'story-badge')}
     <div class="story-body">
       <div class="story-tag">${art.categoria || art.luogo || ''}</div>
-      <h3>${titleHtml(art, ' ')}<em>${art.titolo_em || ''}</em></h3>
+      <h3>${titleHtml(art, ' ')}<em>${emHtml(art)}</em></h3>
       ${art.con ? `<div class="story-con">${conHtml(art)}</div>` : ''}
       <p>${art.estratto || art.intro || ''}</p>
       <span class="story-link">${ctaLabel}</span>
@@ -1120,7 +1128,7 @@ function featuredCardHtml(art, idx) {
       ${mezziBadgesHtml(art, 'featured-card-badge')}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
-    <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + art.titolo_em + '</em>' : ''}</p>
+    <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + emHtml(art) + '</em>' : ''}</p>
     ${art.con ? `<p class="featured-card-con">${conHtml(art)}</p>` : ''}
   </div>`;
 }
@@ -1226,7 +1234,7 @@ function openArticle(index, updateHistory = true) {
   var coverSrc = art.copertina || '';
   var heroEl = document.getElementById('art-hero');
   var tagText = (art.luogo || '') + ' · ' + (art.minuti || 5) + ' min';
-  var titleHtml = window.titleHtml(art, art.titolo_em ? ' ' : '') + (art.titolo_em ? '<em>' + art.titolo_em + '</em>' : '');
+  var titleHtml = window.titleHtml(art, art.titolo_em ? ' ' : '') + (art.titolo_em ? '<em>' + emHtml(art) + '</em>' : '');
   var fotoByHtml = art.fotografo ? '<span class="art-meta-sep">·</span><span class="art-meta-label">Photos by</span><span>' + art.fotografo + '</span>' : '';
   var metaHtml = (art.autore ? '<span class="art-meta-label">Article by</span><span>' + art.autore + '</span>' : '') +
     fotoByHtml +

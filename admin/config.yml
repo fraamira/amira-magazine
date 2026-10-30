@@ -20,7 +20,9 @@ collections:
     identifier_field: "titolo"
     fields:
       - { label: "Titolo", name: "titolo", widget: "string" }
-      - { label: "Titolo corsivo", name: "titolo_em", widget: "string", required: false }
+      - { label: "Titolo corsivo (inglese)", name: "titolo_em", widget: "string", required: false, hint: "Se compili anche le versioni IT ed ES, queste vengono mostrate così come sono; altrimenti l'inglese viene tradotto automaticamente." }
+      - { label: "Titolo corsivo — italiano", name: "titolo_em_it", widget: "string", required: false }
+      - { label: "Titolo corsivo — spagnolo", name: "titolo_em_es", widget: "string", required: false }
       - label: "Tipo di storia"
         name: "tipo"
         widget: "select"
