@@ -1103,7 +1103,6 @@ function storyCardHtml(art, idx) {
   return `<article class="story" ${storyClickAttr(art, idx)}>
     <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
     ${mezziBadgesHtml(art, 'story-badge')}
-    ${isExternalVideo(art) ? '<span class="story-play"><svg viewBox="0 0 24 24" width="40%" height="40%" fill="#fff" aria-hidden="true" style="margin-left:8%"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>' : ''}
     <div class="story-body">
       <div class="story-tag">${art.categoria || art.luogo || ''}</div>
       <h3>${titleHtml(art, ' ')}<em>${art.titolo_em || ''}</em></h3>
@@ -1119,7 +1118,6 @@ function featuredCardHtml(art, idx) {
     <div class="featured-card-media">
       <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
       ${mezziBadgesHtml(art, 'featured-card-badge')}
-      ${isExternalVideo(art) ? '<span class="featured-card-play"><svg viewBox="0 0 24 24" width="40%" height="40%" fill="#fff" aria-hidden="true" style="margin-left:8%"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>' : ''}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
     <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + art.titolo_em + '</em>' : ''}</p>
