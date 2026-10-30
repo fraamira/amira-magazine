@@ -126,7 +126,7 @@
     .featured-card:hover .featured-card-media img{transform:scale(1.04)}
     .featured-card-badge{position:absolute;top:10px;left:10px;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);border:.5px solid rgba(255,255,255,.3);padding:3px 6px;background:rgba(3,5,8,.4)}
     .featured-card-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
-    .featured-card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
+    .featured-card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(5,12,24,.45);backdrop-filter:blur(2px);border-radius:50%;border:1.2px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .featured-card-play i{font-size:13px;color:#fff}
     .featured-card-cat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c9a96e;margin:10px 0 4px}
     .featured-card-title{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:#fff;margin:0}
@@ -147,7 +147,7 @@
     .studio-statement:hover .studio-statement-cta{color:#c9a96e}
     @media(max-width:768px){.studio-statement{grid-template-columns:1fr}.studio-statement-body{padding:36px 20px}}
     .story-badge.type-video{color:#c9a96e;border-color:rgba(201,169,110,.5)}
-    .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
+    .story-play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(5,12,24,.45);border-radius:50%;border:1.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center}
     .story-play i{font-size:16px;color:#fff}
 
     /* HOME HERO: logo, three words and subtitle centred, the eye behind */
@@ -650,6 +650,7 @@
       .art-nav-bottom{grid-template-columns:1fr 1fr;padding:32px 20px}.art-back{display:flex}
     }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 </head>
 <body>
 
@@ -1102,7 +1103,7 @@ function storyCardHtml(art, idx) {
   return `<article class="story" ${storyClickAttr(art, idx)}>
     <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
     ${mezziBadgesHtml(art, 'story-badge')}
-    ${isExternalVideo(art) ? '<span class="story-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+    ${isExternalVideo(art) ? '<span class="story-play"><svg viewBox="0 0 24 24" width="40%" height="40%" fill="#fff" aria-hidden="true" style="margin-left:8%"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>' : ''}
     <div class="story-body">
       <div class="story-tag">${art.categoria || art.luogo || ''}</div>
       <h3>${titleHtml(art, ' ')}<em>${art.titolo_em || ''}</em></h3>
@@ -1118,7 +1119,7 @@ function featuredCardHtml(art, idx) {
     <div class="featured-card-media">
       <img src="${art.copertina || ''}" alt="${art.titolo || ''}" loading="lazy">
       ${mezziBadgesHtml(art, 'featured-card-badge')}
-      ${isExternalVideo(art) ? '<span class="featured-card-play"><i class="ti ti-player-play" aria-hidden="true"></i></span>' : ''}
+      ${isExternalVideo(art) ? '<span class="featured-card-play"><svg viewBox="0 0 24 24" width="40%" height="40%" fill="#fff" aria-hidden="true" style="margin-left:8%"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>' : ''}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
     <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + art.titolo_em + '</em>' : ''}</p>
