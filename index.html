@@ -130,6 +130,7 @@
     .featured-card-play i{font-size:13px;color:#fff}
     .featured-card-cat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c9a96e;margin:10px 0 4px}
     .featured-card-title{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:#fff;margin:0}
+    .featured-card-title em.sub-em{margin-left:.28em}
     .featured-card-title em{font-style:italic;font-weight:300;color:rgba(255,255,255,.65)}
     @media(max-width:768px){.featured-grid{grid-template-columns:1fr 1fr;gap:10px}.featured-section{padding:36px 20px}}
     @media(max-width:480px){.featured-grid{grid-template-columns:1fr}}
@@ -1128,7 +1129,7 @@ function featuredCardHtml(art, idx) {
       ${mezziBadgesHtml(art, 'featured-card-badge')}
     </div>
     <p class="featured-card-cat">${art.categoria || art.luogo || ''}</p>
-    <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '. ' : '')}${art.titolo_em ? '<em>' + emHtml(art) + '</em>' : ''}</p>
+    <p class="featured-card-title">${titleHtml(art, art.titolo_em ? '.' : '')}${art.titolo_em ? '<em class="sub-em">' + emHtml(art) + '</em>' : ''}</p>
     ${art.con ? `<p class="featured-card-con">${conHtml(art)}</p>` : ''}
   </div>`;
 }
@@ -2104,9 +2105,17 @@ function updateLanguageButtons(lang) {
 }
 
 function setGoogleTranslateCookie(value) {
+  // Google may store its cookie on the host or on any parent domain
+  // (.www.example.com, .example.com): write or clear it on all of them,
+  // otherwise an old choice (e.g. Italian) survives a switch to EN or ES.
   const expires = value ? ';path=/;max-age=31536000' : ';path=/;max-age=0';
   document.cookie = 'googtrans=' + value + expires;
-  document.cookie = 'googtrans=' + value + expires + ';domain=.' + location.hostname;
+  const parts = location.hostname.split('.');
+  for (let i = 0; i < parts.length - 1; i++) {
+    const d = parts.slice(i).join('.');
+    document.cookie = 'googtrans=' + value + expires + ';domain=' + d;
+    document.cookie = 'googtrans=' + value + expires + ';domain=.' + d;
+  }
 }
 
 function setLang(lang) {
